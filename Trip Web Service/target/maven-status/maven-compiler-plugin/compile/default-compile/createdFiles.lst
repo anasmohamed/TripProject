@@ -1,3 +1,4 @@
-dao\hello.class
 utilities\Constants.class
+pojo\Trip.class
 dao\DataBaseConnectionHandler.class
+pojo\User.class
