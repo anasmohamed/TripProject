@@ -33,15 +33,18 @@ public class userdao {
     @Path("test")
     public User getUser() {
         User u = new User();
+        u.setEmail("anaskamal");
         u.setUserName("ahmed");
         return u;
     }
+//for test
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("post")
     public User testUser(User user) {
         User u = new User();
+        u.setEmail(user.getEmail());
         u.setUserName(user.getUserName());
         return u;
     }
