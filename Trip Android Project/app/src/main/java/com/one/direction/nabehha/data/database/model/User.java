@@ -15,11 +15,17 @@ public class User {
 
     @SerializedName("password")
     @Expose
-    private int password;
+    private String password;
     @SerializedName("id")
     private int userId;
 
     public User() {
+    }
+
+    public User(String userName, String email, String password) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
     }
 
     public int getUserId() {
@@ -38,19 +44,19 @@ public class User {
         this.userName = userName;
     }
 
-    public String getE_mail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setE_mail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 

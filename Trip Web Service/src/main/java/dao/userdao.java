@@ -27,16 +27,7 @@ public class userdao {
         String message = "hello ya " + name;
         return message;
     }
-//for test
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("test")
-    public User getUser() {
-        User u = new User();
-        u.setEmail("anaskamal");
-        u.setUserName("ahmed");
-        return u;
-    }
+
 //for test
     @POST
     @Produces(MediaType.APPLICATION_JSON)

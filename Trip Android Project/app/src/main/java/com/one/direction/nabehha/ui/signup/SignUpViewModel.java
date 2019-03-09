@@ -25,18 +25,19 @@ public class SignUpViewModel extends ViewModel {
 
     }
     public void sendUserDataToWebService(String userName, String email,String password) {
-        mUserAPIService.insertUserIntoWebService(userName, email, password).enqueue(new Callback<User>() {
+
+        mUserAPIService.insertUserIntoWebService(new User(userName, email, password)).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-
+                Log.e("View Model", "post submitted to API." +response.code());
                 if (response.isSuccessful()) {
-                    Log.i("View Model", "post submitted to API." + response.body().toString());
+                    Log.e("View Model", "post submitted to API.  " + response.body().toString());
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.i("View Model", "Unable to submit post to API. "+t.getMessage() + "    "+t.getCause().toString() + " " + t.toString());
+                Log.e("View Model", "Unable to submit post to API. "+t.getMessage() + "    "+t.getCause() + " " + t.toString());
             }
         });
     }
