@@ -21,30 +21,30 @@ import pojo.User;
  */
 @Path("/hello")
 public class userdao {
-
+//for test
     @GET
     public String sayHello(@QueryParam("name") String name) {
         String message = "hello ya " + name;
         return message;
     }
-
+//for test
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("test")
     public User getUser() {
         User u = new User();
-        u.setE_mail("anaskamal");
+        u.setEmail("anaskamal");
         u.setUserName("ahmed");
         return u;
     }
-
+//for test
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("post")
     public User testUser(User user) {
         User u = new User();
-        u.setE_mail(user.getE_mail());
+        u.setEmail(user.getEmail());
         u.setUserName(user.getUserName());
         return u;
     }

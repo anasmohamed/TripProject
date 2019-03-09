@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.one.direction.nabehha", appContext.getPackageName());
+        assertEquals("com.scheduled.direction.nabehha", appContext.getPackageName());
     }
 }
