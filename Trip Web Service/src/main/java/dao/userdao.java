@@ -5,13 +5,13 @@
  */
 package dao;
 
-import javax.jws.WebMethod;
-import javax.jws.WebService;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import pojo.User;
 
@@ -21,6 +21,12 @@ import pojo.User;
  */
 @Path("/hello")
 public class userdao {
+
+    @GET
+    public String sayHello(@QueryParam("name") String name) {
+        String message = "hello ya " + name;
+        return message;
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -34,7 +40,7 @@ public class userdao {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_XML)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("post")
     public User testUser(User user) {
         User u = new User();

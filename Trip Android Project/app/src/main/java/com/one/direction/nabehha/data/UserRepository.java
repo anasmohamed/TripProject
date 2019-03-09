@@ -1,24 +1,26 @@
 package com.one.direction.nabehha.data;
 
-import android.util.Log;
 
-import com.one.direction.nabehha.data.network.UserWebService;
+import com.one.direction.nabehha.AppExecutors;
+import com.one.direction.nabehha.data.network.UserAPIService;
 
 public class UserRepository {
+    private static final Object LOCK = new Object();
     private static UserRepository userRepositoryInstance;
-    private final UserWebService userWebService;
+    private final AppExecutors mExecutors;
+    UserAPIService userAPIService;
 
-
-    public UserRepository(UserWebService userWebService) {
-        this.userWebService = userWebService;
+    public UserRepository(UserAPIService userWebService, AppExecutors executors) {
+        this.userAPIService = userWebService;
+        this.mExecutors = executors;
     }
 
     public synchronized static UserRepository getInstance(
-             UserWebService userWebService) {
+            UserAPIService userAPIService, AppExecutors executors) {
         if (userRepositoryInstance == null) {
             synchronized (LOCK) {
-                userRepositoryInstance = new UserRepository( userWebService,
-                        );
+                userRepositoryInstance = new UserRepository(userAPIService,
+                        executors);
             }
         }
         return userRepositoryInstance;

@@ -7,23 +7,27 @@ public class User {
     @SerializedName("userName")
     @Expose
     private String userName;
+
     @SerializedName("email")
     @Expose
     private String email;
+
+
     @SerializedName("password")
     @Expose
     private int password;
-    private int user_id;
+    @SerializedName("id")
+    private int userId;
 
     public User() {
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
@@ -50,5 +54,14 @@ public class User {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "Post{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", userName=" + userName +
+                ", id=" + userId +
+                '}';
 
+    }
 }

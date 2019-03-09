@@ -1,18 +1,15 @@
 package com.one.direction.nabehha.ui.signup;
+
 import android.arch.lifecycle.ViewModel;
 
-import com.one.direction.nabehha.data.database.DatabaseClient;
-import com.one.direction.nabehha.data.database.model.User;
+import com.one.direction.nabehha.data.UserRepository;
 
 public class SignUpViewModel extends ViewModel {
     // TODO: Implement the ViewModel
+    private final UserRepository mUserRepository;
 
-SignUpViewModel()
+    public SignUpViewModel(UserRepository userRepository) {
+        this.mUserRepository = userRepository;
 
-    boolean signUp(User user)
-    {
-        DatabaseClient.getInstance().getAppDatabase().userDao().insertUser();
-
-        return  true;
     }
 }

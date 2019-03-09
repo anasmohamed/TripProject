@@ -3,7 +3,6 @@ package com.one.direction.nabehha;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.one.direction.nabehha.ui.signup.RegisterFragment;
 import com.one.direction.nabehha.ui.signup.SignUpFragment;
 
 public class SignUpActivity extends AppCompatActivity {
