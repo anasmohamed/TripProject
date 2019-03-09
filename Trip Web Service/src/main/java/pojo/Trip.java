@@ -19,18 +19,14 @@ public class Trip {
     private String time;
     private String status;
     private String type;
-    private int trip_id;
+    private int id;
 
     public Trip() {
     }
 
-    public int getTrip_id() {
-        return trip_id;
-    }
+  
 
-    public void setTrip_id(int trip_id) {
-        this.trip_id = trip_id;
-    }
+   
 
     public String getTripName() {
         return tripName;
@@ -50,6 +46,14 @@ public class Trip {
 
     public int getEndPoint() {
         return endPoint;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setEndPoint(int endPoint) {
@@ -94,6 +98,14 @@ public class Trip {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getTripImage() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int getUserID() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

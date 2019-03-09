@@ -5,26 +5,21 @@
  */
 package pojo;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Ahmed moatasem
  */
+@XmlRootElement
 public class User {
 
     private String userName;
-    private String e_mail;
+    private String email;
     private int password;
-    private int user_id;
+    private Long id;
 
     public User() {
-    }
-
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
     }
 
     public String getUserName() {
@@ -35,12 +30,12 @@ public class User {
         this.userName = userName;
     }
 
-    public String getE_mail() {
-        return e_mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setE_mail(String e_mail) {
-        this.e_mail = e_mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getPassword() {
@@ -50,5 +45,15 @@ public class User {
     public void setPassword(int password) {
         this.password = password;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+   
 
 }

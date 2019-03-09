@@ -1,4 +1,6 @@
 utilities\Constants.class
 pojo\Trip.class
+dao\userdao.class
 dao\DataBaseConnectionHandler.class
+dao\TripDAO.class
 pojo\User.class

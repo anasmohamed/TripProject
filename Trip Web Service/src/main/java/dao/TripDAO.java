@@ -35,7 +35,7 @@ public class TripDAO {
                     + "USER_ID,"
                     + "TRIP_STATUS)"
                     + "Values (?,?,?,?,?,?,?,?,?,?)");
-            pst.setInt(1, trip.getTrip_id());
+            pst.setInt(1, trip.getId());
             pst.setString(2, trip.getTripName());
             pst.setInt(3, trip.getStartPoint());
             pst.setInt(4, trip.getEndPoint());
