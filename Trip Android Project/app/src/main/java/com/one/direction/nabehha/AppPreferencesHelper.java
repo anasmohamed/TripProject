@@ -12,7 +12,6 @@ public class AppPreferencesHelper implements UserPreferencesHelper {
 
     private static final String PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME";
 
-    private static final String PREF_KEY_CURRENT_USER_PROFILE_PIC_URL = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL";
 
 
     private final SharedPreferences mPrefs;
@@ -57,13 +56,4 @@ public class AppPreferencesHelper implements UserPreferencesHelper {
         mPrefs.edit().putString(PREF_KEY_CURRENT_USER_NAME, userName).apply();
     }
 
-    @Override
-    public String getCurrentUserProfilePicUrl() {
-        return mPrefs.getString(PREF_KEY_CURRENT_USER_PROFILE_PIC_URL, null);
-    }
-
-    @Override
-    public void setCurrentUserProfilePicUrl(String profilePicUrl) {
-        mPrefs.edit().putString(PREF_KEY_CURRENT_USER_PROFILE_PIC_URL, profilePicUrl).apply();
-    }
 }

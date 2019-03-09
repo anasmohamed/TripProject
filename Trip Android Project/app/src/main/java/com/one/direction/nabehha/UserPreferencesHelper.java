@@ -14,8 +14,4 @@ public interface UserPreferencesHelper {
     String getCurrentUserName();
 
     void setCurrentUserName(String userName);
-
-    String getCurrentUserProfilePicUrl();
-
-    void setCurrentUserProfilePicUrl(String profilePicUrl);
 }

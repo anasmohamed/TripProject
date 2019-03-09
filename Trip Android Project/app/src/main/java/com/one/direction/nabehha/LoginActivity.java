@@ -55,25 +55,30 @@ public class LoginActivity extends AppCompatActivity implements
 //                                , mActivityLoginBinding.password.getText().toString());
 
 
-                        mAppExecutors.mainThread().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadingUi(false);
+//                       goToTripsHome(user);
+                    }
+                });
+            }
+        });
+
+    }
+
+    private void goToTripsHome(/*User user*/) {
+        mAppExecutors.mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                loadingUi(false);
 //                                if (user.getEmail() != null) {
 //                                    passUser(user);
+//                                    //TODO Go To Main Screen
 //                                } else {
 //                                    Toast.makeText(LoginActivity.this,
 //                                            "You Are Not Registered or wrong password",
 //                                            Toast.LENGTH_SHORT).show();
 //                                }
 
-                            }
-                        });
-                    }
-                });
             }
         });
-
     }
 
 
@@ -96,14 +101,13 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "Faild to sign in", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Failed to sign in", Toast.LENGTH_SHORT).show();
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -120,22 +124,22 @@ public class LoginActivity extends AppCompatActivity implements
 
             if (acct != null) {
                 String personName = acct.getDisplayName();
-                String personPhotoUrl = acct.getPhotoUrl().toString();
                 String email = acct.getEmail();
 
                 Intent profile = new Intent(this, SplashActivity.class);
-//            profile.putExtra(getString(R.string.user_name), personName);
-//            profile.putExtra(getString(R.string.user_email), email);
-//            profile.putExtra(getString(R.string.user_photo), personPhotoUrl);
                 startActivity(profile);
 
-                //TODO WS LogIn
-                //if not exist : Register
+                //TODO WS LogIn ,, in ws check if email exist if not reqist all case return user
+                //ً  User user=WS.googleLogin(email,personName)
+//                goToTripsHome(user);
             }
 
 
         } else {
-            // Signed out, show unauthenticated UI.
+            loadingUi(false);
+            Toast.makeText(LoginActivity.this,
+                                            "Can't complete",
+                                            Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -154,37 +158,8 @@ public class LoginActivity extends AppCompatActivity implements
         userPreferencesHelper.setCurrentUserId(user.getId());
         userPreferencesHelper.setCurrentUserEmail(user.getEmail);
         userPreferencesHelper.setCurrentUserName(user.getName);
-         //TODO Go To Main Screen
+
         */
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-//        if (mGoogleApiClient != null) {
-//            OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-//            if (opr.isDone()) {
-//                // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-//                // and the GoogleSignInResult will be available instantly.
-//                Log.e(TAG, "Got cached sign-in");
-//                GoogleSignInResult result = opr.get();
-//                handleSignInResult(result);
-//            } else {
-//                // If the user has not previously signed in on this device or the sign-in has expired,
-//                // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-//                // single sign-on will occur in this branch.
-////            showProgressDialog();
-//                opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-//                    @Override
-//                    public void onResult(GoogleSignInResult googleSignInResult) {
-////                    hideProgressDialog();
-//                        Log.e(TAG, "Gotn't cached sign-in");
-//                        handleSignInResult(googleSignInResult);
-//                    }
-//                });
-//            }
-//        }
     }
 
 }
