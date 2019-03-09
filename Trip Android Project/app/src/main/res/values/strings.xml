@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Nabehha</string>
+    <string name="full_name">Full Name</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
