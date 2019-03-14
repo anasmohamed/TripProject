@@ -1,49 +1,36 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package pojo;
+package com.one.direction.nabehha.data.database.model;
 
-import java.util.ArrayList;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
-/**
- *
- * @author Ahmed moatasem
- */
+@Entity
 public class Trip {
+    @NonNull
 
     private String tripName;
+    @NonNull
+
     private String startPoint;
+    @NonNull
     private String endPoint;
-    private ArrayList<TripNotes> notes;
-
-    public ArrayList<TripNotes> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(ArrayList<TripNotes> notes) {
-        this.notes = notes;
-    }
+    private String notes;
+    @NonNull
     private String date;
-    private String time;
-    private String status;
-    private String type;
+    @NonNull
+
     private String tripImage;
-    private Long userId;
+    @NonNull
 
-    public Long getUserId() {
-        return userId;
-    }
+    private String time;
+    @NonNull
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    private String status;
+    @NonNull
 
-    public void setTripImage(String tripImage) {
-        this.tripImage = tripImage;
-    }
-    private int id;
+    private String type;
+    @PrimaryKey(autoGenerate = true)
+    private Long id;
 
     public Trip() {
     }
@@ -68,21 +55,26 @@ public class Trip {
         return endPoint;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setEndPoint(String endPoint) {
         this.endPoint = endPoint;
     }
 
-  
+    public Long getId() {
+        return id;
+    }
 
-  
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     public String getDate() {
         return date;
     }
@@ -118,5 +110,10 @@ public class Trip {
     public String getTripImage() {
         return tripImage;
     }
+
+    public void setTripImage(String tripImage) {
+        this.tripImage = tripImage;
+    }
+
 
 }

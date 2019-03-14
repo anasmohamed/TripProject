@@ -1,7 +1,6 @@
 package com.one.direction.nabehha;
 
 import android.os.Bundle;
-
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -22,8 +21,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-    TabLayout tabLayout =(TabLayout)findViewById(R.id.tabs);
-        ViewPager viewPager =(ViewPager)findViewById(R.id.viewpager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         tabPageAdapter TabPageAdapter = new tabPageAdapter(getSupportFragmentManager());
         viewPager.setAdapter(TabPageAdapter);
