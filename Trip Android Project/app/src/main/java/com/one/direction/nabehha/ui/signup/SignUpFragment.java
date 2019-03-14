@@ -19,10 +19,6 @@ import com.one.direction.nabehha.databinding.SignupFragmentBinding;
 public class SignUpFragment extends Fragment {
 
     private SignUpViewModel mViewModel;
-    private EditText signUpFullNameET;
-    private EditText signUpEmailET;
-    private EditText signUpPasswordET;
-    private Button signUpBtn;
     SignupFragmentBinding binding;
     public static SignUpFragment newInstance() {
         return new SignUpFragment();

@@ -2,7 +2,6 @@ package com.one.direction.nabehha.ui.signup;
 
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.one.direction.nabehha.data.UserRepository;
 import com.one.direction.nabehha.data.database.model.User;
@@ -16,30 +15,27 @@ import retrofit2.Response;
 public class SignUpViewModel extends ViewModel {
     // TODO: Implement the ViewModel
     private final UserRepository mUserRepository;
-    private UserAPIService mUserAPIService;
 
     public SignUpViewModel(UserRepository userRepository) {
         this.mUserRepository = userRepository;
-        mUserAPIService = UserAPIUtils.geUserAPIService();
-
-
     }
-    public void sendUserDataToWebService(String userName, String email,String password) {
 
-        mUserAPIService.insertUserIntoWebService(new User(userName, email, password)).enqueue(new Callback<User>() {
+    public void sendUserDataToWebService(String userName, String email, String password) {
+
+        mUserRepository.insertUserIntoWebService(userName, email, password, new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                Log.e("View Model", "post submitted to API." +response.code());
                 if (response.isSuccessful()) {
-                    Log.e("View Model", "post submitted to API.  " + response.body().toString());
+                    //TODO
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.e("View Model", "Unable to submit post to API. "+t.getMessage() + "    "+t.getCause() + " " + t.toString());
+                Log.e("View Model", "Unable to submit post to API. " + t.getMessage() + "    " + t.getCause() + " " + t.toString());
             }
         });
+
     }
 
 }
