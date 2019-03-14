@@ -17,7 +17,7 @@ public class User {
     @Expose
     private String password;
     @SerializedName("id")
-    private int userId;
+    private Long userId;
 
     public User() {
     }
@@ -28,11 +28,11 @@ public class User {
         this.password = password;
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
