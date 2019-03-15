@@ -1,6 +1,7 @@
 package com.one.direction.nabehha.ui.addtrip;
 
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.data.network.TripRepository;
@@ -17,15 +18,18 @@ public class AddTripViewModel extends ViewModel {
         this.mTripRepository = tripRepository;
     }
 
-    public void AddTripToWebService(String tripName, String startPoint, String endPoint, String date, String time, String type, String tripImage, String status) {
-        mTripRepository.insertTripIntoWebService(tripName, startPoint, endPoint, date, time, type, tripImage, status, new Callback<Trip>() {
+    public void AddTripToWebService(String tripName, String startPoint, String endPoint, String date, String time, String type, String tripImage,int userId ,String status) {
+        mTripRepository.insertTripIntoWebService(tripName, startPoint, endPoint, date, time, type, tripImage,userId, status, new Callback<Trip>() {
             @Override
             public void onResponse(Call<Trip> call, Response<Trip> response) {
+                Log.e("Add Trip",response.message());
 
             }
 
             @Override
             public void onFailure(Call<Trip> call, Throwable t) {
+                Log.e ("error add trip ",t.getMessage());
+
 
             }
         });

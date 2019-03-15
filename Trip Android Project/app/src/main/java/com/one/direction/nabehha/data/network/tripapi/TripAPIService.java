@@ -7,7 +7,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface TripAPIService {
-    @POST("post")
+    @POST("addTrip")
     Call<Trip> insertTripIntoWebService(@Body Trip trip);
 
 }
