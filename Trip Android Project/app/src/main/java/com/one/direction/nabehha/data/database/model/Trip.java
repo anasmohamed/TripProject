@@ -10,11 +10,9 @@ public class Trip {
 
     private String tripName;
     @NonNull
-
     private String startPoint;
     @NonNull
     private String endPoint;
-
 
     @NonNull
     private String date;
@@ -25,6 +23,16 @@ public class Trip {
 
     private String time;
     @NonNull
+    int userId;
+
+    @NonNull
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(@NonNull int userId) {
+        this.userId = userId;
+    }
 
     private String status;
     @NonNull
@@ -36,12 +44,13 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(@NonNull String tripName, @NonNull String startPoint, @NonNull String endPoint, @NonNull String date, @NonNull String tripImage, @NonNull String time, @NonNull String status, @NonNull String type) {
+    public Trip(@NonNull String tripName, @NonNull String startPoint, @NonNull String endPoint, @NonNull String date, @NonNull String time, @NonNull String type, @NonNull String tripImage, int userId, @NonNull String status) {
         this.tripName = tripName;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.date = date;
         this.tripImage = tripImage;
+        this.userId = userId;
         this.time = time;
         this.status = status;
         this.type = type;
