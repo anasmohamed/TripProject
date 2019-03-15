@@ -1,10 +1,10 @@
-package com.one.direction.nabehha.data;
+package com.one.direction.nabehha.data.network;
 
 
 import com.one.direction.nabehha.AppExecutors;
 import com.one.direction.nabehha.UserPreferencesHelper;
 import com.one.direction.nabehha.data.database.model.User;
-import com.one.direction.nabehha.data.network.UserAPIService;
+import com.one.direction.nabehha.data.network.userapi.UserAPIService;
 
 import retrofit2.Callback;
 

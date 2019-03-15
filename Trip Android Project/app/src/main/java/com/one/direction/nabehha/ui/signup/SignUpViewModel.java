@@ -3,10 +3,8 @@ package com.one.direction.nabehha.ui.signup;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
-import com.one.direction.nabehha.data.UserRepository;
+import com.one.direction.nabehha.data.network.UserRepository;
 import com.one.direction.nabehha.data.database.model.User;
-import com.one.direction.nabehha.data.network.UserAPIService;
-import com.one.direction.nabehha.data.network.UserAPIUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;

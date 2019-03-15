@@ -1,4 +1,5 @@
-package com.one.direction.nabehha.data.network;
+package com.one.direction.nabehha.data.network.userapi;
+
 
 public class UserAPIUtils {
     private UserAPIUtils() {}
