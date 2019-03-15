@@ -52,4 +52,8 @@ public class UserRepository {
         userPreferencesHelper.setCurrentUserEmail(user.getEmail());
         userPreferencesHelper.setCurrentUserName(user.getUserName());
     }
+
+    public void saveTripImage(Long tripId,byte[] imageByte) {
+//        tripDao.addImageToTrip(tripId,imageByte);
+    }
 }

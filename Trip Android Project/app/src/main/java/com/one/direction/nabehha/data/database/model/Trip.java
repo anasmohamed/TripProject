@@ -1,5 +1,6 @@
 package com.one.direction.nabehha.data.database.model;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -19,7 +20,8 @@ public class Trip {
     private String date;
     @NonNull
 
-    private String tripImage;
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    private byte[] tripImage;
     @NonNull
 
     private String time;
@@ -107,13 +109,12 @@ public class Trip {
         this.type = type;
     }
 
-    public String getTripImage() {
+    @NonNull
+    public byte[] getTripImage() {
         return tripImage;
     }
 
-    public void setTripImage(String tripImage) {
+    public void setTripImage(@NonNull byte[] tripImage) {
         this.tripImage = tripImage;
     }
-
-
 }
