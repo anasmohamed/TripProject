@@ -15,7 +15,8 @@ public class Trip {
     private String startPoint;
     @NonNull
     private String endPoint;
-    private String notes;
+
+
     @NonNull
     private String date;
     @NonNull
@@ -35,6 +36,17 @@ public class Trip {
     private Long id;
 
     public Trip() {
+    }
+
+    public Trip(@NonNull String tripName, @NonNull String startPoint, @NonNull String endPoint, @NonNull String date, @NonNull String tripImage, @NonNull String time, @NonNull String status, @NonNull String type) {
+        this.tripName = tripName;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.date = date;
+        this.tripImage = tripImage;
+        this.time = time;
+        this.status = status;
+        this.type = type;
     }
 
     public String getTripName() {
@@ -67,14 +79,6 @@ public class Trip {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
     }
 
     public String getDate() {

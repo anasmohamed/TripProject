@@ -4,11 +4,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.one.direction.nabehha.ui.addtrip.AddTripFragment;
 import com.one.direction.nabehha.ui.signin.SignInFragment;
 import com.one.direction.nabehha.ui.signup.SignUpFragment;
 
@@ -36,8 +32,12 @@ public class SignUpActivity extends AppCompatActivity implements SwapFragment {
 //            getSupportFragmentManager().beginTransaction()
 //                    .replace(R.id.container, SignInFragment.newInstance())
 //                    .commitNow();
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.container, AddTripFragment.newInstance())
+//                    .commitNow();
 //        }
-//
+
+
 
 //
         if (!Places.isInitialized()) {

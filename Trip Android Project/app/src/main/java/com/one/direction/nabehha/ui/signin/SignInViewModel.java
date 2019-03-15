@@ -2,7 +2,7 @@ package com.one.direction.nabehha.ui.signin;
 
 import android.arch.lifecycle.ViewModel;
 
-import com.one.direction.nabehha.data.UserRepository;
+import com.one.direction.nabehha.data.network.UserRepository;
 import com.one.direction.nabehha.data.database.model.User;
 
 import retrofit2.Callback;

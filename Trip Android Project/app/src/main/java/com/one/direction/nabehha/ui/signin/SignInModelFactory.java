@@ -3,7 +3,7 @@ package com.one.direction.nabehha.ui.signin;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
-import com.one.direction.nabehha.data.UserRepository;
+import com.one.direction.nabehha.data.network.UserRepository;
 
 public class SignInModelFactory extends ViewModelProvider.NewInstanceFactory {
     private final UserRepository mRepository;

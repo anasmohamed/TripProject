@@ -10,12 +10,13 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>TripService</servlet-name>
-        <url-pattern>/dao/*</url-pattern>
+        <url-pattern>/tripservice/*</url-pattern>
     </servlet-mapping>
+    
      
     <init-param>
         <param-name>com.sun.jersey.config.property.packages</param-name>
-        <param-value>dao</param-value>
+        <param-value>tripservice</param-value>
     </init-param>
       <init-param>
         <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>

@@ -1,4 +1,4 @@
-package com.one.direction.nabehha.data.network;
+package com.one.direction.nabehha.data.network.userapi;
 
 import com.one.direction.nabehha.data.database.model.User;
 
