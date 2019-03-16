@@ -12,10 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <receiver
-            android:name=".broadcast.TripImageReciver"
-            android:enabled="true"
-            android:exported="true"></receiver>
+
 
         <service
             android:name=".service.DownloadImage"

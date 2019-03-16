@@ -25,14 +25,14 @@ public class Trip {
 
     private String time;
     @NonNull
-    int userId;
+    Long userId;
 
     @NonNull
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(@NonNull int userId) {
+    public void setUserId(@NonNull Long userId) {
         this.userId = userId;
     }
 
@@ -46,12 +46,12 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(@NonNull String tripName, @NonNull String startPoint, @NonNull String endPoint, @NonNull String date, @NonNull String time, @NonNull String type, @NonNull String tripImage, int userId, @NonNull String status) {
+    public Trip(@NonNull String tripName, @NonNull String startPoint, @NonNull String endPoint, @NonNull String date, @NonNull String time, @NonNull String type, @NonNull String tripImage, Long userId, @NonNull String status) {
         this.tripName = tripName;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.date = date;
-        this.tripImage = tripImage;
+//        this.tripImage = tripImage;
         this.userId = userId;
         this.time = time;
         this.status = status;

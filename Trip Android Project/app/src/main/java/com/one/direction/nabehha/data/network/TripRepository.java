@@ -34,7 +34,7 @@ public class TripRepository {
     }
 
 
-    public void insertTripIntoWebService(String tripName, String startPoint, String endPoint,String date,String time,String type,String tripImage,int userId,String status, Callback<Trip> mTripCallback) {
+    public void insertTripIntoWebService(String tripName, String startPoint, String endPoint,String date,String time,String type,String tripImage,Long userId,String status, Callback<Trip> mTripCallback) {
         tripAPIService.insertTripIntoWebService(new Trip(tripName,startPoint,endPoint,date,time,type,tripImage,userId ,status )).enqueue(mTripCallback);
     }
 

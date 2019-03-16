@@ -4,6 +4,11 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.one.direction.nabehha.ui.addtrip.AddTripFragment;
 import com.one.direction.nabehha.ui.signin.SignInFragment;
 import com.one.direction.nabehha.ui.signup.SignUpFragment;
@@ -32,38 +37,38 @@ public class SignUpActivity extends AppCompatActivity implements SwapFragment {
 //            getSupportFragmentManager().beginTransaction()
 //                    .replace(R.id.container, SignInFragment.newInstance())
 //                    .commitNow();
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.container, AddTripFragment.newInstance())
-//                    .commitNow();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, AddTripFragment.newInstance())
+                    .commitNow();
 //        }
 
 
 
+////
+//        if (!Places.isInitialized()) {
+//            Places.initialize(getApplicationContext(), "AIzaSyC9VkN6sukOJDJlFlD1gL9PGW9wZQgM4bw");
+//        }
 //
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "AIzaSyC9VkN6sukOJDJlFlD1gL9PGW9wZQgM4bw");
-        }
-
-// Initialize the AutocompleteSupportFragment.
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                getbyteArrayFromURL(BASE_GOOGLE_IMAGE+place.getPhotoMetadatas().get(0).a()) ;
-                place.getAddress();
-            }
-
-            @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-
-            }
-        });
+//// Initialize the AutocompleteSupportFragment.
+//        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+//
+//        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+//
+//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(Place place) {
+//                // TODO: Get info about the selected place.
+//                getbyteArrayFromURL(BASE_GOOGLE_IMAGE+place.getPhotoMetadatas().get(0).a()) ;
+//                place.getAddress();
+//            }
+//
+//            @Override
+//            public void onError(Status status) {
+//                // TODO: Handle the error.
+//
+//            }
+//        });
 //
 //        Uri gmmIntentUri = Uri.parse("google.navigation:q=Taronga+Zoo,+Sydney+Australia");
 //        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);

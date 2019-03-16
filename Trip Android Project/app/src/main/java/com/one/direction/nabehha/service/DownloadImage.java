@@ -50,7 +50,7 @@ public class DownloadImage extends IntentService {
     private void downloadImageAndSaveToDb(String url, Long tripId) {
         byte[] imageByte;
         imageByte = getbyteArrayFromURL(url);
-        InjectionUtils.provideRepository(this).saveTripImage(tripId, imageByte);
+//        InjectionUtils.provideRepository(this).saveTripImage(tripId, imageByte);
         if (imageByte != null) {
             Intent in = new Intent();
             in.putExtra(TRIP_IMAGE_URL, imageByte);

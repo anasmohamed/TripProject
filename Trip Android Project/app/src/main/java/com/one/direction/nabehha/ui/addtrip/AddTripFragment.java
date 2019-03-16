@@ -43,7 +43,7 @@ public class AddTripFragment extends Fragment {
         binder.addNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mViewModel.AddTripToWebService("anas", "moahmed", "kamal", "anas", "mohamed", "kamal", "ahmed",  1,"adadsf");
+                mViewModel.AddTripToWebService("anas", "moahmed", "kamal", "anas", "mohamed", "kamal", "ahmed", 1L,"adadsf");
 
             }
         });

@@ -44,7 +44,7 @@ public class TripDaoImp implements TripDAO {
                     + "TRIP_IMAGE,"
                     + "USER_ID,"
                     + "TRIP_STATUS)"
-                    + "Values (?,?,?,?,?,?,?,?,?,?)");
+                    + "Values (?,?,?,?,?,?,?,?,?)");
             pst.setString(1, trip.getTripName());
             pst.setString(2, trip.getStartPoint());
             pst.setString(3, trip.getEndPoint());

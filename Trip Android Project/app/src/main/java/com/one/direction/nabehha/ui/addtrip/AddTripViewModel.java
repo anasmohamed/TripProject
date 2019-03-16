@@ -18,7 +18,7 @@ public class AddTripViewModel extends ViewModel {
         this.mTripRepository = tripRepository;
     }
 
-    public void AddTripToWebService(String tripName, String startPoint, String endPoint, String date, String time, String type, String tripImage,int userId ,String status) {
+    public void AddTripToWebService(String tripName, String startPoint, String endPoint, String date, String time, String type, String tripImage,Long userId ,String status) {
         mTripRepository.insertTripIntoWebService(tripName, startPoint, endPoint, date, time, type, tripImage,userId, status, new Callback<Trip>() {
             @Override
             public void onResponse(Call<Trip> call, Response<Trip> response) {
