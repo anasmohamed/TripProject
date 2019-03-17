@@ -31,6 +31,7 @@ public class DataBaseConnectionHandler {
             this.currentUsageNumber = 0;
             Class.forName("oracle.jdbc.driver.OracleDriver");
             con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", Constants.DATABASE_NAME, Constants.DATABASE_PASSWORD);
+            
         } catch (ClassNotFoundException | SQLException ex) {
             ex.printStackTrace();
         }
