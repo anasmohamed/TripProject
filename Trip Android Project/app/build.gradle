@@ -8,6 +8,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -37,9 +38,13 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.google.android.libraries.places:places:1.0.0'
 //    implementation 'com.google.android.libraries.places:places-compat:1.0.0'
-
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     testImplementation "android.arch.persistence.room:testing:$room_version"
+    implementation "android.arch.work:work-runtime:1.0.0"
+    configurations {
+        all*.exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+
 
 }

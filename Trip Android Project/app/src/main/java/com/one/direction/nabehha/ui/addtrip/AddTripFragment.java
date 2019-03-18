@@ -16,26 +16,35 @@ import android.widget.TimePicker;
 
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.R;
+import com.one.direction.nabehha.Reminder;
 import com.one.direction.nabehha.databinding.AddTripFragmentBinding;
 
 import java.util.Calendar;
 
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
 
 public class AddTripFragment extends Fragment {
 
-    AddTripFragmentBinding binder;
+    AddTripFragmentBinding mAddTripFragmentBinding;
     private AddTripViewModel mViewModel;
     private int mYear, mMonth, mDay, mHour, mMinute;
+    private WorkManager mWorkManager;
 
     public static AddTripFragment newInstance() {
+
         return new AddTripFragment();
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binder = DataBindingUtil.inflate(inflater, R.layout.add_trip_fragment, container, false);
-        View view = binder.getRoot();
+        mAddTripFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.add_trip_fragment, container, false);
+        View view = mAddTripFragmentBinding.getRoot();
+        mWorkManager = WorkManager.getInstance();
+
         return view;
     }
 
@@ -45,7 +54,7 @@ public class AddTripFragment extends Fragment {
         AddTripModelFactory factory = InjectionUtils.provideAddTripViewModelFactory(getContext());
 
         mViewModel = ViewModelProviders.of(this, factory).get(AddTripViewModel.class);
-        binder.tripTimeBtn.setOnClickListener(new View.OnClickListener() {
+        mAddTripFragmentBinding.tripTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -61,7 +70,7 @@ public class AddTripFragment extends Fragment {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                binder.tripDateET.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                mAddTripFragmentBinding.tripDateET.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -69,7 +78,7 @@ public class AddTripFragment extends Fragment {
 
             }
         });
-        binder.tripDateBtn.setOnClickListener(new View.OnClickListener() {
+        mAddTripFragmentBinding.tripDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -84,7 +93,7 @@ public class AddTripFragment extends Fragment {
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
 
-                                binder.tripTimeEt.setText(hourOfDay + ":" + minute);
+                                mAddTripFragmentBinding.tripTimeEt.setText(hourOfDay + ":" + minute);
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog.show();
@@ -92,14 +101,20 @@ public class AddTripFragment extends Fragment {
 
         });
         // TODO: Use the ViewModel
-        binder.addNote.setOnClickListener(new View.OnClickListener() {
+        mAddTripFragmentBinding.addNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mViewModel.AddTripToWebService("anas", "moahmed", "kamal", "anas", "mohamed", "kamal", "ahmed", 1L, "adadsf");
+                doWork();
+
+                //  mViewModel.AddTripToWebService("anas", "moahmed", "kamal", "anas", "mohamed", "kamal", "ahmed", 1L, "adadsf");
 
             }
         });
 
     }
 
+    void doWork() {
+
+        mWorkManager.enqueue(OneTimeWorkRequest.from(Reminder.class));
+    }
 }
