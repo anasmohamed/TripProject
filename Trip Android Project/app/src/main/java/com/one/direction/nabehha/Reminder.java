@@ -1,31 +1,37 @@
 package com.one.direction.nabehha;
 
+
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
+
+import android.content.Context;
+import android.media.MediaPlayer;
 
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 public class Reminder extends Worker {
-    FragmentActivity context;
 
-    public Reminder(@NonNull FragmentActivity context, @NonNull WorkerParameters workerParams) {
+    Context context;
+    MediaPlayer mp;
+
+    public Reminder(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
+
         this.context = context;
 
     }
 
+
     @NonNull
     @Override
     public Result doWork() {
-        try {
 
-            ReminderDialogFragment reminderDialogFragment = new ReminderDialogFragment();
-            reminderDialogFragment.show(context.getSupportFragmentManager(), "Trip Reminder");
+            ReminderDialogFragment reminderDialogFragment = new ReminderDialogFragment(context);
+            reminderDialogFragment.show();
+            mp = MediaPlayer.create(context, R.raw.alarm);
+            mp.start();
             return Result.success();
 
-        } catch (Throwable throwable) {
-            return Result.failure();
-        }
+
     }
 }

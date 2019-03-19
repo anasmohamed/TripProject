@@ -1,24 +1,33 @@
 package com.one.direction.nabehha;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
+
+import android.app.Activity;
+
+import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.view.Window;
 
 import com.one.direction.nabehha.databinding.ReminderDialogFragmentBinding;
 
-public class ReminderDialogFragment extends AppCompatDialogFragment {
-    ReminderDialogFragmentBinding binder;
+public class ReminderDialogFragment extends AppCompatDialog {
+    ReminderDialogFragmentBinding myReminderDialogFragmentBinding;
+    private Context mContext;
+
+    public ReminderDialogFragment(Context context) {
+        super(context);
+        this.mContext = context;
+    }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        binder = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.reminder_dialog_fragment, null, false);
-        builder.setTitle("Login");
-
-
-        return builder.create();
-
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        myReminderDialogFragmentBinding = DataBindingUtil.setContentView((Activity) mContext, R.layout.reminder_dialog_fragment);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 }

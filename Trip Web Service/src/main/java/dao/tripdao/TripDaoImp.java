@@ -27,7 +27,7 @@ import pojo.User;
 public class TripDaoImp implements TripDAO {
 
     DataBaseConnectionHandler connection;
-    long generatedKey = 0;
+    long lastTripId = 0;
 
     @Override
     public boolean addTrip(Trip trip, ArrayList<TripNotes> tripNotes) {
@@ -44,7 +44,7 @@ public class TripDaoImp implements TripDAO {
                     + "TRIP_IMAGE,"
                     + "USER_ID,"
                     + "TRIP_STATUS)"
-                    + "Values (?,?,?,?,?,?,?,?,?)");
+                    + "Values (?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             pst.setString(1, trip.getTripName());
             pst.setString(2, trip.getStartPoint());
             pst.setString(3, trip.getEndPoint());
@@ -56,18 +56,26 @@ public class TripDaoImp implements TripDAO {
             pst.setString(9, trip.getStatus());
             int executeUpdate = pst.executeUpdate();
 
-            if (executeUpdate > 0) {
-                ResultSet rs = pst.getGeneratedKeys();
-                if (rs.next()) {
-                    generatedKey = rs.getLong(1);
-                }
-            }
+//            if (executeUpdate > 0) {
+//
+//                ResultSet rs = pst.getGeneratedKeys();
+//                if (rs.next()) {
+//                    System.out.println("id " + rs.getLong(1));;
+////                    generatedKey = 
+//                }
+//            }
             pst.close();
+            PreparedStatement preparedStatement = connection.getConnection().prepareStatement("select " + utilities.TripTableConstants.TRIP_ID_COLUMN + " from " + utilities.TripTableConstants.TRIP_TABLE_NAME + " where " + utilities.TripTableConstants.TRIP_USER_ID_COLUMN + " = " + trip.getUserId() + " ORDER BY " + utilities.TripTableConstants.TRIP_ID_COLUMN + " DESC ");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                lastTripId = resultSet.getLong(1);
+            }
+
             if (tripNotes != null) {
                 if (!tripNotes.isEmpty()) {
                     PreparedStatement ps = connection.getConnection().prepareStatement("INSERT INTO TRIP_NOTES VALUES (?, ?)");
                     for (int i = 0; i < tripNotes.size(); i++) {
-                        ps.setLong(1, generatedKey);
+                        ps.setLong(1, lastTripId);
                         ps.setString(2, tripNotes.get(i).getNote());
                         ps.addBatch();
                         ps.clearParameters();
@@ -188,14 +196,14 @@ public class TripDaoImp implements TripDAO {
     }
 
     @Override
-    public boolean addNote(TripNotes note,int tripId) {
+    public boolean addNote(TripNotes note, int tripId) {
 
         try {
             PreparedStatement pst = connection.getConnection().prepareStatement("insert into TRIP_NOTES("
                     + "TRIP_ID,"
                     + "NOTE"
-                     );
-            pst.setInt(1,tripId);
+            );
+            pst.setInt(1, tripId);
             pst.setString(2, note.getNote());
             return true;
         } catch (SQLException ex) {
