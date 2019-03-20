@@ -168,7 +168,7 @@ public class TripDaoImp implements TripDAO {
         ResultSet resultSet;
         ArrayList<Trip> trips = new ArrayList<>();
         try {
-            pst = connection.getConnection().prepareStatement("select * from TRIP.TRIP where TRIP.USER_ID =?  and  TRIP_STATUS =? ;");
+            pst = connection.getConnection().prepareStatement("select * from TRIP.TRIP where TRIP.USER_ID =?  and  TRIP_STATUS =?");
             pst.setLong(1, userId);
             pst.setString(2, tripStatus);
 

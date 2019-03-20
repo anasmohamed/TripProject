@@ -27,7 +27,8 @@ public class ReminderDialogFragment extends AppCompatDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.reminder_dialog_fragment);
         myReminderDialogFragmentBinding = DataBindingUtil.setContentView((Activity) mContext, R.layout.reminder_dialog_fragment);
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 }

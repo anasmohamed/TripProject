@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 
 import com.one.direction.nabehha.data.database.model.Trip;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -14,8 +15,8 @@ public interface TripDao {
     @Insert
     void insert(Trip trip);
 
-    @Query("DELETE FROM trip where id = id")
-    void deleteTrip(Long id);
+//    @Query("DELETE FROM trip where id = id")
+//    void deleteTrip(Long id);
 
     @Query("DELETE FROM trip")
     void deleteAll();
@@ -24,5 +25,4 @@ public interface TripDao {
 
     @Query("SELECT * from trip where status = 'done'")
     LiveData<List<Trip>> getPastTrips();
-
 }

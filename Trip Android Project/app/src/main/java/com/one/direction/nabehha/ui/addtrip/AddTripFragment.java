@@ -116,5 +116,6 @@ public class AddTripFragment extends Fragment {
     void doWork() {
 
         mWorkManager.enqueue(OneTimeWorkRequest.from(Reminder.class));
+        getActivity().finish();
     }
 }

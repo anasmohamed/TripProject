@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/common_google_signin_btn_text_dark_disabled" />
+    <corners android:bottomLeftRadius="@dimen/square_dim"
+        android:bottomRightRadius="@dimen/square_dim"
+        android:topLeftRadius="@dimen/square_dim"
+        android:topRightRadius="@dimen/square_dim"/>
+
+</shape>

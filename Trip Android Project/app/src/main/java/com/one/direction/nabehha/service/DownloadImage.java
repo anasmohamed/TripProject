@@ -50,13 +50,47 @@ public class DownloadImage extends IntentService {
     private void downloadImageAndSaveToDb(String url, Long tripId) {
         byte[] imageByte;
         imageByte = getbyteArrayFromURL(url);
-//        InjectionUtils.provideRepository(this).saveTripImage(tripId, imageByte);
+        InjectionUtils.provideTripRepository(this).saveTripImage(tripId, imageByte);
         if (imageByte != null) {
             Intent in = new Intent();
             in.putExtra(TRIP_IMAGE_URL, imageByte);
             in.putExtra(TRIP_ID, tripId);
             in.setAction(AppConstants.RECEIVE_IMAGE_ACTION);
             LocalBroadcastManager.getInstance(this).sendBroadcast(in);
+            /*TODO in trip viewModel register this code to receive image to render
+
+            private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if(intent!=null){
+                        intent.getLongExtra(DownloadImage.TRIP_ID,-1);
+                        intent.getByteArrayExtra(DownloadImage.TRIP_IMAGE_URL);
+                    }
+                }
+            }
+
+
+            @Override
+            protected void onResume ()
+            {
+                super.onResume();
+                //registerReceiver(broadcastReceiver,mIntent);
+                LocalBroadcastManager.getInstance(this)
+                        .registerReceiver(broadcastReceiver, new IntentFilter(AppConstants.RECEIVE_IMAGE_ACTION));
+            }
+
+            @Override
+            protected void onPause () {
+                if (mIntent != null) {
+                    unregisterReceiver(broadcastReceiver);
+                    mIntent = null;
+                }
+                super.onPause();
+            }
+             *
+             *
+             *
+             * */
         }
 
     }

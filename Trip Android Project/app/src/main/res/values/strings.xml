@@ -18,4 +18,11 @@
     <string name="date">Date</string>
     <string name="Add_Date">add_date</string>
     <string name="cancel">Cancel</string>
+
+
+    <string name="create_floating_widget">Create Floating Widget</string>
+    <string name="floating_widget_label">Floating Widget Label</string>
+    <string name="floating_widget_details">Floating Widget Details</string>
+    <string name="draw_other_app_permission_denied">Draw over other app permission not available. App won\'t work without permission. Please try again.</string>
+
 </resources>
