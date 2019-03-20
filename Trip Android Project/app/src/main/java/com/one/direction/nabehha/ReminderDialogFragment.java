@@ -1,8 +1,8 @@
 package com.one.direction.nabehha;
 
+
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
+
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;

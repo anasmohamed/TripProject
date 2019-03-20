@@ -175,12 +175,12 @@ public class TripDaoImp implements TripDAO {
             resultSet = pst.executeQuery();
             while (resultSet.next()) {
                 Trip trip = new Trip();
-                trip.setTripName(resultSet.getString(resultSet.getString(utilities.TripTableConstants.TRIP_NAME_COLUMN)));
+                trip.setTripName(resultSet.getString(utilities.TripTableConstants.TRIP_NAME_COLUMN));
                 trip.setStartPoint(resultSet.getString(utilities.TripTableConstants.TRIP_START_POINT_COLUMN));
                 trip.setEndPoint(resultSet.getString(utilities.TripTableConstants.TRIP_END_POINT_COLUMN));
                 trip.setDate(resultSet.getString(utilities.TripTableConstants.TRIP_DATE_COLUMN));
                 trip.setStatus(resultSet.getString(utilities.TripTableConstants.TRIP_STATUS_COLUMN));
-                trip.setTime(resultSet.getString(utilities.UserTableConstants.USER_NAME_COLUMN));
+                trip.setTime(resultSet.getString(utilities.TripTableConstants.TRIP_TIME_COLUMN));
                 trip.setType(resultSet.getString(utilities.TripTableConstants.TRIP_TYPE_COLUMN));
                 trip.setTripImage(resultSet.getString(utilities.TripTableConstants.TRIP_IMAGE_COLUMN));
                 trips.add(trip);
