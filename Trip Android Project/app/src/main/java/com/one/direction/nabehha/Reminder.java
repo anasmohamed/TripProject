@@ -36,13 +36,10 @@ public class Reminder extends Worker {
     Context context;
     MediaPlayer mp;
     private WindowManager mWindowManager;
-    private Point szWindow = new Point();
     Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message message) {
             mWindowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
-
-            getWindowManagerDefaultDisplay();
 
             //Init LayoutInflater
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -72,9 +69,6 @@ public class Reminder extends Worker {
 
     }
 
-    private void getWindowManagerDefaultDisplay() {
-        mWindowManager.getDefaultDisplay().getSize(szWindow);
-    }
 
 
 
@@ -111,37 +105,44 @@ public class Reminder extends Worker {
             params.gravity = Gravity.CENTER;
         }
 
-        //Initially view will be added to top-left corner, you change x-y coordinates according to your need
-
+        //TODO get the specific trip and pass to trip
+        final Trip trip=new Trip();
 
         //Add the view to the window
         mWindowManager.addView(mDialogBinder.getRoot(), params);
         mDialogBinder.startRemiderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startTrip();
+                startTrip(trip);
                 mWindowManager.removeViewImmediate(mDialogBinder.getRoot());
             }
         });
         mDialogBinder.laterRemiderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProcrastinateTheTrip();
+                ProcrastinateTheTrip(trip);
+                mWindowManager.removeViewImmediate(mDialogBinder.getRoot());
+
             }
         });
         mDialogBinder.cancelRemiderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelTrip();
+                cancelTrip(trip);
+                mWindowManager.removeViewImmediate(mDialogBinder.getRoot());
             }
         });
     }
 
-    private void cancelTrip() {
+    private void cancelTrip(Trip trip) {
+        //        InjectionUtils.provideTripRepository(context).changeTripStatus(trip.getId(),"cancel");
+        //TODO stop work manger alarm
 
     }
 
-    private void ProcrastinateTheTrip() {
+    private void ProcrastinateTheTrip(Trip trip) {
+        //TODO permenate  notification
+        //Stop work manger alarm
 
     }
 
