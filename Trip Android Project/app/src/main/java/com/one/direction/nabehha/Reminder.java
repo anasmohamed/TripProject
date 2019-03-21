@@ -29,7 +29,6 @@ import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.databinding.ReminderDialogFragmentBinding;
 import com.one.direction.nabehha.service.DownloadImage;
 import com.one.direction.nabehha.service.note.FloatingWidgetService;
-import com.one.direction.nabehha.ui.addtrip.AddTripFragment;
 
 import androidx.work.WorkManager;
 import androidx.work.Worker;
@@ -42,6 +41,7 @@ public class Reminder extends Worker {
     Trip trip;
     Context context;
     MediaPlayer mp;
+    LayoutInflater inflater;
     private WindowManager mWindowManager;
     private ReminderDialogFragmentBinding mDialogBinder;
     Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -50,7 +50,7 @@ public class Reminder extends Worker {
             mWindowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
 
             //Init LayoutInflater
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+            inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
             addFloatingWidgetView(inflater);
         }
@@ -69,7 +69,7 @@ public class Reminder extends Worker {
     public Result doWork() {
         trip = new Trip();
         trip = deserializeFromJson(getInputData().getString("trip"));
-        Log.i("trip Id in work manger",trip.getType()+"");
+        Log.i("trip Id in work manger", trip.getType() + "");
         mHandler.sendEmptyMessage(0);
         mp = MediaPlayer.create(context, R.raw.alarm);
         mp.start();
@@ -172,15 +172,18 @@ public class Reminder extends Worker {
         }
 
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context,channelId)
+                new NotificationCompat.Builder(context, channelId)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(trip.getTripName())
                         .setContentText("my time is now ")
-                .setOngoing(true);
-        Intent intent = new Intent(getApplicationContext(), AddTripFragment.class);
+                        .setOngoing(true);
+        //
+        addFloatingWidgetView(inflater);
+        Intent intent = new Intent(getApplicationContext(), this.getClass());
         PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pi);
         notificationManager.notify(0, mBuilder.build());
+
 
     }
 
