@@ -1,5 +1,6 @@
 package com.one.direction.nabehha.ui.addtrip;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
@@ -19,14 +20,18 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.gson.Gson;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.R;
 import com.one.direction.nabehha.Reminder;
+import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.databinding.AddTripFragmentBinding;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
+import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
@@ -179,9 +184,16 @@ public class AddTripFragment extends Fragment {
         mAddTripFragmentBinding.addTripBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // doWork();
-                //   mViewModel.AddTripToWebService(mTripName, "startpoint", "startpoint", mTripDate, mTripTime, mTripType, "", 1L, mTripStatus);
+                Trip trip = new Trip();
+                trip.setType(mTripType);
+                trip.setStatus(mTripStatus);
+                trip.setTime(mTripTime);
+                trip.setDate(mTripDate);
+                trip.setEndPoint(mTripEndPoint);
+                trip.setStartPoint(mTripStartPoint);
+                //doWork(mMonth,mDay,mHour,mMinute);
+                doWork(trip);
+                   mViewModel.AddTripToWebService(mTripName, "startpoint", "startpoint", mTripDate, mTripTime, mTripType, "", 1L, mTripStatus);
 
                 mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
             }
@@ -190,9 +202,20 @@ public class AddTripFragment extends Fragment {
     }
 
 
-    void doWork() {
-
-        mWorkManager.enqueue(OneTimeWorkRequest.from(Reminder.class));
+    void doWork(Trip trip) {
+        Data.Builder builder = new Data.Builder();
+        @SuppressLint("RestrictedApi") Data tripData = builder.put("trip", serializeToJson(trip)).build();
+        OneTimeWorkRequest myWork =
+                new OneTimeWorkRequest.Builder(Reminder.class).setInputData(tripData).addTag(trip.getType())
+                        .setInitialDelay(4000, TimeUnit.MILLISECONDS)// Use this when you want to add initial delay or schedule initial work to `OneTimeWorkRequest` e.g. setInitialDelay(2, TimeUnit.HOURS)
+                        .build();
+        mWorkManager.enqueue(myWork);
         getActivity().finish();
+    }
+
+    public String serializeToJson(Trip trip) {
+        Gson gson = new Gson();
+        String j = gson.toJson(trip);
+        return j;
     }
 }

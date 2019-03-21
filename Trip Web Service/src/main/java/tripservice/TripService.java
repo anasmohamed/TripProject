@@ -26,9 +26,9 @@ public class TripService {
     @Path("/addTrip")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public boolean addTrip(Trip trip,ArrayList<TripNotes> tripNotes) {
-        boolean isTripAdd = tripDaoImp.addTrip(trip,tripNotes);
-        return isTripAdd;
+    public Long addTrip(Trip trip,ArrayList<TripNotes> tripNotes) {
+        Long tripId = tripDaoImp.addTrip(trip,tripNotes);
+        return tripId;
     }
     
     

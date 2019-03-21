@@ -41,7 +41,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         CheckBox noteCheckBox;
         NoteViewHolder(@NonNull View itemView) {
             super(itemView);
-            noteCheckBox = itemView.findViewById(R.id.note_check_box);
+//            noteCheckBox = itemView.findViewById(R.id.note_check_box);
         }
 
         void bind(int position){

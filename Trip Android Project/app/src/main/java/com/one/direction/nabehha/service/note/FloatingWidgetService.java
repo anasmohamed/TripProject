@@ -26,9 +26,7 @@ import com.one.direction.nabehha.service.DownloadImage;
 
 import java.util.ArrayList;
 
-/**
- * Created by sonu on 28/03/17.
- */
+
 
 public class FloatingWidgetService extends Service implements View.OnClickListener {
     //Abdo Modify

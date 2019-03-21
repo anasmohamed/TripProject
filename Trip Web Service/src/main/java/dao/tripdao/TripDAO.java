@@ -15,7 +15,7 @@ import pojo.TripNotes;
  */
 public interface TripDAO {
 
-    public boolean addTrip(Trip trip,ArrayList<TripNotes> tripNotes);
+    public Long addTrip(Trip trip,ArrayList<TripNotes> tripNotes);
 
     public boolean deleteFromTrip(int tripId);
 
