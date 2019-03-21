@@ -3,6 +3,7 @@ package tripservice;
 import dao.tripdao.TripDaoImp;
 import java.util.ArrayList;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -48,7 +49,7 @@ public class TripService {
         return resultTrip;
     }
 
-    @POST
+    @GET
     @Path("/getTrips")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Trip> getTrips(@QueryParam("userId") String userId, @QueryParam("tripStatus") String type) {

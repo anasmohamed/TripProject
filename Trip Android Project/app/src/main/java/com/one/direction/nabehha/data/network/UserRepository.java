@@ -38,12 +38,12 @@ public class UserRepository {
         userAPIService.insertUserIntoWebService(new User(userName, email, password)).enqueue(mUserCallback);
     }
 
-    public void login(String email, String password, Callback<User> userCallback) {
-//        userAPIService.login(new User(email, password)).enqueue(mUserCallback);
+    public void login(String email, String password, Callback<User> mUserCallback) {
+        userAPIService.login(email, password).enqueue(mUserCallback);
     }
 
-    public void googleLogin(String email, String userName, Callback<User> userCallback) {
-        //        userAPIService.googleLogin(new User(email, password)).enqueue(mUserCallback);
+    public void googleLogin(String email, String userName, Callback<User> mUserCallback) {
+                userAPIService.googleLogin(userName,email).enqueue(mUserCallback);
 
     }
 

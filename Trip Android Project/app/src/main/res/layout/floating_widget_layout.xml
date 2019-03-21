@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!--   Root container of Floating Widget View  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:maxHeight="100dp"
+
+    app:layout_constraintHeight_max="100dp">
+
+    <!--  View while view is collapsed  -->
+
+    <RelativeLayout
+        android:id="@+id/collapse_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!--   ImageView of floating widget  -->
+        <ImageView
+            android:id="@+id/collapsed_iv"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/ic_launcher_round"
+            tools:ignore="ContentDescription" />
+
+        <!--   Close button to close Floating Widget View  -->
+        <ImageView
+            android:id="@+id/close_floating_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/circle_shape"
+            android:src="@drawable/ic_close_white_24dp"
+            tools:ignore="ContentDescription" />
+    </RelativeLayout>
+
+    <!--   View while view is expanded   -->
+    <LinearLayout
+        android:id="@+id/expanded_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/square_shap_ciurvy"
+        android:minHeight="10dp"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+
+        <!--  ImageView to Close Expanded View  -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="9"
+                android:gravity="center"
+                android:text="Your Notes"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/close_expanded_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:src="@drawable/ic_close_black_24dp" />
+        </LinearLayout>
+
+        <!--  ImageView to Open Activity  -->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/note_recycle_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp" />
+
+    </LinearLayout>
+</RelativeLayout>

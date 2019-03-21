@@ -5,9 +5,12 @@ import android.os.AsyncTask;
 
 import com.one.direction.nabehha.AppExecutors;
 import com.one.direction.nabehha.data.database.TripDataBase;
+import com.one.direction.nabehha.UserPreferencesHelper;
 import com.one.direction.nabehha.data.database.dao.TripDao;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.data.network.tripapi.TripAPIService;
+
+import java.util.ArrayList;
 
 import retrofit2.Callback;
 
@@ -81,5 +84,12 @@ public class TripRepository {
             return null;
         }
     }
+    public void saveTripImage(Long tripId, byte[] imageByte) {
 
+    }
+
+    public ArrayList<String> getNotes(Long tripId) {
+//        return tripDao.getNotes(tripId);
+        return null;
+    }
 }

@@ -5,15 +5,15 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.one.direction.nabehha.databinding.ActivitySplashBinding;
+import com.one.direction.nabehha.databinding.ActivitySplashScreenBinding;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private ActivitySplashBinding mActivitySplashBinding;
+    private ActivitySplashScreenBinding mActivitySplashBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivitySplashBinding=DataBindingUtil.setContentView(this, R.layout.activity_splash);
+        mActivitySplashBinding=DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
         UserPreferencesHelper userPreferencesHelper=new AppPreferencesHelper(this,getString(R.string.user_info));
         AppConstants.CURRENT_USER_EMAIL=userPreferencesHelper.getCurrentUserEmail();
         if(AppConstants.CURRENT_USER_EMAIL!=null){
