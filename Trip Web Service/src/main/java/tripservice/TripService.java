@@ -51,7 +51,7 @@ public class TripService {
     @POST
     @Path("/getTrips")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Trip> getTrips(@QueryParam("userId") String userId, @QueryParam("tripType") String type) {
+    public ArrayList<Trip> getTrips(@QueryParam("userId") String userId, @QueryParam("tripStatus") String type) {
         ArrayList<Trip> resultTrips = tripDaoImp.getTrips(Long.parseLong(userId), type);
         return resultTrips;
     }
