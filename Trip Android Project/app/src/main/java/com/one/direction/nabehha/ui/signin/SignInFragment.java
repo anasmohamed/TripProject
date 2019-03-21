@@ -182,5 +182,4 @@ public class SignInFragment extends Fragment implements
         binding.signInGoogleButton.setEnabled(!isLoading);
     }
 
-
 }

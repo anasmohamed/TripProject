@@ -11,9 +11,18 @@ public class Trip {
 
     private String tripName;
     @NonNull
-    private String startPoint;
+    private String startPointAddress;
     @NonNull
-    private String endPoint;
+    private String endPointAddress;
+
+    @NonNull
+    private long startPointLatitude;
+    @NonNull
+    private long startPointLongitude;
+    @NonNull
+    private long endPointLatitude;
+    @NonNull
+    private long endPointLongitude;
 
     @NonNull
     private String date;
@@ -46,14 +55,46 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(@NonNull String tripName, @NonNull String startPoint, @NonNull String endPoint, @NonNull String date, @NonNull String time, @NonNull String type, @NonNull String tripImage, Long userId, @NonNull String status) {
+//    public Trip(@NonNull String tripName, @NonNull String startPoint, @NonNull String endPoint, @NonNull String date, @NonNull String time, @NonNull String type, @NonNull String tripImage, Long userId, @NonNull String status) {
+//        this.tripName = tripName;
+//        this.startPoint = startPoint;
+//        this.endPoint = endPoint;
+//        this.date = date;
+////        this.tripImage = tripImage;
+//        this.userId = userId;
+//        this.time = time;
+//        this.status = status;
+//        this.type = type;
+//    }
+
+
+    public Trip(@NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress, long startPointLatitude, long startPointLongitude, long endPointLatitude, long endPointLongitude, @NonNull String date, @NonNull String time, @NonNull Long userId, String status, @NonNull String type, Long id) {
         this.tripName = tripName;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
+        this.startPointAddress = startPointAddress;
+        this.endPointAddress = endPointAddress;
+        this.startPointLatitude = startPointLatitude;
+        this.startPointLongitude = startPointLongitude;
+        this.endPointLatitude = endPointLatitude;
+        this.endPointLongitude = endPointLongitude;
         this.date = date;
-//        this.tripImage = tripImage;
-        this.userId = userId;
         this.time = time;
+        this.userId = userId;
+        this.status = status;
+        this.type = type;
+        this.id = id;
+    }
+
+    public Trip(@NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress, long startPointLatitude, long startPointLongitude, long endPointLatitude, long endPointLongitude, @NonNull String date, @NonNull String time, @NonNull Long userId, String status, @NonNull String type) {
+        this.tripName = tripName;
+        this.startPointAddress = startPointAddress;
+        this.endPointAddress = endPointAddress;
+        this.startPointLatitude = startPointLatitude;
+        this.startPointLongitude = startPointLongitude;
+        this.endPointLatitude = endPointLatitude;
+        this.endPointLongitude = endPointLongitude;
+        this.date = date;
+        this.time = time;
+        this.userId = userId;
         this.status = status;
         this.type = type;
     }
@@ -66,20 +107,22 @@ public class Trip {
         this.tripName = tripName;
     }
 
-    public String getStartPoint() {
-        return startPoint;
+    @NonNull
+    public String getStartPointAddress() {
+        return startPointAddress;
     }
 
-    public void setStartPoint(String startPoint) {
-        this.startPoint = startPoint;
+    public void setStartPointAddress(@NonNull String startPointAddress) {
+        this.startPointAddress = startPointAddress;
     }
 
-    public String getEndPoint() {
-        return endPoint;
+    @NonNull
+    public String getEndPointAddress() {
+        return endPointAddress;
     }
 
-    public void setEndPoint(String endPoint) {
-        this.endPoint = endPoint;
+    public void setEndPointAddress(@NonNull String endPointAddress) {
+        this.endPointAddress = endPointAddress;
     }
 
     public Long getId() {
@@ -120,6 +163,38 @@ public class Trip {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public long getStartPointLatitude() {
+        return startPointLatitude;
+    }
+
+    public void setStartPointLatitude(long startPointLatitude) {
+        this.startPointLatitude = startPointLatitude;
+    }
+
+    public long getStartPointLongitude() {
+        return startPointLongitude;
+    }
+
+    public void setStartPointLongitude(long startPointLongitude) {
+        this.startPointLongitude = startPointLongitude;
+    }
+
+    public long getEndPointLatitude() {
+        return endPointLatitude;
+    }
+
+    public void setEndPointLatitude(long endPointLatitude) {
+        this.endPointLatitude = endPointLatitude;
+    }
+
+    public long getEndPointLongitude() {
+        return endPointLongitude;
+    }
+
+    public void setEndPointLongitude(long endPointLongitude) {
+        this.endPointLongitude = endPointLongitude;
     }
 
     @NonNull

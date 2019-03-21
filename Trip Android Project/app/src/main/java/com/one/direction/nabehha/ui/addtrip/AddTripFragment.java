@@ -8,12 +8,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.R;
 import com.one.direction.nabehha.Reminder;
@@ -27,6 +32,7 @@ import androidx.work.WorkManager;
 
 public class AddTripFragment extends Fragment {
 
+    private static final String TAG = "Add trip Fragment:";
     AddTripFragmentBinding mAddTripFragmentBinding;
     private AddTripViewModel mViewModel;
     private int mYear, mMonth, mDay, mHour, mMinute;
@@ -100,6 +106,61 @@ public class AddTripFragment extends Fragment {
             }
 
         });
+
+        // 2 fragment
+
+        PlaceAutocompleteFragment startPointFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.start_point_autocomplete_fragment);
+        if (startPointFragment != null)
+            startPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(Place place) {
+                    // TODO: Get info about the selected place.
+                    Log.e(TAG, "Place: " + place.getAddress());
+                    Log.e(TAG, "Place: " + place.getId());
+                    Log.e(TAG, "Place: " + place.getWebsiteUri());
+                    Log.e(TAG, "Place: " + place.getName());
+                    Log.e(TAG, "Place: " + place.getAttributions());
+                    Log.e(TAG, "Place: " + place.getPhoneNumber());
+                    Log.e(TAG, "Place: " + place.getPriceLevel());
+                    Log.e(TAG, "Place: " + place.getRating());
+                    Log.e(TAG, "Place: " + place.getViewport());
+                    Log.e(TAG, "Place: " + place.getLatLng());
+
+                }
+
+                @Override
+                public void onError(Status status) {
+                    // TODO: Handle the error.
+                    Log.e(TAG, "An error occurred: " + status);
+                }
+            });
+        PlaceAutocompleteFragment endPointFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.end_point_autocomplete_fragment);
+        if (endPointFragment != null)
+            endPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(Place place) {
+                    // TODO: Get info about the selected place.
+                    Log.e(TAG, "Place: " + place.getAddress());
+                    Log.e(TAG, "Place: " + place.getId());
+                    Log.e(TAG, "Place: " + place.getWebsiteUri());
+                    Log.e(TAG, "Place: " + place.getName());
+                    Log.e(TAG, "Place: " + place.getAttributions());
+                    Log.e(TAG, "Place: " + place.getPhoneNumber());
+                    Log.e(TAG, "Place: " + place.getPriceLevel());
+                    Log.e(TAG, "Place: " + place.getRating());
+                    Log.e(TAG, "Place: " + place.getViewport());
+                    Log.e(TAG, "Place: " + place.getLatLng());
+
+                }
+
+                @Override
+                public void onError(Status status) {
+                    // TODO: Handle the error.
+                    Log.e(TAG, "An error occurred: " + status);
+                }
+            });
+
+
         // TODO: Use the ViewModel
         mAddTripFragmentBinding.addNote.setOnClickListener(new View.OnClickListener() {
             @Override

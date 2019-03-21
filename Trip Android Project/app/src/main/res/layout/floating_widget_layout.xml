@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <!--   ImageView of floating widget  -->
         <ImageView
@@ -51,7 +51,7 @@
         android:background="@drawable/square_shap_ciurvy"
         android:minHeight="10dp"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
 
         <!--  ImageView to Close Expanded View  -->

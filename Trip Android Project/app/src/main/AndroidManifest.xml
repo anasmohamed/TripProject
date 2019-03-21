@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAluiqmBBsMrnJnpodYT7BPG_MYjZrihfE" />
         <service
             android:name=".service.note.FloatingWidgetService"
             android:enabled="true"

@@ -3,6 +3,7 @@ package com.one.direction.nabehha;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -45,30 +46,31 @@ public class SignUpActivity extends AppCompatActivity implements SwapFragment {
 
 
 ////
-//        if (!Places.isInitialized()) {
-//            Places.initialize(getApplicationContext(), "AIzaSyC9VkN6sukOJDJlFlD1gL9PGW9wZQgM4bw");
-//        }
-//
-//// Initialize the AutocompleteSupportFragment.
-//        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-//                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-//
-//        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-//
-//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//            @Override
-//            public void onPlaceSelected(Place place) {
-//                // TODO: Get info about the selected place.
-//                getbyteArrayFromURL(BASE_GOOGLE_IMAGE+place.getPhotoMetadatas().get(0).a()) ;
-//                place.getAddress();
-//            }
-//
-//            @Override
-//            public void onError(Status status) {
-//                // TODO: Handle the error.
-//
-//            }
-//        });
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), "AIzaSyC9VkN6sukOJDJlFlD1gL9PGW9wZQgM4bw");
+        }
+
+// Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.e("Place Test: : : ",BASE_GOOGLE_IMAGE+place.getPhotoMetadatas().get(0).a());
+                getbyteArrayFromURL(BASE_GOOGLE_IMAGE+place.getPhotoMetadatas().get(0).a()) ;
+                place.getAddress();
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+
+            }
+        });
 //
 //        Uri gmmIntentUri = Uri.parse("google.navigation:q=Taronga+Zoo,+Sydney+Australia");
 //        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);

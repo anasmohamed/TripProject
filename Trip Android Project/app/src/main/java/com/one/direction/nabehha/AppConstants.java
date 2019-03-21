@@ -6,4 +6,6 @@ public class AppConstants {
     public static String CURRENT_USER_NAME=null;
     public static Long CURRENT_USER_ID=null;
     public static String BASE_GOOGLE_IMAGE="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=";
+    public static String BASE_GOOGLE_STATIC_MAP_URL="https://maps.googleapis.com/maps/api/staticmap?";
+    public static String GOOGLE_STATIC_MAP_KEY="AIzaSyDIJ9XX2ZvRKCJcFRrl-lRanEtFUow4piM";
 }

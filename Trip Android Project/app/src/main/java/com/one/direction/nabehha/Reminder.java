@@ -151,7 +151,7 @@ public class Reminder extends Worker {
         //TODO remove alarm for this trip
 
         startFloatingWidgetService(trip.getId());
-        Uri gmmIntentUri = Uri.parse("google.navigation:q="+trip.getEndPoint());
+        Uri gmmIntentUri = Uri.parse("google.navigation:q="+trip.getEndPointAddress());
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         context.startActivity(mapIntent);
