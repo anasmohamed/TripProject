@@ -1,6 +1,5 @@
 package com.one.direction.nabehha;
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.one.direction.nabehha.data.database.model.Trip;
-import com.one.direction.nabehha.data.database.model.TripModel;
+import com.one.direction.nabehha.databinding.PastBinding;
 import com.one.direction.nabehha.webServiceUtils.RetrofitUtils;
 
 import java.util.List;
@@ -18,19 +17,16 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import com.one.direction.nabehha.databinding.PastBinding;
-import com.squareup.picasso.Picasso;
-
-import java.net.URL;
 
 
 public class Past extends Fragment {
 
     RecyclerView tripRecyclerView;
     TripRecyclerViewAdapter tripAdapter;
-    List<TripModel> trips = null;
+    List<Trip> trips = null;
     private static final String TRIP_STATUS = "past";
-PastBinding mPastBinding;
+    PastBinding mPastBinding;
+
     public Past() {
     }
 
@@ -43,10 +39,10 @@ PastBinding mPastBinding;
         tripRecyclerView.setLayoutManager(layoutManager);
         tripRecyclerView.setHasFixedSize(true);
         RetrofitUtils retrofitUtils = new RetrofitUtils();
-        retrofitUtils.getTripsUsingRetrofit("2", TRIP_STATUS,new Callback<List<TripModel>>() {
+        retrofitUtils.getTripsUsingRetrofit("2", TRIP_STATUS, new Callback<List<Trip>>() {
             @Override
 
-            public void onResponse(Call<List<TripModel>> call, Response<List<TripModel>> response) {
+            public void onResponse(Call<List<Trip>> call, Response<List<Trip>> response) {
                 if (!response.isSuccessful()) {
                     //Log.e(HTTP_CODE, String.valueOf(response.code()));
                     return;
@@ -57,20 +53,20 @@ PastBinding mPastBinding;
             }
 
             @Override
-            public void onFailure(Call<List<TripModel>> call, Throwable t) {
+            public void onFailure(Call<List<Trip>> call, Throwable t) {
                 // Log.e(RETROFIT_ERROR, t.getMessage());
             }
         });
         return view;
 
-        mPastBinding = DataBindingUtil.inflate(inflater, R.layout.past, container, false);
-        //TODO  implement viewmodel
-//        Picasso.get()
-//                .load(new URL(Utilities.getGoogleMapImageForTrips(mPastViewModel.getTripList())))
-//                .placeholder(R.drawable.ic_close_black_24dp)
-//                .error(R.drawable.ic_close_white_24dp)
-//                .into(mPastBinding.allTripGoogleImageImg);
-
-        return mPastBinding.getRoot();
+//        mPastBinding = DataBindingUtil.inflate(inflater, R.layout.past, container, false);
+//        //TODO  implement viewmodel
+////        Picasso.get()
+////                .load(new URL(Utilities.getGoogleMapImageForTrips(mPastViewModel.getTripList())))
+////                .placeholder(R.drawable.ic_close_black_24dp)
+////                .error(R.drawable.ic_close_white_24dp)
+////                .into(mPastBinding.allTripGoogleImageImg);
+//
+//        return mPastBinding.getRoot();
     }
 }

@@ -1,12 +1,12 @@
-package com.one.direction.nabehha.data.database.model;
-
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Index;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
-
+//package com.one.direction.nabehha.data.database.model;
+//
+//import android.arch.persistence.room.ColumnInfo;
+//import android.arch.persistence.room.Entity;
+//import android.arch.persistence.room.ForeignKey;
+//import android.arch.persistence.room.Index;
+//import android.arch.persistence.room.PrimaryKey;
+//import android.support.annotation.NonNull;
+//
 //@Entity(indices = {@Index("tripId")},foreignKeys = @ForeignKey(entity = Trip.class,
 //        parentColumns = "tripId",
 //        childColumns = "tripId"))
@@ -44,6 +44,22 @@ import android.support.annotation.NonNull;
 //
 //    public void setNote(@NonNull String note) {
 //        this.note = note;
-//    }
-
+//   }
+//
 //}
+
+package com.one.direction.nabehha.data.database.model;
+
+public class Note {
+
+    private String Note;
+
+    public String getNote() {
+        return Note;
+    }
+
+    public void setNote(String note) {
+        Note = note;
+    }
+}
+

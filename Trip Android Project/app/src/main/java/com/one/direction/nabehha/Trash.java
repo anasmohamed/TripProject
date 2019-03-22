@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.one.direction.nabehha.data.database.model.Trip;
-import com.one.direction.nabehha.data.database.model.TripModel;
 import com.one.direction.nabehha.webServiceUtils.RetrofitUtils;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class Trash extends Fragment {
 
     RecyclerView tripRecyclerView;
     TripRecyclerViewAdapter tripAdapter;
-    List<TripModel> trips = null;
+    List<Trip> trips = null;
     private static final String TRIP_STATUS = "trash";
     public Trash() {
     }
@@ -36,10 +35,10 @@ public class Trash extends Fragment {
         tripRecyclerView.setLayoutManager(layoutManager);
         tripRecyclerView.setHasFixedSize(true);
         RetrofitUtils retrofitUtils = new RetrofitUtils();
-        retrofitUtils.getTripsUsingRetrofit("2", TRIP_STATUS,new Callback<List<TripModel>>() {
+        retrofitUtils.getTripsUsingRetrofit("2", TRIP_STATUS,new Callback<List<Trip>>() {
             @Override
 
-            public void onResponse(Call<List<TripModel>> call, Response<List<TripModel>> response) {
+            public void onResponse(Call<List<Trip>> call, Response<List<Trip>> response) {
                 if (!response.isSuccessful()) {
                     //Log.e(HTTP_CODE, String.valueOf(response.code()));
                     return;
@@ -50,7 +49,7 @@ public class Trash extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<TripModel>> call, Throwable t) {
+            public void onFailure(Call<List<Trip>> call, Throwable t) {
                 // Log.e(RETROFIT_ERROR, t.getMessage());
             }
         });

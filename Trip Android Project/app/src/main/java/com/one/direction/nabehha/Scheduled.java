@@ -1,10 +1,8 @@
 package com.one.direction.nabehha;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.one.direction.nabehha.data.database.model.TripModel;
+import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.webServiceUtils.RetrofitUtils;
 
 import java.util.List;
@@ -31,7 +29,7 @@ public class Scheduled extends Fragment {
 
     RecyclerView tripRecyclerView;
     TripRecyclerViewAdapter tripAdapter;
-    List<TripModel> trips = null;
+    List<Trip> trips = null;
     RetrofitUtils retrofitUtils ;
     private static final String TRIP_STATUS = "scheduled";
 
@@ -48,9 +46,9 @@ public class Scheduled extends Fragment {
         tripRecyclerView.setHasFixedSize(true);
         retrofitUtils = new RetrofitUtils();
         //get user Id from shared preferences
-        retrofitUtils.getTripsUsingRetrofit("2", TRIP_STATUS, new Callback<List<TripModel>>() {
+        retrofitUtils.getTripsUsingRetrofit("2", TRIP_STATUS, new Callback<List<Trip>>() {
             @Override
-            public void onResponse(Call<List<TripModel>> call, Response<List<TripModel>> response) {
+            public void onResponse(Call<List<Trip>> call, Response<List<Trip>> response) {
                 if (!response.isSuccessful()) {
                     //Log.e(HTTP_CODE, String.valueOf(response.code()));
                     return;
@@ -61,7 +59,7 @@ public class Scheduled extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<TripModel>> call, Throwable t) {
+            public void onFailure(Call<List<Trip>> call, Throwable t) {
                 // Log.e(RETROFIT_ERROR, t.getMessage());
             }
         });
@@ -78,10 +76,10 @@ public class Scheduled extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 int position = viewHolder.getAdapterPosition();
-                final TripModel deletedTrip = trips.get(position);
+                final Trip deletedTrip = trips.get(position);
                 final int deletedPosition = position;
                 tripAdapter.deleteItem(deletedPosition);
-                retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(deletedTrip.getId()), new Callback<Boolean>() {
+                retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(deletedTrip.getTripId()), new Callback<Boolean>() {
                     @Override
                     public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                         Log.i("RetrofitResponse",String.valueOf(response.code()));
