@@ -55,7 +55,7 @@ public class TripRepository {
         mExecutors.diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                tripDataBase.tripDao().insertTrip(trip);
+               // tripDataBase.tripDao().insertTrip(trip);
             }
         });
        // new PopulateDataBaseAsync(TripDataBase.getDatabase(context)).execute(trip);

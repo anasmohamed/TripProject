@@ -202,21 +202,82 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/addNoteBtn"
-                android:layout_width="299dp"
+            <!--<Button-->
+                <!--android:id="@+id/addNoteBtn"-->
+                <!--android:layout_width="299dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:layout_marginTop="40dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:text="@string/add_note"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/timeLayout"-->
+                <!--app:layout_constraintVertical_bias="0.204" />-->
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/fragment_note"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/add_note"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/timeLayout"
-                app:layout_constraintVertical_bias="0.204" />
+                tools:context="com.one.direction.nabehha.ui.addtrip.AddNoteFragment">
+
+                <LinearLayout
+                    android:id="@+id/addNoteLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <EditText
+                        android:id="@+id/textView_add_note"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginLeft="11dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_toLeftOf="@+id/image_add_note"
+                        android:layout_weight="3"
+                        android:hint="Add note" />
+
+                    <ImageView
+                        android:id="@+id/image_add_note"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/edit" />
+
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/list_view_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/colorAccent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/addNoteLayout" />
+
+
+            </android.support.constraint.ConstraintLayout>
 
             <Spinner
                 android:id="@+id/addTripTypeSpinner"
@@ -231,7 +292,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addNoteBtn" />
+                app:layout_constraintTop_toBottomOf="@+id/fragment_note" />
 
 
         </android.support.constraint.ConstraintLayout>

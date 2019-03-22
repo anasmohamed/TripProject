@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,12 +43,18 @@ public class AddTripFragment extends Fragment {
     AddTripFragmentBinding mAddTripFragmentBinding;
     Fragment fragment = new AddNoteFragment();
     Bundle bundle;
+    Calendar c;
+    ArrayList<String> notesArrayList;
+    NotesAdapter notesAdapter;
+    Calendar calendarTime;
+    int datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute;
     private AddTripViewModel mViewModel;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private String mTripName, mTripStartPoint, mTripEndPoint, mTripDate, mTripTime, mTripStatus, mTripType;
     private ArrayList<String> mTripNotes;
     private WorkManager mWorkManager;
-
+    private String startPointPlace;
+    private String endPointPlace;
 
     public static AddTripFragment newInstance() {
         return new AddTripFragment();
@@ -61,6 +65,7 @@ public class AddTripFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         mAddTripFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.add_trip_fragment, container, false);
         View view = mAddTripFragmentBinding.getRoot();
+
         mWorkManager = WorkManager.getInstance();
         fragment = new AddNoteFragment();
         mTripNotes = new ArrayList<>();
@@ -69,13 +74,16 @@ public class AddTripFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAddTripFragmentBinding.addTripTypeSpinner.setAdapter(adapter);
         mAddTripFragmentBinding.addTripTypeSpinner.setSelection(adapter.getPosition("Rounded"));
+        notesArrayList = new ArrayList<>();
+        notesAdapter = new NotesAdapter(notesArrayList, getActivity());
+        mAddTripFragmentBinding.listViewNotes.setAdapter(notesAdapter);
 
         return view;
     }
 
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         AddTripModelFactory factory = InjectionUtils.provideAddTripViewModelFactory(getContext());
 
@@ -88,16 +96,16 @@ public class AddTripFragment extends Fragment {
             Log.e("tripNotes", mTripNotes.size() + "");
 
         }
-        mAddTripFragmentBinding.addNoteBtn.setOnClickListener(new View.OnClickListener() {
+        mAddTripFragmentBinding.imageAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, fragment);
-                fragmentTransaction.addToBackStack("noteFragment");
-                fragmentTransaction.commit();
-
+                ;
+                if (mAddTripFragmentBinding.textViewAddNote.getText().toString() != null) {
+                    notesArrayList.add(mAddTripFragmentBinding.textViewAddNote.getText().toString());
+                    mAddTripFragmentBinding.textViewAddNote.setText("");
+                    notesAdapter.notifyDataSetChanged();
+                }
 
             }
         });
@@ -105,7 +113,33 @@ public class AddTripFragment extends Fragment {
         mAddTripFragmentBinding.tripTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
+                c = Calendar.getInstance();
+
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                mAddTripFragmentBinding.tripTimeET.setText(hourOfDay + ":" + minute);
+                                timePickerHour = hourOfDay;
+                                timePickerMinute = minute;
+
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+
+            }
+        });
+        mAddTripFragmentBinding.tripDateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -119,36 +153,17 @@ public class AddTripFragment extends Fragment {
                                                   int monthOfYear, int dayOfMonth) {
 
                                 mAddTripFragmentBinding.tripDateET.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                datePickerMonth = monthOfYear;
+                                datePickerDay = dayOfMonth;
 
+                                datePickerYear = year;
                             }
                         }, mYear, mMonth, mDay);
+
                 datePickerDialog.show();
-
-            }
-        });
-        mAddTripFragmentBinding.tripDateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
-                mHour = c.get(Calendar.HOUR_OF_DAY);
-                mMinute = c.get(Calendar.MINUTE);
-
-                // Launch Time Picker Dialog
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
-                        new TimePickerDialog.OnTimeSetListener() {
-
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-
-                                mAddTripFragmentBinding.tripTimeET.setText(hourOfDay + ":" + minute);
-                            }
-                        }, mHour, mMinute, false);
-                timePickerDialog.show();
             }
 
         });
-
         // 2 fragment
 
         PlaceAutocompleteFragment startPointFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.start_point_autocomplete_fragment);
@@ -168,7 +183,7 @@ public class AddTripFragment extends Fragment {
                     Log.e(TAG, "Place: " + place.getRating());
                     Log.e(TAG, "Place: " + place.getViewport());
                     Log.e(TAG, "Place: " + place.getLatLng());
-
+                    startPointPlace = (String) place.getName();
                 }
 
                 @Override
@@ -215,6 +230,7 @@ public class AddTripFragment extends Fragment {
         mAddTripFragmentBinding.addTripBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                calendarTime = Calendar.getInstance();
                 Trip trip = new Trip();
                 trip.setType(mTripType);
                 trip.setStatus(mTripStatus);
@@ -224,10 +240,11 @@ public class AddTripFragment extends Fragment {
                 trip.setEndPointAddress(mTripEndPoint);
                 trip.setStartPointAddress(mTripStartPoint);
                 //doWork(mMonth,mDay,mHour,mMinute);
+                calendarTime.set(datePickerYear,datePickerMonth,datePickerDay, timePickerHour, timePickerMinute);
                 doWork(trip);
-//                   mViewModel.AddTripToWebService(mTripName, "startpoint", "startpoint", mTripDate, mTripTime, mTripType, "", 1L, mTripStatus);
-//
-//                mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
+                mViewModel.AddTripToWebService(mTripName, "startpoint", "startpoint", mTripDate, mTripTime, mTripType, "", 1L, mTripStatus);
+
+                mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
             }
         });
 
@@ -237,17 +254,33 @@ public class AddTripFragment extends Fragment {
     void doWork(Trip trip) {
         Data.Builder builder = new Data.Builder();
         @SuppressLint("RestrictedApi") Data tripData = builder.put("trip", serializeToJson(trip)).build();
+        Log.i("final time", getTimeInSeconds() + "");
         OneTimeWorkRequest myWork =
                 new OneTimeWorkRequest.Builder(Reminder.class).setInputData(tripData).addTag(trip.getType())
-                        .setInitialDelay(4000, TimeUnit.MILLISECONDS)// Use this when you want to add initial delay or schedule initial work to `OneTimeWorkRequest` e.g. setInitialDelay(2, TimeUnit.HOURS)
-                        .build();
+                        .setInitialDelay(getTimeInSeconds(), TimeUnit.SECONDS).// Use this when you want to add initial delay or schedule initial work to `OneTimeWorkRequest` e.g. setInitialDelay(2, TimeUnit.HOURS)
+                        build();
         mWorkManager.enqueue(myWork);
         getActivity().finish();
+    }
+
+    long getTimeInSeconds() {
+
+        long diffInMs = calendarTime.getTime().getTime() - c.getTime().getTime() ;
+
+        long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
+        return diffInSec ;
     }
 
     public String serializeToJson(Trip trip) {
         Gson gson = new Gson();
         String j = gson.toJson(trip);
         return j;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("startPointPlace", startPointPlace);
+        outState.putString("endPointPlace", endPointPlace);
     }
 }
