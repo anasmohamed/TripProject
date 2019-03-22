@@ -30,7 +30,7 @@ public class TripDaoImp implements TripDAO {
     long lastTripId = 0;
 
     @Override
-    public boolean addTrip(Trip trip, ArrayList<TripNotes> tripNotes) {
+    public Long addTrip(Trip trip, ArrayList<TripNotes> tripNotes) {
         try {
             connection = DataBaseConnectionHandler.getInstance();
 
@@ -86,13 +86,13 @@ public class TripDaoImp implements TripDAO {
             }
             connection.close();
             if (executeUpdate > 0) {
-                return true;
+                return lastTripId;
             }
         } catch (SQLException ex) {
             Logger.getLogger(TripDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return false;
+        return -1L;
 
     }
 

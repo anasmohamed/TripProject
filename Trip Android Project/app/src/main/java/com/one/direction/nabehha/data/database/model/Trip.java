@@ -2,14 +2,17 @@ package com.one.direction.nabehha.data.database.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 @Entity
 public class Trip {
+    @PrimaryKey
+    private Long tripId;
     @NonNull
-
     private String tripName;
+
     @NonNull
     private String startPointAddress;
     @NonNull
@@ -26,78 +29,51 @@ public class Trip {
 
     @NonNull
     private String date;
+
     @NonNull
+    private String time;
 
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private byte[] tripImage;
-    @NonNull
 
-    private String time;
-    @NonNull
-    Long userId;
 
-    @NonNull
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(@NonNull Long userId) {
-        this.userId = userId;
-    }
+//    ArrayList<Note> notes;
 
     private String status;
+
     @NonNull
-
     private String type;
-    @PrimaryKey(autoGenerate = true)
-    private Long id;
 
+    @Ignore
     public Trip() {
     }
 
-//    public Trip(@NonNull String tripName, @NonNull String startPoint, @NonNull String endPoint, @NonNull String date, @NonNull String time, @NonNull String type, @NonNull String tripImage, Long userId, @NonNull String status) {
-//        this.tripName = tripName;
-//        this.startPoint = startPoint;
-//        this.endPoint = endPoint;
-//        this.date = date;
-////        this.tripImage = tripImage;
-//        this.userId = userId;
-//        this.time = time;
-//        this.status = status;
-//        this.type = type;
+    public Trip(Long tripId, @NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress,
+                long startPointLatitude, long startPointLongitude, long endPointLatitude, long endPointLongitude,
+                @NonNull String date, @NonNull String time, String status, @NonNull String type) {
+        this.tripId = tripId;
+        this.tripName = tripName;
+        this.startPointAddress = startPointAddress;
+        this.endPointAddress = endPointAddress;
+        this.startPointLatitude = startPointLatitude;
+        this.startPointLongitude = startPointLongitude;
+        this.endPointLatitude = endPointLatitude;
+        this.endPointLongitude = endPointLongitude;
+        this.date = date;
+        this.time = time;
+        this.status = status;
+        this.type = type;
+    }
+
+//    @NonNull
+//    public ArrayList<Note> getNotes() {
+//        return notes;
 //    }
 
+//    public void setNotes(ArrayList<Note> notes) {
+//        this.notes = notes;
+//    }
 
-    public Trip(@NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress, long startPointLatitude, long startPointLongitude, long endPointLatitude, long endPointLongitude, @NonNull String date, @NonNull String time, @NonNull Long userId, String status, @NonNull String type, Long id) {
-        this.tripName = tripName;
-        this.startPointAddress = startPointAddress;
-        this.endPointAddress = endPointAddress;
-        this.startPointLatitude = startPointLatitude;
-        this.startPointLongitude = startPointLongitude;
-        this.endPointLatitude = endPointLatitude;
-        this.endPointLongitude = endPointLongitude;
-        this.date = date;
-        this.time = time;
-        this.userId = userId;
-        this.status = status;
-        this.type = type;
-        this.id = id;
-    }
-
-    public Trip(@NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress, long startPointLatitude, long startPointLongitude, long endPointLatitude, long endPointLongitude, @NonNull String date, @NonNull String time, @NonNull Long userId, String status, @NonNull String type) {
-        this.tripName = tripName;
-        this.startPointAddress = startPointAddress;
-        this.endPointAddress = endPointAddress;
-        this.startPointLatitude = startPointLatitude;
-        this.startPointLongitude = startPointLongitude;
-        this.endPointLatitude = endPointLatitude;
-        this.endPointLongitude = endPointLongitude;
-        this.date = date;
-        this.time = time;
-        this.userId = userId;
-        this.status = status;
-        this.type = type;
-    }
 
     public String getTripName() {
         return tripName;
@@ -125,12 +101,12 @@ public class Trip {
         this.endPointAddress = endPointAddress;
     }
 
-    public Long getId() {
-        return id;
+    public Long getTripId() {
+        return tripId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
     }
 
     public String getDate() {

@@ -26,9 +26,9 @@ public class TripService {
     @Path("/addTrip")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public boolean addTrip(Trip trip,ArrayList<TripNotes> tripNotes) {
-        boolean isTripAdd = tripDaoImp.addTrip(trip,tripNotes);
-        return isTripAdd;
+    public Long addTrip(Trip trip,ArrayList<TripNotes> tripNotes) {
+        Long tripId = tripDaoImp.addTrip(trip,tripNotes);
+        return tripId;
     }
     
     
@@ -52,7 +52,7 @@ public class TripService {
     @GET
     @Path("/getTrips")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Trip> getTrips(@QueryParam("userId") String userId, @QueryParam("tripType") String type) {
+    public ArrayList<Trip> getTrips(@QueryParam("userId") String userId, @QueryParam("tripStatus") String type) {
         ArrayList<Trip> resultTrips = tripDaoImp.getTrips(Long.parseLong(userId), type);
         return resultTrips;
     }

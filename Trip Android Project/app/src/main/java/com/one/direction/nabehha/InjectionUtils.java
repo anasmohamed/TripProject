@@ -2,7 +2,7 @@ package com.one.direction.nabehha;
 
 import android.content.Context;
 
-import com.one.direction.nabehha.data.database.TripsDatabase;
+import com.one.direction.nabehha.data.database.TripDataBase;
 import com.one.direction.nabehha.data.database.dao.TripDao;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.data.network.TripRepository;
@@ -25,8 +25,8 @@ public class InjectionUtils {
     public static TripRepository provideTripRepository(Context context) {
         AppExecutors executors = AppExecutors.getInstance();
         TripAPIService tripAPIService = TripAPIUtils.geTripAPIService();
-        TripsDatabase mTripsDatabase=TripsDatabase.getInstance(context);
-        return TripRepository.getInstance(tripAPIService,mTripsDatabase.tripDao(), executors);
+        TripDataBase tripDataBase = TripDataBase.getDatabase(context);
+        return TripRepository.getInstance(tripAPIService,tripDataBase ,executors);
     }
 
     public static SignUpModelFactory provideSignUpViewModelFactory(Context context) {
