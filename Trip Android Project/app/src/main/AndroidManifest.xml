@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".EditTrip"></activity>
-        <activity android:name=".DisplayTrip">
+        <activity android:name=".DisplayTrip"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

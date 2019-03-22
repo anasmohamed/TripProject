@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.data.database.model.TripModel;
@@ -30,7 +31,8 @@ public class Past extends Fragment {
     TripRecyclerViewAdapter tripAdapter;
     List<TripModel> trips = null;
     private static final String TRIP_STATUS = "past";
-PastBinding mPastBinding;
+    private ImageView allTripGoogleImageImg;
+
     public Past() {
     }
 
@@ -39,6 +41,7 @@ PastBinding mPastBinding;
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.past, container, false);
         tripRecyclerView = view.findViewById(R.id.tripRecyclerView);
+        allTripGoogleImageImg = view.findViewById(R.id.all_trip_google_image_Img);
         LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
         tripRecyclerView.setLayoutManager(layoutManager);
         tripRecyclerView.setHasFixedSize(true);
@@ -61,9 +64,15 @@ PastBinding mPastBinding;
                 // Log.e(RETROFIT_ERROR, t.getMessage());
             }
         });
+//        Picasso.get()
+//                .load(Utilities.getGoogleMapImageForTrips(trips))
+//                .placeholder(R.drawable.ic_close_black_24dp)
+//                .error(R.drawable.ic_close_white_24dp)
+//                .into(allTripGoogleImageImg);
+
         return view;
 
-        mPastBinding = DataBindingUtil.inflate(inflater, R.layout.past, container, false);
+//        mPastBinding = DataBindingUtil.inflate(inflater, R.layout.past, container, false);
         //TODO  implement viewmodel
 //        Picasso.get()
 //                .load(new URL(Utilities.getGoogleMapImageForTrips(mPastViewModel.getTripList())))
@@ -71,6 +80,6 @@ PastBinding mPastBinding;
 //                .error(R.drawable.ic_close_white_24dp)
 //                .into(mPastBinding.allTripGoogleImageImg);
 
-        return mPastBinding.getRoot();
+//        return mPastBinding.getRoot();
     }
 }

@@ -13,54 +13,11 @@
         tools:context="com.one.direction.nabehha.ui.addtrip.AddTripFragment">
 
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="362dp"
-            android:layout_height="55dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="56dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="59dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-            <Button
-                android:id="@+id/addNote"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:width="0dp"
-                android:text="@string/add_note"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="586dp" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context="com.one.direction.nabehha.ui.addtrip.AddTripFragment">
-
-
             <EditText
                 android:id="@+id/tripNameET"
                 android:layout_width="362dp"
@@ -153,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:width="0dp"
-                    android:text="@string/add_trip"
+                    android:text="@string/add_trip_anas"
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:layout_editor_absoluteY="586dp" />
 
