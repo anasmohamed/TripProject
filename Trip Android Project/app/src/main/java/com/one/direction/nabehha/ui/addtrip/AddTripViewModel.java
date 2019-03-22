@@ -26,20 +26,20 @@ public class AddTripViewModel extends ViewModel {
     }
 
     public void AddTripToWebService(String tripName, String startPoint, String endPoint, String date, String time, String type, String tripImage, Long userId, String status) {
-                mTripRepository.insertTripIntoWebService(tripName, startPoint, endPoint, date, time, type, tripImage,userId, status, new Callback<Trip>() {
-            @Override
-            public void onResponse(Call<Trip> call, Response<Trip> response) {
-                Log.e("Add Trip",response.message());
-
-            }
-
-            @Override
-            public void onFailure(Call<Trip> call, Throwable t) {
-                Log.e ("error add trip ",t.getMessage());
-
-
-            }
-        });
+//                mTripRepository.insertTripIntoWebService(tripName, startPoint, endPoint, date, time, type, tripImage,userId, status, new Callback<Trip>() {
+//            @Override
+//            public void onResponse(Call<Trip> call, Response<Trip> response) {
+//                Log.e("Add Trip",response.message());
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Trip> call, Throwable t) {
+//                Log.e ("error add trip ",t.getMessage());
+//
+//
+//            }
+//        });
 
     }
 

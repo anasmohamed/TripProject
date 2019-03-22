@@ -24,11 +24,11 @@ PastBinding mPastBinding;
                              Bundle savedInstanceState) {
         mPastBinding = DataBindingUtil.inflate(inflater, R.layout.past, container, false);
         //TODO  implement viewmodel
-        Picasso.get()
-                .load(new URL(Utilities.getGoogleMapImageForTrips(mPastViewModel.getTripList())))
-                .placeholder(R.drawable.ic_close_black_24dp)
-                .error(R.drawable.ic_close_white_24dp)
-                .into(mPastBinding.allTripGoogleImageImg);
+//        Picasso.get()
+//                .load(new URL(Utilities.getGoogleMapImageForTrips(mPastViewModel.getTripList())))
+//                .placeholder(R.drawable.ic_close_black_24dp)
+//                .error(R.drawable.ic_close_white_24dp)
+//                .into(mPastBinding.allTripGoogleImageImg);
 
         return mPastBinding.getRoot();
     }
