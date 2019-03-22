@@ -14,8 +14,8 @@ public class TripTableConstants {
     public static final String TRIP_TABLE_NAME = "TRIP.TRIP";
     public static final String TRIP_ID_COLUMN = "TRIP_ID";
     public static final String TRIP_NAME_COLUMN = "TRIP_NAME";
-    public static final String TRIP_START_POINT_COLUMN = "TRIP_START_POINT";
-    public static final String TRIP_END_POINT_COLUMN = "TRIP_END_POINT";
+    public static final String TRIP_START_POINT_COLUMN = "START_POINT";
+    public static final String TRIP_END_POINT_COLUMN = "END_POINT";
     public static final String TRIP_DATE_COLUMN = "TRIP_DATE";
     public static final String TRIP_TIME_COLUMN = "TRIP_TIME";
     public static final String TRIP_TYPE_COLUMN = "TRIP_TYPE";

@@ -8,13 +8,11 @@ import android.support.annotation.NonNull;
 @Entity
 public class Trip {
     @NonNull
-
     private String tripName;
     @NonNull
     private String startPoint;
     @NonNull
     private String endPoint;
-
     @NonNull
     private String date;
     @NonNull
@@ -22,11 +20,9 @@ public class Trip {
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private byte[] tripImage;
     @NonNull
-
     private String time;
     @NonNull
     Long userId;
-
     @NonNull
     public Long getUserId() {
         return userId;
