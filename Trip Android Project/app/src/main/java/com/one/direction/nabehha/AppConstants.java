@@ -1,6 +1,7 @@
 package com.one.direction.nabehha;
 
 public class AppConstants {
+    public static final String PARCELABLE_TRIP = "receive trip";
     public static final String RECEIVE_IMAGE_ACTION = "receive image";
     public static String CURRENT_USER_EMAIL=null;
     public static String CURRENT_USER_NAME=null;

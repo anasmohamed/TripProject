@@ -152,7 +152,8 @@ public class AddTripFragment extends Fragment {
         // 2 fragment
 
         PlaceAutocompleteFragment startPointFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.start_point_autocomplete_fragment);
-        if (startPointFragment != null)
+        if (startPointFragment != null) {
+            startPointFragment.setHint("Start Point");
             startPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
@@ -176,8 +177,10 @@ public class AddTripFragment extends Fragment {
                     Log.e(TAG, "An error occurred: " + status);
                 }
             });
+        }
         PlaceAutocompleteFragment endPointFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.end_point_autocomplete_fragment);
-        if (endPointFragment != null)
+        if (endPointFragment != null) {
+            endPointFragment.setHint("Destination");
             endPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
@@ -193,6 +196,7 @@ public class AddTripFragment extends Fragment {
                     Log.e(TAG, "Place: " + place.getViewport());
                     Log.e(TAG, "Place: " + place.getLatLng());
 
+
                 }
 
                 @Override
@@ -201,6 +205,7 @@ public class AddTripFragment extends Fragment {
                     Log.e(TAG, "An error occurred: " + status);
                 }
             });
+        }
         mTripDate = mAddTripFragmentBinding.tripDateET.getText().toString();
         mTripTime = mAddTripFragmentBinding.tripTimeET.getText().toString();
         mTripType = mAddTripFragmentBinding.addTripTypeSpinner.getSelectedItem().toString();
@@ -220,9 +225,9 @@ public class AddTripFragment extends Fragment {
                 trip.setStartPointAddress(mTripStartPoint);
                 //doWork(mMonth,mDay,mHour,mMinute);
                 doWork(trip);
-                   mViewModel.AddTripToWebService(mTripName, "startpoint", "startpoint", mTripDate, mTripTime, mTripType, "", 1L, mTripStatus);
-
-                mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
+//                   mViewModel.AddTripToWebService(mTripName, "startpoint", "startpoint", mTripDate, mTripTime, mTripType, "", 1L, mTripStatus);
+//
+//                mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
             }
         });
 
