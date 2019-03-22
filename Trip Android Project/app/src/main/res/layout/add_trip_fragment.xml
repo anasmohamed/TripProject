@@ -15,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context="com.one.direction.nabehha.ui.addtrip.AddTripFragment">
-
             <EditText
                 android:id="@+id/tripNameET"
                 android:layout_width="362dp"

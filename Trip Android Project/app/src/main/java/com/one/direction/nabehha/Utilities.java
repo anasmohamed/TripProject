@@ -3,6 +3,7 @@ package com.one.direction.nabehha;
 import com.one.direction.nabehha.data.database.model.Trip;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static com.one.direction.nabehha.AppConstants.BASE_GOOGLE_STATIC_MAP_URL;
@@ -10,7 +11,7 @@ import static com.one.direction.nabehha.AppConstants.GOOGLE_STATIC_MAP_KEY;
 
 public class Utilities {
 
-    static public String getGoogleMapImageForTrips(ArrayList<Trip> tripArrayList) {
+    static public String getGoogleMapImageForTrips(List<Trip> tripArrayList) {
         StringBuilder urlString = new StringBuilder(BASE_GOOGLE_STATIC_MAP_URL);
         for (int i = 1, size = tripArrayList.size(); i <= size; i++) {
             Trip trip = tripArrayList.get(i - 1);

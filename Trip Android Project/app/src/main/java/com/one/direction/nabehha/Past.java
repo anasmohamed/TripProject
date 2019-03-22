@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.databinding.PastBinding;
@@ -35,6 +36,7 @@ public class Past extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.past, container, false);
         tripRecyclerView = view.findViewById(R.id.tripRecyclerView);
+        allTripGoogleImageImg = view.findViewById(R.id.all_trip_google_image_Img);
         LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
         tripRecyclerView.setLayoutManager(layoutManager);
         tripRecyclerView.setHasFixedSize(true);
@@ -57,6 +59,12 @@ public class Past extends Fragment {
                 // Log.e(RETROFIT_ERROR, t.getMessage());
             }
         });
+//        Picasso.get()
+//                .load(Utilities.getGoogleMapImageForTrips(trips))
+//                .placeholder(R.drawable.ic_close_black_24dp)
+//                .error(R.drawable.ic_close_white_24dp)
+//                .into(allTripGoogleImageImg);
+
         return view;
 
 //        mPastBinding = DataBindingUtil.inflate(inflater, R.layout.past, container, false);
@@ -67,6 +75,7 @@ public class Past extends Fragment {
 ////                .error(R.drawable.ic_close_white_24dp)
 ////                .into(mPastBinding.allTripGoogleImageImg);
 //
+
 //        return mPastBinding.getRoot();
     }
 }
