@@ -61,7 +61,6 @@ public class SignInFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 loadingUi(true);
-                //TODO WS LogIn
                 mViewModel.login(binding.email.getText().toString()
                         , binding.password.getText().toString(), new Callback<User>() {
 
@@ -151,7 +150,6 @@ public class SignInFragment extends Fragment implements
             if (acct != null) {
                 String personName = acct.getDisplayName();
                 String email = acct.getEmail();
-                //TODO WS LogIn ,, in ws check if email exist if not reqist all case return user
                 mViewModel.googleLogin(email, personName, new Callback<User>() {
 
                     @Override
@@ -183,6 +181,5 @@ public class SignInFragment extends Fragment implements
         binding.emailSignInButton.setEnabled(!isLoading);
         binding.signInGoogleButton.setEnabled(!isLoading);
     }
-
 
 }

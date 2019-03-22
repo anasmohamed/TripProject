@@ -1,5 +1,6 @@
 package com.one.direction.nabehha;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,11 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import com.one.direction.nabehha.databinding.PastBinding;
+import com.squareup.picasso.Picasso;
+
+import java.net.URL;
+
 
 public class Past extends Fragment {
 
@@ -24,6 +30,7 @@ public class Past extends Fragment {
     TripRecyclerViewAdapter tripAdapter;
     List<TripModel> trips = null;
     private static final String TRIP_STATUS = "past";
+PastBinding mPastBinding;
     public Past() {
     }
 
@@ -55,5 +62,15 @@ public class Past extends Fragment {
             }
         });
         return view;
+
+        mPastBinding = DataBindingUtil.inflate(inflater, R.layout.past, container, false);
+        //TODO  implement viewmodel
+//        Picasso.get()
+//                .load(new URL(Utilities.getGoogleMapImageForTrips(mPastViewModel.getTripList())))
+//                .placeholder(R.drawable.ic_close_black_24dp)
+//                .error(R.drawable.ic_close_white_24dp)
+//                .into(mPastBinding.allTripGoogleImageImg);
+
+        return mPastBinding.getRoot();
     }
 }

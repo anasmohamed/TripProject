@@ -2,57 +2,112 @@ package com.one.direction.nabehha.data.database.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 @Entity
-public class Trip {
+public class Trip implements Parcelable {
+    @PrimaryKey
+    private Long tripId;
     @NonNull
     private String tripName;
+
     @NonNull
-    private String startPoint;
+    private String startPointAddress;
     @NonNull
-    private String endPoint;
+    private String endPointAddress;
+
+    @NonNull
+    private long startPointLatitude;
+    @NonNull
+    private long startPointLongitude;
+    @NonNull
+    private long endPointLatitude;
+
+    private long endPointLongitude;
+
     @NonNull
     private String date;
+
     @NonNull
+    private String time;
 
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private byte[] tripImage;
-    @NonNull
-    private String time;
-    @NonNull
-    Long userId;
-    @NonNull
-    public Long getUserId() {
-        return userId;
-    }
 
-    public void setUserId(@NonNull Long userId) {
-        this.userId = userId;
-    }
+
+//    ArrayList<Note> notes;
 
     private String status;
+
     @NonNull
-
     private String type;
-    @PrimaryKey(autoGenerate = true)
-    private Long id;
 
+    @Ignore
     public Trip() {
     }
 
-    public Trip(@NonNull String tripName, @NonNull String startPoint, @NonNull String endPoint, @NonNull String date, @NonNull String time, @NonNull String type, @NonNull String tripImage, Long userId, @NonNull String status) {
+    public Trip(Long tripId, @NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress,
+                long startPointLatitude, long startPointLongitude, long endPointLatitude, long endPointLongitude,
+                @NonNull String date, @NonNull String time, String status, @NonNull String type) {
+        this.tripId = tripId;
         this.tripName = tripName;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
+        this.startPointAddress = startPointAddress;
+        this.endPointAddress = endPointAddress;
+        this.startPointLatitude = startPointLatitude;
+        this.startPointLongitude = startPointLongitude;
+        this.endPointLatitude = endPointLatitude;
+        this.endPointLongitude = endPointLongitude;
         this.date = date;
-//        this.tripImage = tripImage;
-        this.userId = userId;
         this.time = time;
         this.status = status;
         this.type = type;
     }
+
+//    @NonNull
+//    public ArrayList<Note> getNotes() {
+//        return notes;
+//    }
+
+//    public void setNotes(ArrayList<Note> notes) {
+//        this.notes = notes;
+//    }
+
+
+    protected Trip(Parcel in) {
+        if (in.readByte() == 0) {
+            tripId = null;
+        } else {
+            tripId = in.readLong();
+        }
+        tripName = in.readString();
+        startPointAddress = in.readString();
+        endPointAddress = in.readString();
+        startPointLatitude = in.readLong();
+        startPointLongitude = in.readLong();
+        endPointLatitude = in.readLong();
+        endPointLongitude = in.readLong();
+        date = in.readString();
+        time = in.readString();
+        tripImage = in.createByteArray();
+        status = in.readString();
+        type = in.readString();
+    }
+
+    public static final Creator<Trip> CREATOR = new Creator<Trip>() {
+        @Override
+        public Trip createFromParcel(Parcel in) {
+            return new Trip(in);
+        }
+
+        @Override
+        public Trip[] newArray(int size) {
+            return new Trip[size];
+        }
+    };
 
     public String getTripName() {
         return tripName;
@@ -62,28 +117,30 @@ public class Trip {
         this.tripName = tripName;
     }
 
-    public String getStartPoint() {
-        return startPoint;
+    @NonNull
+    public String getStartPointAddress() {
+        return startPointAddress;
     }
 
-    public void setStartPoint(String startPoint) {
-        this.startPoint = startPoint;
+    public void setStartPointAddress(@NonNull String startPointAddress) {
+        this.startPointAddress = startPointAddress;
     }
 
-    public String getEndPoint() {
-        return endPoint;
+    @NonNull
+    public String getEndPointAddress() {
+        return endPointAddress;
     }
 
-    public void setEndPoint(String endPoint) {
-        this.endPoint = endPoint;
+    public void setEndPointAddress(@NonNull String endPointAddress) {
+        this.endPointAddress = endPointAddress;
     }
 
-    public Long getId() {
-        return id;
+    public Long getTripId() {
+        return tripId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
     }
 
     public String getDate() {
@@ -118,6 +175,38 @@ public class Trip {
         this.type = type;
     }
 
+    public long getStartPointLatitude() {
+        return startPointLatitude;
+    }
+
+    public void setStartPointLatitude(long startPointLatitude) {
+        this.startPointLatitude = startPointLatitude;
+    }
+
+    public long getStartPointLongitude() {
+        return startPointLongitude;
+    }
+
+    public void setStartPointLongitude(long startPointLongitude) {
+        this.startPointLongitude = startPointLongitude;
+    }
+
+    public long getEndPointLatitude() {
+        return endPointLatitude;
+    }
+
+    public void setEndPointLatitude(long endPointLatitude) {
+        this.endPointLatitude = endPointLatitude;
+    }
+
+    public long getEndPointLongitude() {
+        return endPointLongitude;
+    }
+
+    public void setEndPointLongitude(long endPointLongitude) {
+        this.endPointLongitude = endPointLongitude;
+    }
+
     @NonNull
     public byte[] getTripImage() {
         return tripImage;
@@ -125,5 +214,32 @@ public class Trip {
 
     public void setTripImage(@NonNull byte[] tripImage) {
         this.tripImage = tripImage;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (tripId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(tripId);
+        }
+        dest.writeString(tripName);
+        dest.writeString(startPointAddress);
+        dest.writeString(endPointAddress);
+        dest.writeLong(startPointLatitude);
+        dest.writeLong(startPointLongitude);
+        dest.writeLong(endPointLatitude);
+        dest.writeLong(endPointLongitude);
+        dest.writeString(date);
+        dest.writeString(time);
+        dest.writeByteArray(tripImage);
+        dest.writeString(status);
+        dest.writeString(type);
     }
 }
