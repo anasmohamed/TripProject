@@ -9,14 +9,15 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context="com.one.direction.nabehha.ui.addtrip.AddTripFragment">
+
+
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context="com.one.direction.nabehha.ui.addtrip.AddTripFragment">
-
-
             <EditText
                 android:id="@+id/tripNameET"
                 android:layout_width="362dp"
@@ -109,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:width="0dp"
-                    android:text="@string/add_trip"
+                    android:text="@string/add_trip_anas"
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:layout_editor_absoluteY="586dp" />
 

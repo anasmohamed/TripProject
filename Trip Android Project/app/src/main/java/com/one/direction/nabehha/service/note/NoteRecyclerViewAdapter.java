@@ -23,7 +23,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     @NonNull
     @Override
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.note_item, viewGroup , false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.float_note_item, viewGroup , false);
         return new NoteViewHolder(view);
     }
 
@@ -41,7 +41,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         CheckBox noteCheckBox;
         NoteViewHolder(@NonNull View itemView) {
             super(itemView);
-//            noteCheckBox = itemView.findViewById(R.id.note_check_box);
+            noteCheckBox = itemView.findViewById(R.id.note_check_box);
         }
 
         void bind(int position){

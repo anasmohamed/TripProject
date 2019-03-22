@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,11 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".EditTrip"></activity>
+        <activity android:name=".DisplayTrip"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAluiqmBBsMrnJnpodYT7BPG_MYjZrihfE" />
+
         <service
             android:name=".service.note.FloatingWidgetService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".service.TripAlarmDialog"
             android:enabled="true"
             android:exported="false" />
 
@@ -31,12 +40,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".LoginActivity" />-->
+
+        <service
+            android:name=".service.DownloadImage"
+            android:exported="false" />
+
         <activity android:name=".SplashActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

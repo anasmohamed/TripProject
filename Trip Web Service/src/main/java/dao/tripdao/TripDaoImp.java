@@ -175,6 +175,8 @@ public class TripDaoImp implements TripDAO {
             resultSet = pst.executeQuery();
             while (resultSet.next()) {
                 Trip trip = new Trip();
+                trip.setUserId(userId);
+                trip.setId(Integer.valueOf(resultSet.getString(utilities.TripTableConstants.TRIP_ID_COLUMN)));
                 trip.setTripName(resultSet.getString(utilities.TripTableConstants.TRIP_NAME_COLUMN));
                 trip.setStartPoint(resultSet.getString(utilities.TripTableConstants.TRIP_START_POINT_COLUMN));
                 trip.setEndPoint(resultSet.getString(utilities.TripTableConstants.TRIP_END_POINT_COLUMN));
@@ -182,7 +184,8 @@ public class TripDaoImp implements TripDAO {
                 trip.setStatus(resultSet.getString(utilities.TripTableConstants.TRIP_STATUS_COLUMN));
                 trip.setTime(resultSet.getString(utilities.TripTableConstants.TRIP_TIME_COLUMN));
                 trip.setType(resultSet.getString(utilities.TripTableConstants.TRIP_TYPE_COLUMN));
-                trip.setTripImage(resultSet.getString(utilities.TripTableConstants.TRIP_IMAGE_COLUMN));
+                trip.setTripImage(String.valueOf(resultSet.getBlob(utilities.TripTableConstants.TRIP_IMAGE_COLUMN)));
+              
                 trips.add(trip);
             }
             pst.close();

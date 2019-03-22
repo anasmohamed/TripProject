@@ -157,8 +157,10 @@ public class AddTripFragment extends Fragment {
 
         });
         // 2 fragment
-        final PlaceAutocompleteFragment startPointFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.start_point_autocomplete_fragment);
-        if (startPointFragment != null)
+
+        PlaceAutocompleteFragment startPointFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.start_point_autocomplete_fragment);
+        if (startPointFragment != null) {
+            startPointFragment.setHint("Start Point");
             startPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
@@ -182,8 +184,10 @@ public class AddTripFragment extends Fragment {
                     Log.e(TAG, "An error occurred: " + status);
                 }
             });
-        final PlaceAutocompleteFragment endPointFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.end_point_autocomplete_fragment);
-        if (endPointFragment != null)
+        }
+        PlaceAutocompleteFragment endPointFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.end_point_autocomplete_fragment);
+        if (endPointFragment != null) {
+            endPointFragment.setHint("Destination");
             endPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
@@ -198,6 +202,7 @@ public class AddTripFragment extends Fragment {
                     Log.e(TAG, "Place: " + place.getRating());
                     Log.e(TAG, "Place: " + place.getViewport());
                     Log.e(TAG, "Place: " + place.getLatLng());
+
 
                 }
 
@@ -264,10 +269,5 @@ public class AddTripFragment extends Fragment {
         return j;
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("startPointPlace", startPointPlace);
-        outState.putString("endPointPlace", endPointPlace);
-    }
+ 
 }

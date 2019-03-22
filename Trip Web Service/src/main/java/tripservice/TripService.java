@@ -3,6 +3,7 @@ package tripservice;
 import dao.tripdao.TripDaoImp;
 import java.util.ArrayList;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -64,7 +65,7 @@ public class TripService {
         return tripDaoImp.updateStatus(Integer.parseInt(tripId), type);
     }
 
-    @POST
+    @DELETE
     @Path("/deleteTrip")
     @Produces(MediaType.APPLICATION_JSON)
     public boolean deleteTrip(@QueryParam("tripId") String tripId) {

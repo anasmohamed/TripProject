@@ -4,10 +4,12 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 @Entity
-public class Trip {
+public class Trip implements Parcelable {
     @PrimaryKey
     private Long tripId;
     @NonNull
@@ -24,7 +26,7 @@ public class Trip {
     private long startPointLongitude;
     @NonNull
     private long endPointLatitude;
-    @NonNull
+
     private long endPointLongitude;
 
     @NonNull
@@ -74,6 +76,38 @@ public class Trip {
 //        this.notes = notes;
 //    }
 
+
+    protected Trip(Parcel in) {
+        if (in.readByte() == 0) {
+            tripId = null;
+        } else {
+            tripId = in.readLong();
+        }
+        tripName = in.readString();
+        startPointAddress = in.readString();
+        endPointAddress = in.readString();
+        startPointLatitude = in.readLong();
+        startPointLongitude = in.readLong();
+        endPointLatitude = in.readLong();
+        endPointLongitude = in.readLong();
+        date = in.readString();
+        time = in.readString();
+        tripImage = in.createByteArray();
+        status = in.readString();
+        type = in.readString();
+    }
+
+    public static final Creator<Trip> CREATOR = new Creator<Trip>() {
+        @Override
+        public Trip createFromParcel(Parcel in) {
+            return new Trip(in);
+        }
+
+        @Override
+        public Trip[] newArray(int size) {
+            return new Trip[size];
+        }
+    };
 
     public String getTripName() {
         return tripName;
@@ -180,5 +214,32 @@ public class Trip {
 
     public void setTripImage(@NonNull byte[] tripImage) {
         this.tripImage = tripImage;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (tripId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(tripId);
+        }
+        dest.writeString(tripName);
+        dest.writeString(startPointAddress);
+        dest.writeString(endPointAddress);
+        dest.writeLong(startPointLatitude);
+        dest.writeLong(startPointLongitude);
+        dest.writeLong(endPointLatitude);
+        dest.writeLong(endPointLongitude);
+        dest.writeString(date);
+        dest.writeString(time);
+        dest.writeByteArray(tripImage);
+        dest.writeString(status);
+        dest.writeString(type);
     }
 }
