@@ -35,7 +35,7 @@ public class UserRepository {
 
 
     public void insertUserIntoWebService(String userName, String email, String password, Callback<User> mUserCallback) {
-        userAPIService.insertUserIntoWebService(new User(userName, email, password)).enqueue(mUserCallback);
+        userAPIService.insertUserIntoWebService(userName, email, password).enqueue(mUserCallback);
     }
 
     public void login(String email, String password, Callback<User> mUserCallback) {

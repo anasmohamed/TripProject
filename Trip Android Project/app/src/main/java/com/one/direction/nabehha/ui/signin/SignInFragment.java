@@ -68,8 +68,11 @@ public class SignInFragment extends Fragment implements
 
                             @Override
                             public void onResponse(Call<User> call, Response<User> response) {
-                                if (response.body() != null)
-                                    goToTripsHome(response.body());
+                                if (response.isSuccessful()) {
+                                    if (response.body() != null)
+                                        goToTripsHome(response.body());
+                                } else
+                                    Toast.makeText(getContext(), "Faild to login", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -82,8 +85,8 @@ public class SignInFragment extends Fragment implements
         binding.registerSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getContext() instanceof SwapFragment )
-                ((SwapFragment)getContext()).swapFragment();
+                if (getContext() instanceof SwapFragment)
+                    ((SwapFragment) getContext()).swapFragment();
             }
         });
         return view;

@@ -2,6 +2,7 @@ package userservice;
 
 
 import dao.userdao.UserDaoImp;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -18,7 +19,7 @@ public class UserService {
         userDaoImp = new UserDaoImp();
     }
 
-    @POST
+    @GET
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
     public User register(@QueryParam("userName") String userName, @QueryParam("email") String email, @QueryParam("password") String password) {
@@ -29,7 +30,7 @@ public class UserService {
         return resultuser;
     }
     
-       @POST
+       @GET
     @Path("/registerWithGmail")
     @Produces(MediaType.APPLICATION_JSON)
     public User registerWithGmail(@QueryParam("userName") String userName, @QueryParam("email") String email) {
@@ -40,7 +41,7 @@ public class UserService {
         return resultuser;
     }
 
-    @POST
+    @GET
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     public User login(@QueryParam("userName") String userName, @QueryParam("password") String password) {
