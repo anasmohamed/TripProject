@@ -19,10 +19,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.one.direction.nabehha.AppConstants;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.MainActivity;
 import com.one.direction.nabehha.R;
-import com.one.direction.nabehha.SplashActivity;
 import com.one.direction.nabehha.SwapFragment;
 import com.one.direction.nabehha.data.database.model.User;
 import com.one.direction.nabehha.databinding.SigninFragmentBinding;
@@ -31,16 +36,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignInFragment extends Fragment implements
-        GoogleApiClient.OnConnectionFailedListener {
-
-    private SignInViewModel mViewModel;
-    SigninFragmentBinding binding;
+public class SignInFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "<^_^>";
-    private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
-
+    SigninFragmentBinding binding;
+    private SignInViewModel mViewModel;
+    private GoogleApiClient mGoogleApiClient;
 
     public static SignInFragment newInstance() {
         return new SignInFragment();
@@ -52,6 +54,7 @@ public class SignInFragment extends Fragment implements
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.signin_fragment, container, false);
         View view = binding.getRoot();
+
         binding.signInGoogleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,28 +62,73 @@ public class SignInFragment extends Fragment implements
                 GoogleSignIn();
             }
         });
+        // binding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
+        // @Override
+        // public void onClick(View v) {
+        // loadingUi(true);
+        // mViewModel.login(binding.email.getText().toString()
+        // , binding.password.getText().toString(), new Callback<User>() {
+        //
+        // @Override
+        // public void onResponse(Call<User> call, Response<User> response) {
+        // if (response.body() != null)
+        // goToTripsHome(response.body());
+        // }
+        //
+        // @Override
+        // public void onFailure(Call<User> call, Throwable t) {
+        //
+        // }
+        // });
+        // }
+        // });
         binding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 loadingUi(true);
-                mViewModel.login(binding.email.getText().toString()
-                        , binding.password.getText().toString(), new Callback<User>() {
+                if (!binding.email.getText().toString().isEmpty() && binding.password.getText().toString().isEmpty()) {
+                    mViewModel.login(binding.email.getText().toString(), binding.password.getText().toString(),
+                            new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    task.addOnSuccessListener(getActivity(), new OnSuccessListener<AuthResult>() {
+                                        @Override
+                                        public void onSuccess(AuthResult authResult) {
+                                            User user = new User();
 
-                            @Override
-                            public void onResponse(Call<User> call, Response<User> response) {
-                                if (response.isSuccessful()) {
-                                    if (response.body() != null)
-                                        goToTripsHome(response.body());
-                                } else
-                                    Toast.makeText(getContext(), "Faild to login", Toast.LENGTH_SHORT).show();
+                                            user.setUserName(authResult.getUser().getDisplayName());
+                                            user.setEmail(authResult.getUser().getEmail());
+                                            user.setUserId(authResult.getUser().getUid());
+
+                                            goToTripsHome(user);
+                                        }
+                                    });
+                                    task.addOnFailureListener(getActivity(), new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            binding.loginProgress.setVisibility(View.GONE);
+
+                                            Toast.makeText(getActivity(), "You Are Not Authorized to Login", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    binding.loginProgress.setVisibility(View.GONE);
+
+                                    Toast.makeText(getActivity(), "Login Fail Please Check Email Or Password",
+                                            Toast.LENGTH_SHORT);
+                                }
                             }
 
-                            @Override
-                            public void onFailure(Call<User> call, Throwable t) {
+                    );
+                } else {
+                    Toast.makeText(getActivity(), "Please Fill All Fields", Toast.LENGTH_SHORT).show();
+                }
 
-                            }
-                        });
             }
+
         });
         binding.registerSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,17 +148,16 @@ public class SignInFragment extends Fragment implements
         mViewModel = ViewModelProviders.of(this, factory).get(SignInViewModel.class);
     }
 
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(getContext(), "Failed to sign in", Toast.LENGTH_SHORT).show();
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        // Result returned from launching the Intent from
+        // GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
@@ -119,28 +166,22 @@ public class SignInFragment extends Fragment implements
 
     private void goToTripsHome(final User user) {
         loadingUi(false);
-        if (user.getEmail() != null) {
+        if (user.getUserId() != null) {
             mViewModel.saveUserInfo(user);
             startActivity(new Intent(getActivity(), MainActivity.class));
 
         } else {
-            Toast.makeText(getContext(),
-                    "You Are Not Registered or wrong password",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "You Are Not Registered or wrong password", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     private void GoogleSignIn() {
         if (mGoogleApiClient == null) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build();
+                    .requestEmail().build();
 
-            mGoogleApiClient = new GoogleApiClient.Builder(getContext())
-                    .enableAutoManage(getActivity(), this)
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                    .build();
+            mGoogleApiClient = new GoogleApiClient.Builder(getContext()).enableAutoManage(getActivity(), this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
         }
 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -172,9 +213,7 @@ public class SignInFragment extends Fragment implements
             }
         } else {
             loadingUi(false);
-            Toast.makeText(getContext(),
-                    "Can't complete",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Can't complete", Toast.LENGTH_SHORT).show();
         }
     }
 

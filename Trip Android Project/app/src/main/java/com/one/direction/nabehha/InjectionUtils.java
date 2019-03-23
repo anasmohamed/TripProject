@@ -11,6 +11,7 @@ import com.one.direction.nabehha.data.network.tripapi.TripAPIService;
 import com.one.direction.nabehha.data.network.tripapi.TripAPIUtils;
 import com.one.direction.nabehha.data.network.userapi.UserAPIService;
 import com.one.direction.nabehha.data.network.userapi.UserAPIUtils;
+import com.one.direction.nabehha.data.network.userapi.UserFireBase;
 import com.one.direction.nabehha.ui.addtrip.AddTripModelFactory;
 import com.one.direction.nabehha.ui.signin.SignInModelFactory;
 import com.one.direction.nabehha.ui.signup.SignUpModelFactory;
@@ -18,9 +19,9 @@ import com.one.direction.nabehha.ui.signup.SignUpModelFactory;
 public class InjectionUtils {
     public static UserRepository provideUserRepository(Context context) {
         AppExecutors executors = AppExecutors.getInstance();
-        UserAPIService userAPIService = UserAPIUtils.geUserAPIService();
+        UserFireBase userFireBase = UserFireBase.getInstance();
         UserPreferencesHelper userPreferencesHelper = new AppPreferencesHelper(context, context.getString(R.string.user_info));
-        return UserRepository.getInstance(userAPIService, executors,userPreferencesHelper);
+        return UserRepository.getInstance(userFireBase, executors,userPreferencesHelper);
     }
     public static TripRepository provideTripRepository(Context context) {
         AppExecutors executors = AppExecutors.getInstance();

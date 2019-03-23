@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.R;
@@ -53,8 +54,7 @@ public class AddTripFragment extends Fragment {
     private String mTripName, mTripStartPoint, mTripEndPoint, mTripDate, mTripTime, mTripStatus, mTripType;
     private ArrayList<String> mTripNotes;
     private WorkManager mWorkManager;
-    private String startPointPlace;
-    private String endPointPlace;
+
 
     public static AddTripFragment newInstance() {
         return new AddTripFragment();
@@ -86,27 +86,25 @@ public class AddTripFragment extends Fragment {
     public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         AddTripModelFactory factory = InjectionUtils.provideAddTripViewModelFactory(getContext());
-
         mViewModel = ViewModelProviders.of(this, factory).get(AddTripViewModel.class);
 
-        mTripName = mAddTripFragmentBinding.tripNameET.getText().toString();
-        bundle = this.getArguments();
-        if (bundle != null) {
-            mTripNotes = bundle.getStringArrayList("notes");
-            Log.e("tripNotes", mTripNotes.size() + "");
+        if (!mAddTripFragmentBinding.tripNameET.getText().toString().isEmpty())
+            mTripName = mAddTripFragmentBinding.tripNameET.getText().toString();
 
-        }
+//        bundle = this.getArguments();
+//        if (bundle != null) {
+//            mTripNotes = bundle.getStringArrayList("notes");
+//            Log.e("tripNotes", mTripNotes.size() + "");
+//        }
         mAddTripFragmentBinding.imageAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                ;
-                if (mAddTripFragmentBinding.textViewAddNote.getText().toString() != null) {
+                if (!mAddTripFragmentBinding.textViewAddNote.getText().toString().isEmpty()) {
                     notesArrayList.add(mAddTripFragmentBinding.textViewAddNote.getText().toString());
                     mAddTripFragmentBinding.textViewAddNote.setText("");
                     notesAdapter.notifyDataSetChanged();
                 }
-
             }
         });
 
@@ -114,7 +112,6 @@ public class AddTripFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 c = Calendar.getInstance();
-
                 mHour = c.get(Calendar.HOUR_OF_DAY);
                 mMinute = c.get(Calendar.MINUTE);
 
@@ -125,7 +122,6 @@ public class AddTripFragment extends Fragment {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-
                                 mAddTripFragmentBinding.tripTimeET.setText(hourOfDay + ":" + minute);
                                 timePickerHour = hourOfDay;
                                 timePickerMinute = minute;
@@ -143,15 +139,11 @@ public class AddTripFragment extends Fragment {
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                         new DatePickerDialog.OnDateSetListener() {
-
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-
                                 mAddTripFragmentBinding.tripDateET.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                                 datePickerMonth = monthOfYear;
                                 datePickerDay = dayOfMonth;
@@ -183,7 +175,6 @@ public class AddTripFragment extends Fragment {
                     Log.e(TAG, "Place: " + place.getRating());
                     Log.e(TAG, "Place: " + place.getViewport());
                     Log.e(TAG, "Place: " + place.getLatLng());
-                    startPointPlace = (String) place.getName();
                 }
 
                 @Override
@@ -220,34 +211,35 @@ public class AddTripFragment extends Fragment {
                     Log.e(TAG, "An error occurred: " + status);
                 }
             });
+            if (!mAddTripFragmentBinding.tripDateET.getText().toString().isEmpty())
+                mTripDate = mAddTripFragmentBinding.tripDateET.getText().toString();
+            if (!mAddTripFragmentBinding.tripTimeET.getText().toString().isEmpty())
+                mTripTime = mAddTripFragmentBinding.tripTimeET.getText().toString();
+            mTripType = mAddTripFragmentBinding.addTripTypeSpinner.getSelectedItem().toString();
+
+
+            // TODO: Use the ViewModel
+            mAddTripFragmentBinding.addTripBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    calendarTime = Calendar.getInstance();
+                    Trip trip = new Trip();
+                    trip.setType(mTripType);
+                    trip.setStatus(mTripStatus);
+                    trip.setTime(mTripTime);
+                    trip.setDate(mTripDate);
+                    //TODO Add LatLog attrib
+
+                    trip.setEndPointAddress(mTripEndPoint);
+                    trip.setStartPointAddress(mTripStartPoint);
+                    calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
+                    doWork(trip);
+                    mViewModel.AddTripToWebService(mTripName, "startpoint", "startpoint", mTripDate, mTripTime, mTripType, "", 1L, mTripStatus);
+                    mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
+                }
+            });
+
         }
-        mTripDate = mAddTripFragmentBinding.tripDateET.getText().toString();
-        mTripTime = mAddTripFragmentBinding.tripTimeET.getText().toString();
-        mTripType = mAddTripFragmentBinding.addTripTypeSpinner.getSelectedItem().toString();
-
-
-        // TODO: Use the ViewModel
-        mAddTripFragmentBinding.addTripBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                calendarTime = Calendar.getInstance();
-                Trip trip = new Trip();
-                trip.setType(mTripType);
-                trip.setStatus(mTripStatus);
-                trip.setTime(mTripTime);
-                trip.setDate(mTripDate);
-                //TODO Add LatLog attrib
-                trip.setEndPointAddress(mTripEndPoint);
-                trip.setStartPointAddress(mTripStartPoint);
-                //doWork(mMonth,mDay,mHour,mMinute);
-                calendarTime.set(datePickerYear,datePickerMonth,datePickerDay, timePickerHour, timePickerMinute);
-                doWork(trip);
-                mViewModel.AddTripToWebService(mTripName, "startpoint", "startpoint", mTripDate, mTripTime, mTripType, "", 1L, mTripStatus);
-
-                mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
-            }
-        });
-
     }
 
 
@@ -265,10 +257,10 @@ public class AddTripFragment extends Fragment {
 
     long getTimeInSeconds() {
 
-        long diffInMs = calendarTime.getTime().getTime() - c.getTime().getTime() ;
+        long diffInMs = calendarTime.getTime().getTime() - c.getTime().getTime();
 
         long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
-        return diffInSec ;
+        return diffInSec;
     }
 
     public String serializeToJson(Trip trip) {
@@ -277,10 +269,5 @@ public class AddTripFragment extends Fragment {
         return j;
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("startPointPlace", startPointPlace);
-        outState.putString("endPointPlace", endPointPlace);
-    }
+
 }
