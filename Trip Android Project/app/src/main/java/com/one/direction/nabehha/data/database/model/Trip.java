@@ -6,8 +6,9 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
@@ -16,10 +17,17 @@ public class Trip implements Parcelable {
     @PrimaryKey
     private Long tripId;
     @NonNull
+    @SerializedName("tripName")
     private String tripName;
     @NonNull
+    @Ignore
+    @SerializedName("tripImage")
+    private String tripImageUrl;
+    @NonNull
+    @SerializedName("startPoint")
     private String startPointAddress;
     @NonNull
+    @SerializedName("endPoint")
     private String endPointAddress;
     @NonNull
     private long startPointLatitude;
@@ -37,11 +45,13 @@ public class Trip implements Parcelable {
     private String status;
     @NonNull
     private String type;
-@Ignore
+    @Ignore
     ArrayList<Note> notes;
 
+
+
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    private byte[] tripImage;
+    private byte[] tripImagebyte;
 
     @Ignore
     public Trip() {
@@ -89,7 +99,7 @@ public class Trip implements Parcelable {
         endPointLongitude = in.readLong();
         date = in.readString();
         time = in.readString();
-        tripImage = in.createByteArray();
+        tripImagebyte = in.createByteArray();
         status = in.readString();
         type = in.readString();
     }
@@ -205,12 +215,12 @@ public class Trip implements Parcelable {
     }
 
     @NonNull
-    public byte[] getTripImage() {
-        return tripImage;
+    public byte[] getTripImagebyte() {
+        return tripImagebyte;
     }
 
-    public void setTripImage(@NonNull byte[] tripImage) {
-        this.tripImage = tripImage;
+    public void setTripImagebyte(@NonNull byte[] tripImagebyte) {
+        this.tripImagebyte = tripImagebyte;
     }
 
     @Override
@@ -235,7 +245,7 @@ public class Trip implements Parcelable {
         dest.writeLong(endPointLongitude);
         dest.writeString(date);
         dest.writeString(time);
-        dest.writeByteArray(tripImage);
+        dest.writeByteArray(tripImagebyte);
         dest.writeString(status);
         dest.writeString(type);
     }
