@@ -15,7 +15,7 @@ public class InsertTripDataBaseAsync extends AsyncTask<Trip, Void, Void> {
 
     @Override
     protected Void doInBackground(final Trip... trips) {
-        asyncTaskDao.insertTrip(trips[0]);
+//        asyncTaskDao.insertTrip(trips[0]);
         return null;
     }
 }

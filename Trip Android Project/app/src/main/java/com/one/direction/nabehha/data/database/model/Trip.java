@@ -37,7 +37,7 @@ public class Trip implements Parcelable {
     private String status;
     @NonNull
     private String type;
-
+@Ignore
     ArrayList<Note> notes;
 
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
@@ -64,15 +64,15 @@ public class Trip implements Parcelable {
         this.type = type;
     }
 
-    @NonNull
-    public ArrayList<Note> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(ArrayList<Note> notes) {
-        this.notes = notes;
-    }
-
+//    @NonNull
+//    public ArrayList<Note> getNotes() {
+//        return notes;
+//    }
+//
+//    public void setNotes(ArrayList<Note> notes) {
+//        this.notes = notes;
+//    }
+//
 
     protected Trip(Parcel in) {
         if (in.readByte() == 0) {

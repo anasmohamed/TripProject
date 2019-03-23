@@ -13,8 +13,8 @@ import java.util.List;
 
 @Dao
 public interface TripDao {
-    @Insert
-    void insertTrip(Trip trip);
+//    @Insert
+//    void insertTrip(Trip trip);
 
 //    @Query("UPDATE  trip set tripImage=:imageByte where tripId = tripId")
 //    public void saveTripImage(Long tripId, byte[] imageByte);
@@ -27,8 +27,8 @@ public interface TripDao {
 //    @Query("DELETE FROM trip")
 //    void deleteAll();
 //
-    @Query("SELECT * from trip where status = 'upcmming'")
-    LiveData<List<Trip>> getUpcomingTrips();
+//    @Query("SELECT * from trip where status = 'upcmming'")
+//    LiveData<List<Trip>> getUpcomingTrips();
 //
 //    @Query("SELECT * from trip where status = 'done'")
 //    LiveData<List<Trip>> getPastTrips();
@@ -36,6 +36,6 @@ public interface TripDao {
 
 
 
-    @Query("SELECT * from trip where status = 'done'")
-    LiveData<List<Trip>> getPastTrips();
+//    @Query("SELECT * from trip where status = 'done'")
+//    LiveData<List<Trip>> getPastTrips();
 }
