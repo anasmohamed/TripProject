@@ -32,7 +32,7 @@ public class UserService {
         return resultuser;
     }
     
-       @POST
+       @GET
     @Path("/registerWithGmail")
     @Produces(MediaType.APPLICATION_JSON)
     public User registerWithGmail(@QueryParam("userName") String userName, @QueryParam("email") String email) {
@@ -43,7 +43,7 @@ public class UserService {
         return resultuser;
     }
 
-    @POST
+    @GET
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     public User login(@QueryParam("userName") String userName, @QueryParam("password") String password) {

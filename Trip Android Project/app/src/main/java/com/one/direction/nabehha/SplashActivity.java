@@ -21,14 +21,6 @@ public class SplashActivity extends AppCompatActivity {
         DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
         final UserPreferencesHelper userPreferencesHelper=new AppPreferencesHelper(this,getString(R.string.user_info));
         AppConstants.CURRENT_USER_EMAIL=userPreferencesHelper.getCurrentUserEmail();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-            //If the draw over permission is not available open the settings screen
-            //to grant the permission.
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, 100);
-        }
         //finish();
         countDownTimer=new CountDownTimer(1000, 1000) {
 

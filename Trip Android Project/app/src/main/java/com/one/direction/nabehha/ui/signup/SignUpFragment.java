@@ -1,11 +1,13 @@
 package com.one.direction.nabehha.ui.signup;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +22,15 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.one.direction.nabehha.InjectionUtils;
+import com.one.direction.nabehha.MainActivity;
 import com.one.direction.nabehha.R;
+import com.one.direction.nabehha.SignUpActivity;
 import com.one.direction.nabehha.data.database.model.User;
 import com.one.direction.nabehha.databinding.SignupFragmentBinding;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpFragment extends Fragment {
     SignupFragmentBinding binding;
@@ -66,12 +74,13 @@ public class SignUpFragment extends Fragment {
         binding.signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+loadingUi(true);
+
                 // mViewModel.sendUserDataToWebService(binding.fullNameSignUpET.getText().toString(),binding.emailSignUpET.getText().toString(), binding.passwordSignUpET.getText().toString());
                 // createAccount(binding.emailSignUpET.getText().toString(), binding.passwordSignUpET.getText().toString());
                 mViewModel.register(binding.emailSignUpET.getText().toString(), binding.passwordSignUpET.getText().toString(), binding.fullNameSignUpET.getText().toString(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-//TODO go main Activity
 
                         User user = new User();
                         user.setUserId(mAuth.getCurrentUser().getUid());
@@ -80,6 +89,7 @@ public class SignUpFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 Toast.makeText(getActivity(), "COrrrect", Toast.LENGTH_SHORT).show();
+                                goToTripsHome(response.body());
 
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -101,6 +111,28 @@ public class SignUpFragment extends Fragment {
         });
 
     }
+    private void goToTripsHome(final User user) {
+//        loadingUi(false);
+        if (user.getEmail() != null) {
+            mViewModel.saveUserInfo(user);
+            startActivity(new Intent(getActivity(), MainActivity.class));
 
+        } else {
+            Toast.makeText(getContext(),
+                    "You Are Not Registered or wrong password",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void loadingUi(boolean isLoading) {
+        if (isLoading) {
+            binding.loginProgress.setVisibility(View.VISIBLE);
+        } else {
+            binding.loginProgress.setVisibility(View.GONE);
+        }
+        binding.emailSignUpET.setEnabled(!isLoading);
+        binding.fullNameSignUpET.setEnabled(!isLoading);
+        binding.passwordSignUpET.setEnabled(!isLoading);
+        binding.signUpBtn.setEnabled(!isLoading);
+    }
 
 }

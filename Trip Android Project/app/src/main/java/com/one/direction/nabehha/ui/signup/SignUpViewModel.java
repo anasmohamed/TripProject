@@ -1,11 +1,14 @@
 package com.one.direction.nabehha.ui.signup;
 
 import android.arch.lifecycle.ViewModel;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.AuthResult;
+import com.one.direction.nabehha.MainActivity;
 import com.one.direction.nabehha.data.network.UserRepository;
 import com.one.direction.nabehha.data.database.model.User;
 
@@ -22,23 +25,9 @@ public class SignUpViewModel extends ViewModel {
         this.mUserRepository = userRepository;
     }
 
+    public void sendUserDataToWebService(String userName, String email, String password,Callback<User> mUserCallback) {
 
-    public void sendUserDataToWebService(String userName, String email, String password) {
-
-
-        mUserRepository.insertUserIntoWebService(userName, email, password, new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    //TODO
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.e("View Model", "Unable to submit post to API. " + t.getMessage() + "    " + t.getCause() + " " + t.toString());
-            }
-        });
+        mUserRepository.insertUserIntoWebService(userName, email, password,mUserCallback );
 
 
     }
@@ -50,4 +39,7 @@ public class SignUpViewModel extends ViewModel {
     }
 
 
+    public void saveUserInfo(User user) {
+        mUserRepository.saveUserInfo(user);
+    }
 }

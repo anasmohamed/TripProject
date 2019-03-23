@@ -34,8 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignInFragment extends Fragment implements
-        GoogleApiClient.OnConnectionFailedListener {
+public class SignInFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "<^_^>";
     private static final int RC_SIGN_IN = 007;
@@ -50,7 +49,7 @@ public class SignInFragment extends Fragment implements
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.signin_fragment, container, false);
         View view = binding.getRoot();
 
@@ -61,39 +60,42 @@ public class SignInFragment extends Fragment implements
                 GoogleSignIn();
             }
         });
-//        binding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                loadingUi(true);
-//                mViewModel.login(binding.email.getText().toString()
-//                        , binding.password.getText().toString(), new Callback<User>() {
-//
-//                            @Override
-//                            public void onResponse(Call<User> call, Response<User> response) {
-//                                if (response.body() != null)
-//                                    goToTripsHome(response.body());
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<User> call, Throwable t) {
-//
-//                            }
-//                        });
-//            }
-//        });
+        // binding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
+        // @Override
+        // public void onClick(View v) {
+        // loadingUi(true);
+        // mViewModel.login(binding.email.getText().toString()
+        // , binding.password.getText().toString(), new Callback<User>() {
+        //
+        // @Override
+        // public void onResponse(Call<User> call, Response<User> response) {
+        // if (response.body() != null)
+        // goToTripsHome(response.body());
+        // }
+        //
+        // @Override
+        // public void onFailure(Call<User> call, Throwable t) {
+        //
+        // }
+        // });
+        // }
+        // });
         binding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loadingUi(true);
                 if (!binding.email.getText().toString().isEmpty() || binding.password.getText().toString().isEmpty()) {
-                    mViewModel.login(binding.email.getText().toString(), binding.password.getText().toString(), new OnCompleteListener<AuthResult>() {
+                    mViewModel.login(binding.email.getText().toString(), binding.password.getText().toString(),
+                            new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-//TODO go to main activity
+                                    goToTripsHome(response.body());
                                 }
                             }, new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), "Login Fail Please Check Email Or Password", Toast.LENGTH_SHORT);
+                                    Toast.makeText(getActivity(), "Login Fail Please Check Email Or Password",
+                                            Toast.LENGTH_SHORT);
                                 }
                             }
 
@@ -121,17 +123,16 @@ public class SignInFragment extends Fragment implements
         mViewModel = ViewModelProviders.of(this, factory).get(SignInViewModel.class);
     }
 
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(getContext(), "Failed to sign in", Toast.LENGTH_SHORT).show();
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        // Result returned from launching the Intent from
+        // GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
@@ -145,23 +146,17 @@ public class SignInFragment extends Fragment implements
             startActivity(new Intent(getActivity(), MainActivity.class));
 
         } else {
-            Toast.makeText(getContext(),
-                    "You Are Not Registered or wrong password",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "You Are Not Registered or wrong password", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     private void GoogleSignIn() {
         if (mGoogleApiClient == null) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build();
+                    .requestEmail().build();
 
-            mGoogleApiClient = new GoogleApiClient.Builder(getContext())
-                    .enableAutoManage(getActivity(), this)
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                    .build();
+            mGoogleApiClient = new GoogleApiClient.Builder(getContext()).enableAutoManage(getActivity(), this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
         }
 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -193,9 +188,7 @@ public class SignInFragment extends Fragment implements
             }
         } else {
             loadingUi(false);
-            Toast.makeText(getContext(),
-                    "Can't complete",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Can't complete", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -208,6 +201,5 @@ public class SignInFragment extends Fragment implements
         binding.emailSignInButton.setEnabled(!isLoading);
         binding.signInGoogleButton.setEnabled(!isLoading);
     }
-
 
 }
