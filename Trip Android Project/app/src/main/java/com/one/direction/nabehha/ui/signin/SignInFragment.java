@@ -19,10 +19,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.MainActivity;
 import com.one.direction.nabehha.R;
-import com.one.direction.nabehha.SplashActivity;
 import com.one.direction.nabehha.SwapFragment;
 import com.one.direction.nabehha.data.database.model.User;
 import com.one.direction.nabehha.databinding.SigninFragmentBinding;
@@ -34,13 +37,11 @@ import retrofit2.Response;
 public class SignInFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
 
-    private SignInViewModel mViewModel;
-    SigninFragmentBinding binding;
-
     private static final String TAG = "<^_^>";
-    private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
-
+    SigninFragmentBinding binding;
+    private SignInViewModel mViewModel;
+    private GoogleApiClient mGoogleApiClient;
 
     public static SignInFragment newInstance() {
         return new SignInFragment();
@@ -52,6 +53,7 @@ public class SignInFragment extends Fragment implements
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.signin_fragment, container, false);
         View view = binding.getRoot();
+
         binding.signInGoogleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,31 +61,53 @@ public class SignInFragment extends Fragment implements
                 GoogleSignIn();
             }
         });
+//        binding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                loadingUi(true);
+//                mViewModel.login(binding.email.getText().toString()
+//                        , binding.password.getText().toString(), new Callback<User>() {
+//
+//                            @Override
+//                            public void onResponse(Call<User> call, Response<User> response) {
+//                                if (response.body() != null)
+//                                    goToTripsHome(response.body());
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<User> call, Throwable t) {
+//
+//                            }
+//                        });
+//            }
+//        });
         binding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                loadingUi(true);
-                mViewModel.login(binding.email.getText().toString()
-                        , binding.password.getText().toString(), new Callback<User>() {
-
-                            @Override
-                            public void onResponse(Call<User> call, Response<User> response) {
-                                if (response.body() != null)
-                                    goToTripsHome(response.body());
+            public void onClick(View view) {
+                if (!binding.email.getText().toString().isEmpty() || binding.password.getText().toString().isEmpty()) {
+                    mViewModel.login(binding.email.getText().toString(), binding.password.getText().toString(), new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+//TODO go to main activity
+                                }
+                            }, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getActivity(), "Login Fail Please Check Email Or Password", Toast.LENGTH_SHORT);
+                                }
                             }
 
-                            @Override
-                            public void onFailure(Call<User> call, Throwable t) {
+                    );
+                }
 
-                            }
-                        });
             }
+
         });
         binding.registerSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getContext() instanceof SwapFragment )
-                ((SwapFragment)getContext()).swapFragment();
+                if (getContext() instanceof SwapFragment)
+                    ((SwapFragment) getContext()).swapFragment();
             }
         });
         return view;
@@ -184,5 +208,6 @@ public class SignInFragment extends Fragment implements
         binding.emailSignInButton.setEnabled(!isLoading);
         binding.signInGoogleButton.setEnabled(!isLoading);
     }
+
 
 }

@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.R;
@@ -53,8 +54,7 @@ public class AddTripFragment extends Fragment {
     private String mTripName, mTripStartPoint, mTripEndPoint, mTripDate, mTripTime, mTripStatus, mTripType;
     private ArrayList<String> mTripNotes;
     private WorkManager mWorkManager;
-    private String startPointPlace;
-    private String endPointPlace;
+
 
     public static AddTripFragment newInstance() {
         return new AddTripFragment();
@@ -175,7 +175,6 @@ public class AddTripFragment extends Fragment {
                     Log.e(TAG, "Place: " + place.getRating());
                     Log.e(TAG, "Place: " + place.getViewport());
                     Log.e(TAG, "Place: " + place.getLatLng());
-                    startPointPlace = (String) place.getName();
                 }
 
                 @Override
@@ -212,34 +211,35 @@ public class AddTripFragment extends Fragment {
                     Log.e(TAG, "An error occurred: " + status);
                 }
             });
-        if (!mAddTripFragmentBinding.tripDateET.getText().toString().isEmpty())
-            mTripDate = mAddTripFragmentBinding.tripDateET.getText().toString();
-        if (!mAddTripFragmentBinding.tripTimeET.getText().toString().isEmpty())
-            mTripTime = mAddTripFragmentBinding.tripTimeET.getText().toString();
-        mTripType = mAddTripFragmentBinding.addTripTypeSpinner.getSelectedItem().toString();
+            if (!mAddTripFragmentBinding.tripDateET.getText().toString().isEmpty())
+                mTripDate = mAddTripFragmentBinding.tripDateET.getText().toString();
+            if (!mAddTripFragmentBinding.tripTimeET.getText().toString().isEmpty())
+                mTripTime = mAddTripFragmentBinding.tripTimeET.getText().toString();
+            mTripType = mAddTripFragmentBinding.addTripTypeSpinner.getSelectedItem().toString();
 
 
-        // TODO: Use the ViewModel
-        mAddTripFragmentBinding.addTripBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                calendarTime = Calendar.getInstance();
-                Trip trip = new Trip();
-                trip.setType(mTripType);
-                trip.setStatus(mTripStatus);
-                trip.setTime(mTripTime);
-                trip.setDate(mTripDate);
-                //TODO Add LatLog attrib
+            // TODO: Use the ViewModel
+            mAddTripFragmentBinding.addTripBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    calendarTime = Calendar.getInstance();
+                    Trip trip = new Trip();
+                    trip.setType(mTripType);
+                    trip.setStatus(mTripStatus);
+                    trip.setTime(mTripTime);
+                    trip.setDate(mTripDate);
+                    //TODO Add LatLog attrib
 
-                trip.setEndPointAddress(mTripEndPoint);
-                trip.setStartPointAddress(mTripStartPoint);
-                calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
-                doWork(trip);
-                mViewModel.AddTripToWebService(mTripName, "startpoint", "startpoint", mTripDate, mTripTime, mTripType, "", 1L, mTripStatus);
-                mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
-            }
-        });
+                    trip.setEndPointAddress(mTripEndPoint);
+                    trip.setStartPointAddress(mTripStartPoint);
+                    calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
+                    doWork(trip);
+                    mViewModel.AddTripToWebService(mTripName, "startpoint", "startpoint", mTripDate, mTripTime, mTripType, "", 1L, mTripStatus);
+                    mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
+                }
+            });
 
+        }
     }
 
 
@@ -269,5 +269,5 @@ public class AddTripFragment extends Fragment {
         return j;
     }
 
- 
+
 }

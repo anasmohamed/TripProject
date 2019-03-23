@@ -3,6 +3,9 @@ package com.one.direction.nabehha.ui.signup;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.auth.AuthResult;
 import com.one.direction.nabehha.data.network.UserRepository;
 import com.one.direction.nabehha.data.database.model.User;
 
@@ -14,11 +17,14 @@ public class SignUpViewModel extends ViewModel {
     // TODO: Implement the ViewModel
     private final UserRepository mUserRepository;
 
+
     public SignUpViewModel(UserRepository userRepository) {
         this.mUserRepository = userRepository;
     }
 
+
     public void sendUserDataToWebService(String userName, String email, String password) {
+
 
         mUserRepository.insertUserIntoWebService(userName, email, password, new Callback<User>() {
             @Override
@@ -34,6 +40,14 @@ public class SignUpViewModel extends ViewModel {
             }
         });
 
+
     }
+
+
+    public void register(String email, String password, String userName, OnCompleteListener<AuthResult>authResultOnCompleteListener, OnFailureListener onFailureListener)
+    {
+        mUserRepository.register(email,password,userName,authResultOnCompleteListener,onFailureListener);
+    }
+
 
 }
