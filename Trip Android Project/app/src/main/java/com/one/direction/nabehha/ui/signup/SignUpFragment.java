@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,13 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.MainActivity;
 import com.one.direction.nabehha.R;
-import com.one.direction.nabehha.SignUpActivity;
 import com.one.direction.nabehha.data.database.model.User;
 import com.one.direction.nabehha.databinding.SignupFragmentBinding;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SignUpFragment extends Fragment {
     SignupFragmentBinding binding;
@@ -74,46 +69,69 @@ public class SignUpFragment extends Fragment {
         binding.signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-loadingUi(true);
 
                 // mViewModel.sendUserDataToWebService(binding.fullNameSignUpET.getText().toString(),binding.emailSignUpET.getText().toString(), binding.passwordSignUpET.getText().toString());
                 // createAccount(binding.emailSignUpET.getText().toString(), binding.passwordSignUpET.getText().toString());
-                mViewModel.register(binding.emailSignUpET.getText().toString(), binding.passwordSignUpET.getText().toString(), binding.fullNameSignUpET.getText().toString(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!binding.emailSignUpET.getText().toString().isEmpty() && !binding.passwordSignUpET.getText().toString().isEmpty() && !binding.fullNameSignUpET.getText().toString().isEmpty()) {
+                    loadingUi(true);
 
-                        User user = new User();
-                        user.setUserId(mAuth.getCurrentUser().getUid());
-                        user.setUserName(binding.emailSignUpET.getText().toString().substring(0, binding.emailSignUpET.getText().toString().indexOf("@")));
-                        userDatabaseReference.child(mAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(getActivity(), "COrrrect", Toast.LENGTH_SHORT).show();
-                                goToTripsHome(response.body());
+                    mViewModel.register(binding.emailSignUpET.getText().toString(), binding.passwordSignUpET.getText().toString(), binding.fullNameSignUpET.getText().toString(), new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getActivity(), "There is Error in Email or Password", Toast.LENGTH_SHORT).show();
+                            final User user = new User();
+                            user.setUserId(mAuth.getCurrentUser().getUid());
+                            user.setUserName(binding.emailSignUpET.getText().toString().substring(0, binding.emailSignUpET.getText().toString().indexOf("@")));
 
-                            }
-                        });
+                            userDatabaseReference.child(mAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    task.addOnSuccessListener(getActivity(), new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
 
-                    }
-                }, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "There is Error in Email or Password", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                            goToTripsHome(user);
+                                        }
+                                    });
+                                    task.addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            binding.loginProgress.setVisibility(View.GONE);
+                                            Toast.makeText(getActivity(), "Please Check Email Or Password", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    binding.loginProgress.setVisibility(View.GONE);
+
+                                    Toast.makeText(getActivity(), "There is Error in Email or Password", Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+                        }
+                    }, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), "There is Error in Email or Password", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else {
+                    Toast.makeText(getActivity(),"Please Fill All Fields",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }
+
     private void goToTripsHome(final User user) {
 //        loadingUi(false);
-        if (user.getEmail() != null) {
+        if (user.getUserId() != null) {
             mViewModel.saveUserInfo(user);
             startActivity(new Intent(getActivity(), MainActivity.class));
 
@@ -123,6 +141,7 @@ loadingUi(true);
                     Toast.LENGTH_SHORT).show();
         }
     }
+
     private void loadingUi(boolean isLoading) {
         if (isLoading) {
             binding.loginProgress.setVisibility(View.VISIBLE);
