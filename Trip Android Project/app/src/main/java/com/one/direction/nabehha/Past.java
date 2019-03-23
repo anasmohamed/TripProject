@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 
 public class Past extends Fragment {
-
+private ImageView allTripGoogleImageImg;
     RecyclerView tripRecyclerView;
     TripRecyclerViewAdapter tripAdapter;
     List<Trip> trips = null;

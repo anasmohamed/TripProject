@@ -27,12 +27,12 @@ public class SignUpActivity extends AppCompatActivity implements SwapFragment {
 ////            getSupportFragmentManager().beginTransaction()
 ////                    .replace(R.id.container, SignUpFragment.newInstance())
 ////                    .commitNow();
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.container, SignInFragment.newInstance())
-//                    .commitNow();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, AddTripFragment.newInstance())
-                .commitNow();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, SignInFragment.newInstance())
+                    .commitNow();
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.container, AddTripFragment.newInstance())
+//                .commitNow();
 //        }
 
 

@@ -20,7 +20,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.one.direction.nabehha.InjectionUtils;
+import com.one.direction.nabehha.MainActivity;
 import com.one.direction.nabehha.R;
+import com.one.direction.nabehha.SplashActivity;
 import com.one.direction.nabehha.SwapFragment;
 import com.one.direction.nabehha.data.database.model.User;
 import com.one.direction.nabehha.databinding.SigninFragmentBinding;
@@ -116,7 +118,8 @@ public class SignInFragment extends Fragment implements
         loadingUi(false);
         if (user.getEmail() != null) {
             mViewModel.saveUserInfo(user);
-            //TODO Go To Main Screen
+            startActivity(new Intent(getActivity(), MainActivity.class));
+
         } else {
             Toast.makeText(getContext(),
                     "You Are Not Registered or wrong password",
