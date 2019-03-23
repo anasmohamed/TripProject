@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.one.direction.nabehha.data.database.model.Note;
+import com.one.direction.nabehha.data.database.model.Trip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
         notifyItemRangeChanged(position, notes.size());
     }
 
-    public void restoreItem(Note note, int position) {
+    public void restoreItem(Trip trip, int position) {
         notes.add(recentlyDeletedNotePosition, recentlyDeletedNote);
         // notify item added by position
         notifyItemInserted(position);
@@ -61,10 +62,10 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
 
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);
-             noteTv= itemView.findViewById(R.id.note_tv);
+            noteTv= itemView.findViewById(R.id.note_tv);
         }
         void bind(int position) {
-           // noteTv.setText(notes.get(position).getNote());
+            // noteTv.setText(notes.get(position).getNote());
             noteTv.setText("This is a note!");
         }
     }

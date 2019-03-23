@@ -54,7 +54,7 @@ public class Scheduled extends Fragment {
                     return;
                 }
                 trips = response.body();
-                tripAdapter = new TripRecyclerViewAdapter(trips);
+                tripAdapter = new TripRecyclerViewAdapter(trips, (TripRecyclerViewAdapter.CardClickedListener) getContext());
                 tripRecyclerView.setAdapter(tripAdapter);
             }
 
@@ -79,7 +79,7 @@ public class Scheduled extends Fragment {
                 final Trip deletedTrip = trips.get(position);
                 final int deletedPosition = position;
                 tripAdapter.deleteItem(deletedPosition);
-                retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(deletedTrip.getTripId()), new Callback<Boolean>() {
+                retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(deletedTrip.getUserId()), new Callback<Boolean>() {
                     @Override
                     public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                         Log.i("RetrofitResponse",String.valueOf(response.code()));
@@ -96,4 +96,5 @@ public class Scheduled extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchHelper);
         itemTouchHelper.attachToRecyclerView(tripRecyclerView);
     }
+
 }

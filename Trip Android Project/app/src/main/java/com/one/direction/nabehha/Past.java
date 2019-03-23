@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 
 public class Past extends Fragment {
-private ImageView allTripGoogleImageImg;
+    private ImageView allTripGoogleImageImg;
     RecyclerView tripRecyclerView;
     TripRecyclerViewAdapter tripAdapter;
     List<Trip> trips = null;
@@ -50,7 +50,7 @@ private ImageView allTripGoogleImageImg;
                     return;
                 }
                 trips = response.body();
-                tripAdapter = new TripRecyclerViewAdapter(trips);
+                tripAdapter = new TripRecyclerViewAdapter(trips, (TripRecyclerViewAdapter.CardClickedListener) getContext());
                 tripRecyclerView.setAdapter(tripAdapter);
             }
 

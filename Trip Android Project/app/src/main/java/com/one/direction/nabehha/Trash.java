@@ -44,7 +44,7 @@ public class Trash extends Fragment {
                     return;
                 }
                 trips = response.body();
-                tripAdapter = new TripRecyclerViewAdapter(trips);
+                tripAdapter = new TripRecyclerViewAdapter(trips, (TripRecyclerViewAdapter.CardClickedListener) getContext());
                 tripRecyclerView.setAdapter(tripAdapter);
             }
 
@@ -55,4 +55,5 @@ public class Trash extends Fragment {
         });
         return view;
     }
+
 }

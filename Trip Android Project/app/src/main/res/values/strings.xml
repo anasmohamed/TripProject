@@ -6,7 +6,7 @@
     <string name="user_info">userInfo</string>
     <string name="full_name">Full Name</string>
     <string name="sign_up">Sign Up</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Logout</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>

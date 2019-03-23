@@ -6,13 +6,37 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
 @Entity
 public class Trip implements Parcelable {
+
+    public static final Creator<Trip> CREATOR = new Creator<Trip>() {
+        @Override
+        public Trip createFromParcel(Parcel in) {
+            return new Trip(in);
+        }
+
+        @Override
+        public Trip[] newArray(int size) {
+            return new Trip[size];
+        }
+    };
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    @Ignore
+    private Integer userId;
+    @Ignore
+    ArrayList<Note> notes;
     @PrimaryKey
     private Long tripId;
     @NonNull
@@ -37,15 +61,22 @@ public class Trip implements Parcelable {
     private String status;
     @NonNull
     private String type;
-@Ignore
-    ArrayList<Note> notes;
-
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private byte[] tripImage;
 
     @Ignore
     public Trip() {
     }
+
+//    @NonNull
+//    public ArrayList<Note> getNotes() {
+//        return notes;
+//    }
+//
+//    public void setNotes(ArrayList<Note> notes) {
+//        this.notes = notes;
+//    }
+//
 
     public Trip(Long tripId, @NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress,
                 long startPointLatitude, long startPointLongitude, long endPointLatitude, long endPointLongitude,
@@ -63,16 +94,6 @@ public class Trip implements Parcelable {
         this.status = status;
         this.type = type;
     }
-
-//    @NonNull
-//    public ArrayList<Note> getNotes() {
-//        return notes;
-//    }
-//
-//    public void setNotes(ArrayList<Note> notes) {
-//        this.notes = notes;
-//    }
-//
 
     protected Trip(Parcel in) {
         if (in.readByte() == 0) {
@@ -93,18 +114,6 @@ public class Trip implements Parcelable {
         status = in.readString();
         type = in.readString();
     }
-
-    public static final Creator<Trip> CREATOR = new Creator<Trip>() {
-        @Override
-        public Trip createFromParcel(Parcel in) {
-            return new Trip(in);
-        }
-
-        @Override
-        public Trip[] newArray(int size) {
-            return new Trip[size];
-        }
-    };
 
     public String getTripName() {
         return tripName;
