@@ -6,7 +6,10 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+
+import java.util.ArrayList;
 
 @Entity
 public class Trip implements Parcelable {
@@ -14,37 +17,31 @@ public class Trip implements Parcelable {
     private Long tripId;
     @NonNull
     private String tripName;
-
     @NonNull
     private String startPointAddress;
     @NonNull
     private String endPointAddress;
-
     @NonNull
     private long startPointLatitude;
     @NonNull
     private long startPointLongitude;
     @NonNull
     private long endPointLatitude;
-
+    @NonNull
     private long endPointLongitude;
-
     @NonNull
     private String date;
-
     @NonNull
     private String time;
+    @NonNull
+    private String status;
+    @NonNull
+    private String type;
+
+    ArrayList<Note> notes;
 
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private byte[] tripImage;
-
-
-//    ArrayList<Note> notes;
-
-    private String status;
-
-    @NonNull
-    private String type;
 
     @Ignore
     public Trip() {
@@ -67,14 +64,14 @@ public class Trip implements Parcelable {
         this.type = type;
     }
 
-//    @NonNull
-//    public ArrayList<Note> getNotes() {
-//        return notes;
-//    }
+    @NonNull
+    public ArrayList<Note> getNotes() {
+        return notes;
+    }
 
-//    public void setNotes(ArrayList<Note> notes) {
-//        this.notes = notes;
-//    }
+    public void setNotes(ArrayList<Note> notes) {
+        this.notes = notes;
+    }
 
 
     protected Trip(Parcel in) {

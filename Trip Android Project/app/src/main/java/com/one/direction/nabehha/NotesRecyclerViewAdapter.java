@@ -5,19 +5,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.one.direction.nabehha.data.database.model.NoteModel;
-import com.one.direction.nabehha.data.database.model.TripModel;
+import com.one.direction.nabehha.data.database.model.Note;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecyclerViewAdapter.NotesViewHolder> {
 
-    List<NoteModel> notes = new ArrayList();
-    NoteModel recentlyDeletedNote;
+    List<Note> notes = new ArrayList();
+    Note recentlyDeletedNote;
     int recentlyDeletedNotePosition;
 
 //    public NotesRecyclerViewAdapter(List<NoteModel> notes) {
@@ -52,7 +50,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
         notifyItemRangeChanged(position, notes.size());
     }
 
-    public void restoreItem(TripModel trip, int position) {
+    public void restoreItem(Note note, int position) {
         notes.add(recentlyDeletedNotePosition, recentlyDeletedNote);
         // notify item added by position
         notifyItemInserted(position);

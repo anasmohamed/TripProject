@@ -8,18 +8,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.one.direction.nabehha.data.database.model.TripModel;
+import com.one.direction.nabehha.data.database.model.Trip;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerViewAdapter.TripViewHolder> {
 
-    List<TripModel> trips = new ArrayList();
-    TripModel recentlyDeletedTrip;
+    List<Trip> trips = new ArrayList();
+    Trip recentlyDeletedTrip;
     int recentlyDeletedTripPosition;
 
-    public TripRecyclerViewAdapter(List<TripModel> trips) {
+    public TripRecyclerViewAdapter(List<Trip> trips) {
         this.trips = trips;
     }
 
@@ -49,7 +49,7 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
         notifyItemRangeChanged(position, trips.size());
     }
 
-    public void restoreItem(TripModel trip, int position) {
+    public void restoreItem(Trip trip, int position) {
         trips.add(recentlyDeletedTripPosition, recentlyDeletedTrip);
         // notify item added by position
         notifyItemInserted(position);
