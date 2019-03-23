@@ -35,6 +35,7 @@ public class Reminder extends Worker {
         TripAlarmDialog.startTripAlarm(context,trip);
         mp = MediaPlayer.create(context, R.raw.alarm);
         mp.start();
+
         return Result.success();
 
     }

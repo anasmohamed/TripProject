@@ -2,6 +2,7 @@ package com.one.direction.nabehha;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -12,13 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.one.direction.nabehha.ui.addtrip.AddTripFragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 public class MainActivity extends AppCompatActivity
-       {
+      {
+    FloatingActionButton floatingActionButton;
+
+
     public static final String DISPLAY_ACTIVITY_INTENT = "tripObject";
            FirebaseDatabase mUsersFirebaseDatabaseDatabaseReference;
            DatabaseReference userDatabaseReference;
@@ -32,20 +38,9 @@ public class MainActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         mUsersFirebaseDatabaseDatabaseReference = FirebaseDatabase.getInstance();
         userDatabaseReference = mUsersFirebaseDatabaseDatabaseReference.getReference("Users");
-       // TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-       // ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-
-//        tabPageAdapter TabPageAdapter = new tabPageAdapter(getSupportFragmentManager());
-//        viewPager.setAdapter(TabPageAdapter);
-//        tabLayout.setupWithViewPager(viewPager);
-
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.addDrawerListener(toggle);
-//        toggle.syncState();
-
-
+     
+        floatingActionButton = findViewById(R.id.fab);
+  
     }
 
 

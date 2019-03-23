@@ -11,10 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.webServiceUtils.RetrofitUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,7 +34,7 @@ public class Scheduled extends Fragment {
 
     RecyclerView tripRecyclerView;
     TripRecyclerViewAdapter tripAdapter;
-    List<Trip> trips = null;
+    List<Trip> trips;
     RetrofitUtils retrofitUtils ;
     private static final String TRIP_STATUS = "scheduled";
 
@@ -46,23 +51,41 @@ public class Scheduled extends Fragment {
         tripRecyclerView.setHasFixedSize(true);
         retrofitUtils = new RetrofitUtils();
         //get user Id from shared preferences
-        retrofitUtils.getTripsUsingRetrofit("2", TRIP_STATUS, new Callback<List<Trip>>() {
+        retrofitUtils.getTripsUsingRetrofit(String.valueOf(AppConstants.CURRENT_USER_ID), TRIP_STATUS,new ValueEventListener() {
             @Override
-            public void onResponse(Call<List<Trip>> call, Response<List<Trip>> response) {
-                if (!response.isSuccessful()) {
-                    //Log.e(HTTP_CODE, String.valueOf(response.code()));
-                    return;
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                trips=new ArrayList<>();
+                if ((dataSnapshot.getValue()) != null) {
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        Trip temp = new Trip((String) child.child("tripId").getKey(),
+                                (String) child.child("tripName").getValue(),
+                                (String) child.child("startPointAddress").getValue(),
+                                (String) child.child("endPointAddress").getValue(),
+                                (double) child.child("startPointLatitude").getValue(),
+                                (double) child.child("startPointLongitude").getValue(),
+                                (double) child.child("endPointLatitude").getValue(),
+                                (double) child.child("endPointLongitude").getValue(),
+                                (String) child.child("date").getValue(),
+                                (String) child.child("time").getValue(),
+                                TRIP_STATUS,
+                                (String) child.child("type").getValue()
+                        );
+                        if (!trips.contains(temp))
+                            trips.add(temp);
+                    }
+                    tripAdapter = new TripRecyclerViewAdapter(trips);
+                    tripRecyclerView.setAdapter(tripAdapter);
                 }
-                trips = response.body();
-                tripAdapter = new TripRecyclerViewAdapter(trips, (TripRecyclerViewAdapter.CardClickedListener) getContext());
-                tripRecyclerView.setAdapter(tripAdapter);
             }
 
             @Override
-            public void onFailure(Call<List<Trip>> call, Throwable t) {
-                // Log.e(RETROFIT_ERROR, t.getMessage());
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Failed to read value
+                Toast.makeText(getActivity(), "Faild To Log In", Toast.LENGTH_LONG).show();
             }
         });
+
+
         deleteItem();
         return view;
     }
@@ -79,17 +102,7 @@ public class Scheduled extends Fragment {
                 final Trip deletedTrip = trips.get(position);
                 final int deletedPosition = position;
                 tripAdapter.deleteItem(deletedPosition);
-                retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(deletedTrip.getUserId()), new Callback<Boolean>() {
-                    @Override
-                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                        Log.i("RetrofitResponse",String.valueOf(response.code()));
-                    }
-
-                    @Override
-                    public void onFailure(Call<Boolean> call, Throwable t) {
-                        Log.i("RetrofitResponse",String.valueOf(t.getMessage()));
-                    }
-                });
+                retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(AppConstants.CURRENT_USER_ID), TRIP_STATUS,String.valueOf(deletedTrip.getTripId()));
 
             }
         };

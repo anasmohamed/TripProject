@@ -11,7 +11,7 @@ import com.one.direction.nabehha.data.database.dao.NoteDao;
 import com.one.direction.nabehha.data.database.dao.TripDao;
 import com.one.direction.nabehha.data.database.model.Trip;
 
-@Database(entities = {Trip.class}, version = 1, exportSchema = false)
+@Database(entities = {Trip.class}, version = 5, exportSchema = false)
 public abstract  class TripDataBase extends RoomDatabase {
     public abstract TripDao tripDao();
   //  public abstract NoteDao noteDao();

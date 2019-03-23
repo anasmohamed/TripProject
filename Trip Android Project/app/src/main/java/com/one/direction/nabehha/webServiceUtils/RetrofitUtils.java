@@ -1,7 +1,14 @@
 package com.one.direction.nabehha.webServiceUtils;
 
+import android.support.annotation.NonNull;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.one.direction.nabehha.data.database.model.Trip;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -15,6 +22,8 @@ public class RetrofitUtils {
 
     private Retrofit retrofit;
     private TripServiceApi tripServiceApi;
+    FirebaseDatabase mFirebaseDatabase=FirebaseDatabase.getInstance();
+    DatabaseReference mDatabaseReference;
     private List<Trip> trips;
 
     public RetrofitUtils() {
@@ -25,15 +34,13 @@ public class RetrofitUtils {
         tripServiceApi = retrofit.create(TripServiceApi.class);
     }
 
-    public void getTripsUsingRetrofit(String userId, String tripStatus, Callback<List<Trip>> mListCallback) {
-
-        Call<List<Trip>> call = tripServiceApi.getTrips(userId, tripStatus);
-        call.enqueue(mListCallback);
+    public void getTripsUsingRetrofit(String userId, final String tripStatus, ValueEventListener valueEventListener) {
+        mDatabaseReference = mFirebaseDatabase.getReference("Trips/" + userId + "/"+tripStatus);
+        mDatabaseReference.addValueEventListener(valueEventListener);
     }
 
-    public Call<Trip> deleteTripsUsingRetrofit(String tripId, Callback<Boolean> mListCallback ) {
-        Call<Trip> response = tripServiceApi.deleteTrips(tripId);
-        return response;
+    public boolean deleteTripsUsingRetrofit(String userId,String tripStatus,String tripId) {
+       return  mFirebaseDatabase.getReference("Trips/" + userId + "/"+tripStatus+"/"+tripId).removeValue().isSuccessful();
     }
 
 }

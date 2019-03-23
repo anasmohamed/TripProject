@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 public interface TripServiceApi {
 
     @GET("getTrips")
-    Call<List<Trip>> getTrips(@Query("userId") String userId , @Query("tripType") String tripStatus );
+    Call<List<Trip>> getTrips(@Query("userId") String userId , @Query("tripStatus") String tripStatus );
 
     @DELETE("deleteTrip")
     Call<Trip> deleteTrips(@Query("tripId") String tripId);

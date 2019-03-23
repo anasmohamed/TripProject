@@ -8,9 +8,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
-@Entity
+@Entity(primaryKeys = {"tripId"})
 public class Trip implements Parcelable {
 
     public static final Creator<Trip> CREATOR = new Creator<Trip>() {
@@ -37,22 +39,30 @@ public class Trip implements Parcelable {
     private Integer userId;
     @Ignore
     ArrayList<Note> notes;
-    @PrimaryKey
-    private Long tripId;
+   
     @NonNull
+    private String tripId;
+    @NonNull
+    @SerializedName("tripName")
     private String tripName;
     @NonNull
+    @Ignore
+    @SerializedName("tripImage")
+    private String tripImageUrl;
+    @NonNull
+    @SerializedName("startPoint")
     private String startPointAddress;
     @NonNull
+    @SerializedName("endPoint")
     private String endPointAddress;
     @NonNull
-    private long startPointLatitude;
+    private double startPointLatitude;
     @NonNull
-    private long startPointLongitude;
+    private double startPointLongitude;
     @NonNull
-    private long endPointLatitude;
+    private double endPointLatitude;
     @NonNull
-    private long endPointLongitude;
+    private double endPointLongitude;
     @NonNull
     private String date;
     @NonNull
@@ -62,24 +72,14 @@ public class Trip implements Parcelable {
     @NonNull
     private String type;
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    private byte[] tripImage;
+    private byte[] tripImagebyte;
 
     @Ignore
     public Trip() {
     }
 
-//    @NonNull
-//    public ArrayList<Note> getNotes() {
-//        return notes;
-//    }
-//
-//    public void setNotes(ArrayList<Note> notes) {
-//        this.notes = notes;
-//    }
-//
-
-    public Trip(Long tripId, @NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress,
-                long startPointLatitude, long startPointLongitude, long endPointLatitude, long endPointLongitude,
+    public Trip(String tripId, @NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress,
+                double startPointLatitude, double startPointLongitude, double endPointLatitude, double endPointLongitude,
                 @NonNull String date, @NonNull String time, String status, @NonNull String type) {
         this.tripId = tripId;
         this.tripName = tripName;
@@ -96,21 +96,17 @@ public class Trip implements Parcelable {
     }
 
     protected Trip(Parcel in) {
-        if (in.readByte() == 0) {
-            tripId = null;
-        } else {
-            tripId = in.readLong();
-        }
+        tripId = in.readString();
         tripName = in.readString();
         startPointAddress = in.readString();
         endPointAddress = in.readString();
-        startPointLatitude = in.readLong();
-        startPointLongitude = in.readLong();
-        endPointLatitude = in.readLong();
-        endPointLongitude = in.readLong();
+        startPointLatitude = in.readDouble();
+        startPointLongitude = in.readDouble();
+        endPointLatitude = in.readDouble();
+        endPointLongitude = in.readDouble();
         date = in.readString();
         time = in.readString();
-        tripImage = in.createByteArray();
+        tripImagebyte = in.createByteArray();
         status = in.readString();
         type = in.readString();
     }
@@ -141,11 +137,11 @@ public class Trip implements Parcelable {
         this.endPointAddress = endPointAddress;
     }
 
-    public Long getTripId() {
+    public String getTripId() {
         return tripId;
     }
 
-    public void setTripId(Long tripId) {
+    public void setTripId(String tripId) {
         this.tripId = tripId;
     }
 
@@ -181,45 +177,45 @@ public class Trip implements Parcelable {
         this.type = type;
     }
 
-    public long getStartPointLatitude() {
+    public double getStartPointLatitude() {
         return startPointLatitude;
     }
 
-    public void setStartPointLatitude(long startPointLatitude) {
+    public void setStartPointLatitude(double startPointLatitude) {
         this.startPointLatitude = startPointLatitude;
     }
 
-    public long getStartPointLongitude() {
+    public double getStartPointLongitude() {
         return startPointLongitude;
     }
 
-    public void setStartPointLongitude(long startPointLongitude) {
+    public void setStartPointLongitude(double startPointLongitude) {
         this.startPointLongitude = startPointLongitude;
     }
 
-    public long getEndPointLatitude() {
+    public double getEndPointLatitude() {
         return endPointLatitude;
     }
 
-    public void setEndPointLatitude(long endPointLatitude) {
+    public void setEndPointLatitude(double endPointLatitude) {
         this.endPointLatitude = endPointLatitude;
     }
 
-    public long getEndPointLongitude() {
+    public double getEndPointLongitude() {
         return endPointLongitude;
     }
 
-    public void setEndPointLongitude(long endPointLongitude) {
+    public void setEndPointLongitude(double endPointLongitude) {
         this.endPointLongitude = endPointLongitude;
     }
 
     @NonNull
-    public byte[] getTripImage() {
-        return tripImage;
+    public byte[] getTripImagebyte() {
+        return tripImagebyte;
     }
 
-    public void setTripImage(@NonNull byte[] tripImage) {
-        this.tripImage = tripImage;
+    public void setTripImagebyte(@NonNull byte[] tripImagebyte) {
+        this.tripImagebyte = tripImagebyte;
     }
 
     @Override
@@ -229,22 +225,17 @@ public class Trip implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        if (tripId == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeLong(tripId);
-        }
+        dest.writeString(tripId);
         dest.writeString(tripName);
         dest.writeString(startPointAddress);
         dest.writeString(endPointAddress);
-        dest.writeLong(startPointLatitude);
-        dest.writeLong(startPointLongitude);
-        dest.writeLong(endPointLatitude);
-        dest.writeLong(endPointLongitude);
+        dest.writeDouble(startPointLatitude);
+        dest.writeDouble(startPointLongitude);
+        dest.writeDouble(endPointLatitude);
+        dest.writeDouble(endPointLongitude);
         dest.writeString(date);
         dest.writeString(time);
-        dest.writeByteArray(tripImage);
+        dest.writeByteArray(tripImagebyte);
         dest.writeString(status);
         dest.writeString(type);
     }
