@@ -11,7 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.webServiceUtils.RetrofitUtils;
 
@@ -57,13 +61,13 @@ public class Scheduled extends Fragment {
                                 (String) child.child("tripName").getValue(),
                                 (String) child.child("startPointAddress").getValue(),
                                 (String) child.child("endPointAddress").getValue(),
-                                (Long) child.child("startPointLatitude").getValue(),
-                                (Long) child.child("startPointLongitude").getValue(),
-                                (Long) child.child("endPointLatitude").getValue(),
-                                (Long) child.child("endPointLongitude").getValue(),
+                                (double) child.child("startPointLatitude").getValue(),
+                                (double) child.child("startPointLongitude").getValue(),
+                                (double) child.child("endPointLatitude").getValue(),
+                                (double) child.child("endPointLongitude").getValue(),
                                 (String) child.child("date").getValue(),
                                 (String) child.child("time").getValue(),
-                                tripStatus,
+                                TRIP_STATUS,
                                 (String) child.child("type").getValue()
                         );
                         if (!trips.contains(temp))
@@ -77,9 +81,9 @@ public class Scheduled extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
-//                Toast.makeText(mContext, "Faild To Log In", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Faild To Log In", Toast.LENGTH_LONG).show();
             }
-        };
+        });
 
 
         deleteItem();
@@ -98,17 +102,7 @@ public class Scheduled extends Fragment {
                 final Trip deletedTrip = trips.get(position);
                 final int deletedPosition = position;
                 tripAdapter.deleteItem(deletedPosition);
-                retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(deletedTrip.getTripId()), new Callback<Boolean>() {
-                    @Override
-                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                        Log.i("RetrofitResponse",String.valueOf(response.code()));
-                    }
-
-                    @Override
-                    public void onFailure(Call<Boolean> call, Throwable t) {
-                        Log.i("RetrofitResponse",String.valueOf(t.getMessage()));
-                    }
-                });
+                retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(AppConstants.CURRENT_USER_ID), TRIP_STATUS,String.valueOf(deletedTrip.getTripId()));
 
             }
         };

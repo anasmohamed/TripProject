@@ -2,6 +2,9 @@ package com.one.direction.nabehha.webServiceUtils;
 
 import android.support.annotation.NonNull;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.one.direction.nabehha.data.database.model.Trip;
 
 import java.util.ArrayList;
@@ -31,16 +34,13 @@ public class RetrofitUtils {
         tripServiceApi = retrofit.create(TripServiceApi.class);
     }
 
-    public void getTripsUsingRetrofit(String userId, final String tripStatus, ValueEventListener mListCallback) {
+    public void getTripsUsingRetrofit(String userId, final String tripStatus, ValueEventListener valueEventListener) {
         mDatabaseReference = mFirebaseDatabase.getReference("Trips/" + userId + "/"+tripStatus);
         mDatabaseReference.addValueEventListener(valueEventListener);
     }
 
-    public Call<Trip> deleteTripsUsingRetrofit(String userId,String tripStatus,String tripId, Callback<Boolean> mListCallback ) {
-        mDatabaseReference = mFirebaseDatabase.getReference("Trips/" + userId + "/"+tripStatus+"/"+tripId).removeValue();
-        mDatabaseReference.addValueEventListener(valueEventListener);
-        Call<Trip> response = tripServiceApi.deleteTrips(tripId);
-        return response;
+    public boolean deleteTripsUsingRetrofit(String userId,String tripStatus,String tripId) {
+       return  mFirebaseDatabase.getReference("Trips/" + userId + "/"+tripStatus+"/"+tripId).removeValue().isSuccessful();
     }
 
 }

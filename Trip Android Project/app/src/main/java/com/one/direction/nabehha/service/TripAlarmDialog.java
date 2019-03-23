@@ -186,7 +186,7 @@ public class TripAlarmDialog extends Service {
 
     }
 
-    private void startFloatingWidgetService(Long tripId) {
+    private void startFloatingWidgetService(String tripId) {
         Intent intent = new Intent(this, FloatingWidgetService.class);
         intent.putExtra(DownloadImage.TRIP_ID, tripId);
         startService(intent);

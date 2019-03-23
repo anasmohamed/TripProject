@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -23,6 +24,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
+import com.one.direction.nabehha.AppConstants;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.R;
 import com.one.direction.nabehha.Reminder;
@@ -52,6 +54,10 @@ public class AddTripFragment extends Fragment {
     private AddTripViewModel mViewModel;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private String mTripName, mTripStartPoint, mTripEndPoint, mTripDate, mTripTime, mTripStatus, mTripType;
+    private double startPointLatitude;
+    private double startPointLongitude;
+    private double endPointLatitude;
+    private double endPointLongitude;
     private ArrayList<String> mTripNotes;
     private WorkManager mWorkManager;
 
@@ -88,7 +94,7 @@ public class AddTripFragment extends Fragment {
         AddTripModelFactory factory = InjectionUtils.provideAddTripViewModelFactory(getContext());
         mViewModel = ViewModelProviders.of(this, factory).get(AddTripViewModel.class);
 
-        if (!mAddTripFragmentBinding.tripNameET.getText().toString().isEmpty())
+
             mTripName = mAddTripFragmentBinding.tripNameET.getText().toString();
 
 //        bundle = this.getArguments();
@@ -100,11 +106,11 @@ public class AddTripFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if (!mAddTripFragmentBinding.textViewAddNote.getText().toString().isEmpty()) {
+
                     notesArrayList.add(mAddTripFragmentBinding.textViewAddNote.getText().toString());
                     mAddTripFragmentBinding.textViewAddNote.setText("");
                     notesAdapter.notifyDataSetChanged();
-                }
+
             }
         });
 
@@ -164,17 +170,9 @@ public class AddTripFragment extends Fragment {
             startPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
-                    // TODO: Get info about the selected place.
-                    Log.e(TAG, "Place: " + place.getAddress());
-                    Log.e(TAG, "Place: " + place.getId());
-                    Log.e(TAG, "Place: " + place.getWebsiteUri());
-                    Log.e(TAG, "Place: " + place.getName());
-                    Log.e(TAG, "Place: " + place.getAttributions());
-                    Log.e(TAG, "Place: " + place.getPhoneNumber());
-                    Log.e(TAG, "Place: " + place.getPriceLevel());
-                    Log.e(TAG, "Place: " + place.getRating());
-                    Log.e(TAG, "Place: " + place.getViewport());
-                    Log.e(TAG, "Place: " + place.getLatLng());
+                    mTripStartPoint= String.valueOf(place.getName());
+                    startPointLatitude=place.getLatLng().latitude;
+                    startPointLongitude=place.getLatLng().longitude;
                 }
 
                 @Override
@@ -190,17 +188,9 @@ public class AddTripFragment extends Fragment {
             endPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
-                    // TODO: Get info about the selected place.
-                    Log.e(TAG, "Place: " + place.getAddress());
-                    Log.e(TAG, "Place: " + place.getId());
-                    Log.e(TAG, "Place: " + place.getWebsiteUri());
-                    Log.e(TAG, "Place: " + place.getName());
-                    Log.e(TAG, "Place: " + place.getAttributions());
-                    Log.e(TAG, "Place: " + place.getPhoneNumber());
-                    Log.e(TAG, "Place: " + place.getPriceLevel());
-                    Log.e(TAG, "Place: " + place.getRating());
-                    Log.e(TAG, "Place: " + place.getViewport());
-                    Log.e(TAG, "Place: " + place.getLatLng());
+                    mTripEndPoint= String.valueOf(place.getName());
+                    endPointLatitude=place.getLatLng().latitude;
+                    endPointLongitude=place.getLatLng().longitude;
 
 
                 }
@@ -211,9 +201,7 @@ public class AddTripFragment extends Fragment {
                     Log.e(TAG, "An error occurred: " + status);
                 }
             });
-            if (!mAddTripFragmentBinding.tripDateET.getText().toString().isEmpty())
-                mTripDate = mAddTripFragmentBinding.tripDateET.getText().toString();
-            if (!mAddTripFragmentBinding.tripTimeET.getText().toString().isEmpty())
+
                 mTripTime = mAddTripFragmentBinding.tripTimeET.getText().toString();
             mTripType = mAddTripFragmentBinding.addTripTypeSpinner.getSelectedItem().toString();
 
@@ -222,20 +210,26 @@ public class AddTripFragment extends Fragment {
             mAddTripFragmentBinding.addTripBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    calendarTime = Calendar.getInstance();
+                    if (!mAddTripFragmentBinding.tripDateET.getText().toString().isEmpty()&&
+                        !mAddTripFragmentBinding.tripTimeET.getText().toString().isEmpty()&& !mAddTripFragmentBinding.tripNameET.getText().toString().isEmpty()&&(!mAddTripFragmentBinding.textViewAddNote.getText().toString().isEmpty()))
+                    { calendarTime = Calendar.getInstance();
                     Trip trip = new Trip();
                     trip.setType(mTripType);
                     trip.setStatus(mTripStatus);
                     trip.setTime(mTripTime);
                     trip.setDate(mTripDate);
                     //TODO Add LatLog attrib
-
                     trip.setEndPointAddress(mTripEndPoint);
                     trip.setStartPointAddress(mTripStartPoint);
                     calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
                     doWork(trip);
-                    mViewModel.AddTripToWebService(mTripName, "startpoint", "startpoint", mTripDate, mTripTime, mTripType, "", 1L, mTripStatus);
+                    mViewModel.AddTripToWebService(mTripName, mTripStartPoint, mTripEndPoint,startPointLatitude,startPointLongitude,endPointLatitude,endPointLongitude ,mTripDate, mTripTime, mTripType);
                     mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
+                    getActivity().finish();
+                }
+                else {
+                        Toast.makeText(getActivity(),"Please Fill All Required All Fields",Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 

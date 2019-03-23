@@ -29,7 +29,9 @@ public class SplashActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUsersFirebaseDatabaseDatabaseReference = FirebaseDatabase.getInstance();
         userDatabaseReference = mUsersFirebaseDatabaseDatabaseReference.getReference("Users");
-        AppConstants.CURRENT_USER_EMAIL = mAuth.getCurrentUser().getEmail();
+        if(mAuth.getCurrentUser()!=null) {
+            AppConstants.CURRENT_USER_EMAIL = mAuth.getCurrentUser().getEmail();
+        }
         //finish();
         countDownTimer = new CountDownTimer(1000, 1000) {
 
