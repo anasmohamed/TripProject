@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this , DisplayTrip.class);
         intent.putExtra(DISPLAY_ACTIVITY_INTENT, trip);
         startActivity(intent);
-        Toast.makeText(this,String.valueOf(trip.getTripName()),Toast.LENGTH_LONG).show();
     }
 
 }

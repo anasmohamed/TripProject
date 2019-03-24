@@ -7,7 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import  android.support.v7.widget.Toolbar;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,19 +24,20 @@ import androidx.work.WorkManager;
 public class DisplayTrip extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar toolbar;
-    RecyclerView notesRecyclerView ;
+    RecyclerView notesRecyclerView;
     ImageView tripImage;
     TextView tripStartTv;
     TextView tripEndTv;
     TextView dateTv;
     TextView timeTv;
-    Trip trip ;
+    Trip trip;
     FloatingActionButton floatingActionButton;
     Button startBtn;
     Button cancelBtn;
 
     NotesRecyclerViewAdapter notesRecyclerViewAdapter;
     public static final String DISPLAY_TRIP_OBJECT = "tripObject";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,21 +80,23 @@ public class DisplayTrip extends AppCompatActivity implements View.OnClickListen
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         notesRecyclerView.setLayoutManager(layoutManager);
         notesRecyclerView.setHasFixedSize(true);
-        notesRecyclerViewAdapter = new NotesRecyclerViewAdapter(trip.getNotes());
-        notesRecyclerView.setAdapter(notesRecyclerViewAdapter);
+        if (trip.getNotes() != null) {
+            notesRecyclerViewAdapter = new NotesRecyclerViewAdapter(trip.getNotes());
+            notesRecyclerView.setAdapter(notesRecyclerViewAdapter);
+        }
 
     }
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.editBtn){
+        if (v.getId() == R.id.editBtn) {
             Intent intent = new Intent(this, EditTrip.class);
             intent.putExtra(DISPLAY_TRIP_OBJECT, trip);
             startActivity(intent);
-        }else if(v.getId() == R.id.startBtn){
-            Toast.makeText(this,"started",Toast.LENGTH_LONG).show();
+        } else if (v.getId() == R.id.startBtn) {
+            Toast.makeText(this, "started", Toast.LENGTH_LONG).show();
             startTrip(trip);
-        }else if(v.getId() == R.id.cancelBtn){
+        } else if (v.getId() == R.id.cancelBtn) {
             cancelTrip(trip);
         }
     }
@@ -111,7 +114,7 @@ public class DisplayTrip extends AppCompatActivity implements View.OnClickListen
 
         WorkManager.getInstance().cancelAllWorkByTag(trip.getTripId());//TODO Cancel with id better i think
         startFloatingWidgetService(trip.getTripId());
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + trip.getEndPointLatitude()+","+trip.getEndPointLongitude());
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + trip.getEndPointLatitude() + "," + trip.getEndPointLongitude());
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);

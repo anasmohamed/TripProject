@@ -50,9 +50,28 @@
 
 package com.one.direction.nabehha.data.database.model;
 
-public class Note {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Note  implements Parcelable {
 
     private String Note;
+
+    protected Note(Parcel in) {
+        Note = in.readString();
+    }
+
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
 
     public String getNote() {
         return Note;
@@ -60,6 +79,16 @@ public class Note {
 
     public void setNote(String note) {
         Note = note;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Note);
     }
 }
 

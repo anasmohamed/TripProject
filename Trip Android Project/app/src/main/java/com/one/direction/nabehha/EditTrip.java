@@ -76,12 +76,12 @@ public class EditTrip extends AppCompatActivity {
         adapter = ArrayAdapter.createFromResource(this, R.array.select_state, android.R.layout.simple_spinner_item);
         activityEditTripBinding.listViewNotes.setAdapter(notesAdapter);
 
-
-        for (int i = 0; i < incomeTrip.getNotes().size(); i++) {
-            notesArrayList.add(incomeTrip.getNotes().get(i));
-            notesAdapter.notifyDataSetChanged();
+        if (incomeTrip.getNotes() != null) {
+            for (int i = 0; i < incomeTrip.getNotes().size(); i++) {
+                notesArrayList.add(incomeTrip.getNotes().get(i));
+                notesAdapter.notifyDataSetChanged();
+            }
         }
-
 
         activityEditTripBinding.addTripTypeSpinner.setAdapter(adapter);
         activityEditTripBinding.imageAddNote.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +149,7 @@ public class EditTrip extends AppCompatActivity {
                 finish();
             }
         });
-        PlaceAutocompleteFragment startPointFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.start_point_autocomplete_fragment);
+        final PlaceAutocompleteFragment startPointFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.start_point_autocomplete_fragment);
         if (startPointFragment != null) {
             startPointFragment.setHint("Start Point");
             startPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -167,7 +167,7 @@ public class EditTrip extends AppCompatActivity {
                 }
             });
         }
-        PlaceAutocompleteFragment endPointFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.end_point_autocomplete_fragment);
+        final PlaceAutocompleteFragment endPointFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.end_point_autocomplete_fragment);
         if (incomeTrip != null) {
             startPointFragment.setText(incomeTrip.getStartPointAddress());
             endPointFragment.setText(incomeTrip.getEndPointAddress());
@@ -178,7 +178,10 @@ public class EditTrip extends AppCompatActivity {
             mTripTime = incomeTrip.getTime();
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             activityEditTripBinding.addTripTypeSpinner.setSelection(adapter.getPosition(incomeTrip.getType()));
-
+            startPointLatitude = incomeTrip.getStartPointLatitude();
+            startPointLongitude = incomeTrip.getStartPointLongitude();
+            endPointLatitude = incomeTrip.getEndPointLatitude();
+            endPointLongitude = incomeTrip.getEndPointLongitude();
             activityEditTripBinding.tripNameET.setText(mTripName);
             activityEditTripBinding.tripDateET.setText(mTripDate);
             activityEditTripBinding.tripTimeET.setText(mTripTime);
@@ -193,7 +196,6 @@ public class EditTrip extends AppCompatActivity {
                     mTripEndPoint = String.valueOf(place.getName());
                     endPointLatitude = place.getLatLng().latitude;
                     endPointLongitude = place.getLatLng().longitude;
-
 
                 }
 
@@ -221,12 +223,12 @@ public class EditTrip extends AppCompatActivity {
                 ) {
                     calendarTime = Calendar.getInstance();
                     Trip trip = new Trip();
+                    trip.setTripId(incomeTrip.getTripId());
                     trip.setTripName(mTripName);
                     trip.setType(mTripType);
                     trip.setStatus(mTripStatus);
                     trip.setTime(mTripTime);
                     trip.setDate(mTripDate);
-                    trip.setStartPointLatitude(startPointLatitude);
                     trip.setStartPointLongitude(startPointLongitude);
                     trip.setEndPointLatitude(endPointLatitude);
                     trip.setEndPointLongitude(endPointLongitude);
@@ -249,10 +251,13 @@ public class EditTrip extends AppCompatActivity {
         Data.Builder builder = new Data.Builder();
         @SuppressLint("RestrictedApi") Data tripData = builder.put("trip", serializeToJson(trip)).build();
         Log.i("final time", getTimeInSeconds() + "");
+        mWorkManager.cancelAllWorkByTag(trip.getTripId());
+
         OneTimeWorkRequest myWork =
-                new OneTimeWorkRequest.Builder(Reminder.class).setInputData(tripData).addTag(trip.getTripName() + trip.getDate() + trip.getTime())
+                new OneTimeWorkRequest.Builder(Reminder.class).setInputData(tripData).addTag(trip.getTripId())
                         .setInitialDelay(getTimeInSeconds(), TimeUnit.SECONDS).// Use this when you want to add initial delay or schedule initial work to `OneTimeWorkRequest` e.g. setInitialDelay(2, TimeUnit.HOURS)
                         build();
+
         mWorkManager.enqueue(myWork);
         finish();
     }
