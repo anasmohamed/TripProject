@@ -96,7 +96,7 @@ public class TripAlarmDialog extends Service {
 
         //Add the view to the window
         mWindowManager.addView(mDialogBinder.getRoot(), params);
-        mDialogBinder.tripNameAlertTV.setText(trip.getTripName());
+//        mDialogBinder.tripNameAlertTV.setText(trip.getTripName());
         mDialogBinder.startReminderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
