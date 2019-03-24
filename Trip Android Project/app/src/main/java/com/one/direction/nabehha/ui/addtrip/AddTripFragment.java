@@ -85,7 +85,12 @@ public class AddTripFragment extends Fragment {
         notesAdapter = new NotesAdapter(notesArrayList, getActivity());
         mAddTripFragmentBinding.listViewNotes.setAdapter(notesAdapter);
 
-
+        mAddTripFragmentBinding.cancelTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+            }
+        });
         return view;
     }
 

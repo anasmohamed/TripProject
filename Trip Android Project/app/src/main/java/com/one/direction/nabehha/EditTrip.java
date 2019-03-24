@@ -128,6 +128,12 @@ public class EditTrip extends AppCompatActivity {
 
         });
 
+        activityEditTripBinding.cancelEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         PlaceAutocompleteFragment startPointFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.start_point_autocomplete_fragment);
         if (startPointFragment != null) {
             startPointFragment.setHint("Start Point");
@@ -150,6 +156,10 @@ public class EditTrip extends AppCompatActivity {
         if (incomeTrip != null) {
             startPointFragment.setText(incomeTrip.getStartPointAddress());
             endPointFragment.setText(incomeTrip.getEndPointAddress());
+            for(int i =0; i < incomeTrip.getNotes().size();i++) {
+                notesArrayList.add(incomeTrip.getNotes().get(i));
+                notesAdapter.notifyDataSetChanged();
+            }
             mTripName = incomeTrip.getTripName();
             mTripDate = incomeTrip.getDate();
             mTripTime = incomeTrip.getTime();
