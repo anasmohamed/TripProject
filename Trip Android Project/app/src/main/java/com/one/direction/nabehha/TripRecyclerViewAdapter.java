@@ -84,6 +84,7 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
         void bind(final int position) {
             tripName.setText(trips.get(position).getTripName());
             tripDate.setText(trips.get(position).getDate());
+
             byte[] imageByte = null;
             imageByte = trips.get(position).getTripImagebyte();
             if(imageByte!=null)

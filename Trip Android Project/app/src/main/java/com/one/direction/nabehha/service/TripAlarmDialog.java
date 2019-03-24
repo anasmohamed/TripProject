@@ -96,7 +96,7 @@ public class TripAlarmDialog extends Service {
 
         //Add the view to the window
         mWindowManager.addView(mDialogBinder.getRoot(), params);
-//        mDialogBinder.tripNameAlertTV.setText(trip.getType());
+        mDialogBinder.tripNameAlertTV.setText(trip.getTripName());
         mDialogBinder.startReminderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +129,7 @@ public class TripAlarmDialog extends Service {
     private void cancelTrip(Trip trip) {
         //        InjectionUtils.provideTripRepository(context).changeTripStatus(trip.getId(),"cancel");
         //TODO stop work manger alarm
-        WorkManager.getInstance().cancelAllWorkByTag(trip.getType());
+        WorkManager.getInstance().cancelAllWorkByTag(trip.getTripName() + trip.getDate() + trip.getTime());
 
     }
 

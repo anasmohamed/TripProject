@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -43,7 +44,7 @@ public class Scheduled extends Fragment {
     List<Trip> trips;
     RetrofitUtils retrofitUtils ;
     private static final String TRIP_STATUS = "scheduled";
-
+Button startBtn;
     public Scheduled() {
     }
 
@@ -57,6 +58,7 @@ public class Scheduled extends Fragment {
         tripRecyclerView.setHasFixedSize(true);
         retrofitUtils = new RetrofitUtils();
         //get user Id from shared preferences
+
         retrofitUtils.getTripsUsingRetrofit(String.valueOf(AppConstants.CURRENT_USER_ID), TRIP_STATUS,new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -80,7 +82,7 @@ public class Scheduled extends Fragment {
                         if (!trips.contains(temp))
                             trips.add(temp);
                     }
-                    tripAdapter = new TripRecyclerViewAdapter(trips,(TripRecyclerViewAdapter.CardClickedListener) getContext());
+                    tripAdapter = new TripRecyclerViewAdapter(trips,(TripRecyclerViewAdapter.CardClickedListener)getContext());
                     tripRecyclerView.setAdapter(tripAdapter);
                 }
             }
@@ -88,7 +90,7 @@ public class Scheduled extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
-                Toast.makeText(getActivity(), "Faild To Log In", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Failed To Log In", Toast.LENGTH_LONG).show();
             }
         });
 

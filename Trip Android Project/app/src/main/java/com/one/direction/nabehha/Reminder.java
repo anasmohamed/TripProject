@@ -31,7 +31,6 @@ public class Reminder extends Worker {
     public Result doWork() {
         trip = new Trip();
         trip = deserializeFromJson(getInputData().getString("trip"));
-        Log.i("trip Id in work manger", trip.getType() + "");
         TripAlarmDialog.startTripAlarm(context,trip);
         mp = MediaPlayer.create(context, R.raw.alarm);
         mp.start();
@@ -42,8 +41,7 @@ public class Reminder extends Worker {
 
     public Trip deserializeFromJson(String jsonString) {
         Gson gson = new Gson();
-        Trip myClass = gson.fromJson(jsonString, Trip.class);
-        return myClass;
+        return gson.fromJson(jsonString, Trip.class);
     }
 
 }

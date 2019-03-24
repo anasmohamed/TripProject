@@ -22,9 +22,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
-import com.one.direction.nabehha.AppConstants;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.R;
 import com.one.direction.nabehha.Reminder;
@@ -96,15 +94,7 @@ public class AddTripFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         AddTripModelFactory factory = InjectionUtils.provideAddTripViewModelFactory(getContext());
         mViewModel = ViewModelProviders.of(this, factory).get(AddTripViewModel.class);
-
-
-        mTripName = mAddTripFragmentBinding.tripNameET.getText().toString();
-
-//        bundle = this.getArguments();
-//        if (bundle != null) {
-//            mTripNotes = bundle.getStringArrayList("notes");
-//            Log.e("tripNotes", mTripNotes.size() + "");
-//        }
+    
         mAddTripFragmentBinding.imageAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -205,18 +195,26 @@ public class AddTripFragment extends Fragment {
                 }
             });
 
-            mTripTime = mAddTripFragmentBinding.tripTimeET.getText().toString();
-            mTripType = mAddTripFragmentBinding.addTripTypeSpinner.getSelectedItem().toString();
-
 
             // TODO: Use the ViewModel
             mAddTripFragmentBinding.addTripBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (!mAddTripFragmentBinding.tripDateET.getText().toString().isEmpty() &&
-                            !mAddTripFragmentBinding.tripTimeET.getText().toString().isEmpty() && !mAddTripFragmentBinding.tripNameET.getText().toString().isEmpty() && (!mAddTripFragmentBinding.textViewAddNote.getText().toString().isEmpty())) {
+                    mTripName = mAddTripFragmentBinding.tripNameET.getText().toString();
+                    mTripTime = mAddTripFragmentBinding.tripTimeET.getText().toString();
+                    mTripType = mAddTripFragmentBinding.addTripTypeSpinner.getSelectedItem().toString();
+                    mTripDate = mAddTripFragmentBinding.tripDateET.getText().toString();
+                    if (!mTripDate.isEmpty() &&
+                            !mTripName.isEmpty() &&
+                            !mTripName.isEmpty() &&
+                            !mTripStartPoint.isEmpty() && !mTripEndPoint.isEmpty()
+                            && !String.valueOf(endPointLatitude).isEmpty()
+                            && !String.valueOf(endPointLongitude).isEmpty() &&
+                            !String.valueOf(startPointLatitude).isEmpty()
+                            && !String.valueOf(startPointLongitude).isEmpty()
+                    ) {
                         calendarTime = Calendar.getInstance();
-                        Trip trip = new Trip();
+                        Trip trip = new Trip();                       
                         trip.setTripName(mTripName);
                         trip.setType(mTripType);
                         trip.setStatus(mTripStatus);
@@ -230,7 +228,7 @@ public class AddTripFragment extends Fragment {
                         trip.setStartPointAddress(mTripStartPoint);
                         trip.setNotes(notesArrayList);
                         calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
-                        doWork(trip);
+                        tripReminder(trip);
                         mViewModel.AddTripToWebService(trip,getActivity().getApplicationContext());
                         mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
                         getActivity().finish();
@@ -244,12 +242,12 @@ public class AddTripFragment extends Fragment {
     }
 
 
-    void doWork(Trip trip) {
+    void tripReminder(Trip trip) {
         Data.Builder builder = new Data.Builder();
         @SuppressLint("RestrictedApi") Data tripData = builder.put("trip", serializeToJson(trip)).build();
         Log.i("final time", getTimeInSeconds() + "");
         OneTimeWorkRequest myWork =
-                new OneTimeWorkRequest.Builder(Reminder.class).setInputData(tripData).addTag(trip.getType())
+                new OneTimeWorkRequest.Builder(Reminder.class).setInputData(tripData).addTag(trip.getTripName() + trip.getDate() + trip.getTime())
                         .setInitialDelay(getTimeInSeconds(), TimeUnit.SECONDS).// Use this when you want to add initial delay or schedule initial work to `OneTimeWorkRequest` e.g. setInitialDelay(2, TimeUnit.HOURS)
                         build();
         mWorkManager.enqueue(myWork);
@@ -259,15 +257,12 @@ public class AddTripFragment extends Fragment {
     long getTimeInSeconds() {
 
         long diffInMs = calendarTime.getTime().getTime() - c.getTime().getTime();
-
-        long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
-        return diffInSec;
+        return TimeUnit.MILLISECONDS.toSeconds(diffInMs);
     }
 
     public String serializeToJson(Trip trip) {
         Gson gson = new Gson();
-        String j = gson.toJson(trip);
-        return j;
+        return gson.toJson(trip);
     }
 
 
