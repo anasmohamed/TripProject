@@ -79,7 +79,7 @@ public class DisplayTrip extends AppCompatActivity implements View.OnClickListen
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         notesRecyclerView.setLayoutManager(layoutManager);
         notesRecyclerView.setHasFixedSize(true);
-        notesRecyclerViewAdapter = new NotesRecyclerViewAdapter();
+        notesRecyclerViewAdapter = new NotesRecyclerViewAdapter(trip.getNotes());
         notesRecyclerView.setAdapter(notesRecyclerViewAdapter);
 
     }

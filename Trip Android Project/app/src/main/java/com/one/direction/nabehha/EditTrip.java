@@ -41,10 +41,9 @@ public class EditTrip extends AppCompatActivity {
     ActivityEditTripBinding activityEditTripBinding;
     Trip trip;
     int datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute;
-    Calendar c;
     ArrayList<String> notesArrayList;
     NotesAdapter notesAdapter;
-    Calendar calendarTime;
+    Calendar calendarTime, calendar;
     Trip incomeTrip;
     private AddTripViewModel mViewModel;
     private String mTripName, mTripStartPoint, mTripEndPoint, mTripDate, mTripTime, mTripStatus, mTripType;
@@ -62,12 +61,28 @@ public class EditTrip extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activityEditTripBinding = DataBindingUtil.setContentView(this, R.layout.activity_edit_trip);
         mWorkManager = WorkManager.getInstance();
+
         AddTripModelFactory factory = InjectionUtils.provideAddTripViewModelFactory(this);
+
         mViewModel = ViewModelProviders.of(this, factory).get(AddTripViewModel.class);
+        if (calendar == null) {
+            calendar = Calendar.getInstance();
+        }
         if (!getIntent().getExtras().isEmpty()) {
             incomeTrip = getIntent().getParcelableExtra(DISPLAY_TRIP_OBJECT);
         }
-       adapter = ArrayAdapter.createFromResource(this, R.array.select_state, android.R.layout.simple_spinner_item);
+        notesArrayList = new ArrayList<>();
+        notesAdapter = new NotesAdapter(notesArrayList, this);
+        adapter = ArrayAdapter.createFromResource(this, R.array.select_state, android.R.layout.simple_spinner_item);
+        activityEditTripBinding.listViewNotes.setAdapter(notesAdapter);
+
+
+        for (int i = 0; i < incomeTrip.getNotes().size(); i++) {
+            notesArrayList.add(incomeTrip.getNotes().get(i));
+            notesAdapter.notifyDataSetChanged();
+        }
+
+
         activityEditTripBinding.addTripTypeSpinner.setAdapter(adapter);
         activityEditTripBinding.imageAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,9 +97,9 @@ public class EditTrip extends AppCompatActivity {
         activityEditTripBinding.tripTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                c = Calendar.getInstance();
-                mHour = c.get(Calendar.HOUR_OF_DAY);
-                mMinute = c.get(Calendar.MINUTE);
+                calendar = Calendar.getInstance();
+                mHour = calendar.get(Calendar.HOUR_OF_DAY);
+                mMinute = calendar.get(Calendar.MINUTE);
 
                 // Launch Time Picker Dialog
                 TimePickerDialog timePickerDialog = new TimePickerDialog(EditTrip.this,
@@ -106,10 +121,10 @@ public class EditTrip extends AppCompatActivity {
         activityEditTripBinding.tripDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+                calendar = Calendar.getInstance();
+                mYear = calendar.get(Calendar.YEAR);
+                mMonth = calendar.get(Calendar.MONTH);
+                mDay = calendar.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog datePickerDialog = new DatePickerDialog(EditTrip.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -156,15 +171,17 @@ public class EditTrip extends AppCompatActivity {
         if (incomeTrip != null) {
             startPointFragment.setText(incomeTrip.getStartPointAddress());
             endPointFragment.setText(incomeTrip.getEndPointAddress());
-            for(int i =0; i < incomeTrip.getNotes().size();i++) {
-                notesArrayList.add(incomeTrip.getNotes().get(i));
-                notesAdapter.notifyDataSetChanged();
-            }
+            mTripStartPoint = incomeTrip.getStartPointAddress();
+            mTripEndPoint = incomeTrip.getEndPointAddress();
             mTripName = incomeTrip.getTripName();
             mTripDate = incomeTrip.getDate();
             mTripTime = incomeTrip.getTime();
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             activityEditTripBinding.addTripTypeSpinner.setSelection(adapter.getPosition(incomeTrip.getType()));
+
+            activityEditTripBinding.tripNameET.setText(mTripName);
+            activityEditTripBinding.tripDateET.setText(mTripDate);
+            activityEditTripBinding.tripTimeET.setText(mTripTime);
 
 
         }
@@ -242,7 +259,7 @@ public class EditTrip extends AppCompatActivity {
 
     long getTimeInSeconds() {
 
-        long diffInMs = calendarTime.getTime().getTime() - c.getTime().getTime();
+        long diffInMs = calendarTime.getTime().getTime() - calendar.getTime().getTime();
         return TimeUnit.MILLISECONDS.toSeconds(diffInMs);
     }
 
