@@ -1,9 +1,14 @@
 package com.one.direction.nabehha;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -17,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.one.direction.nabehha.data.database.model.Trip;
+import com.one.direction.nabehha.service.DownloadImage;
 import com.one.direction.nabehha.webServiceUtils.RetrofitUtils;
 
 import java.util.ArrayList;
@@ -57,7 +63,7 @@ public class Scheduled extends Fragment {
                 trips=new ArrayList<>();
                 if ((dataSnapshot.getValue()) != null) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        Trip temp = new Trip((String) child.child("tripId").getKey(),
+                        Trip temp = new Trip((String) child.getKey(),
                                 (String) child.child("tripName").getValue(),
                                 (String) child.child("startPointAddress").getValue(),
                                 (String) child.child("endPointAddress").getValue(),
@@ -91,7 +97,7 @@ public class Scheduled extends Fragment {
     }
 
     private void deleteItem() {
-        ItemTouchHelper.SimpleCallback simpleItemTouchHelper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback simpleItemTouchHelper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
                 return false;
@@ -103,11 +109,40 @@ public class Scheduled extends Fragment {
                 final int deletedPosition = position;
                 tripAdapter.deleteItem(deletedPosition);
                 retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(AppConstants.CURRENT_USER_ID), TRIP_STATUS,String.valueOf(deletedTrip.getTripId()));
-
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchHelper);
         itemTouchHelper.attachToRecyclerView(tripRecyclerView);
+    }
+
+
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent!=null){
+                String tripId=intent.getStringExtra(DownloadImage.TRIP_ID);
+                byte[] image=intent.getByteArrayExtra(DownloadImage.TRIP_IMAGE_URL);
+                trips.get(trips.indexOf(new Trip(tripId))).setTripImagebyte(image);
+                tripAdapter.notifyDataSetChanged();
+            }
+        }
+    };
+
+
+    @Override
+    public void onResume ()
+    {
+        super.onResume();
+        //registerReceiver(broadcastReceiver,mIntent);
+        LocalBroadcastManager.getInstance(getActivity())
+                .registerReceiver(broadcastReceiver, new IntentFilter(AppConstants.RECEIVE_IMAGE_ACTION));
+    }
+
+    @Override
+    public void onPause () {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+        super.onPause();
     }
 
 }

@@ -1,6 +1,8 @@
 package com.one.direction.nabehha;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.one.direction.nabehha.data.database.model.Trip;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,9 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
 
     public interface CardClickedListener {
         void onCardClicked(Trip trip);
+        void onStartClicked();
     }
+
     public TripRecyclerViewAdapter(List<Trip> trips, CardClickedListener cardClickedListener) {
         this.trips = trips;
         this.cardClickedListener = cardClickedListener;
@@ -75,16 +80,23 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
             tripDate = itemView.findViewById(R.id.trip_card_date);
             itemView.setOnClickListener(this);
         }
+
         void bind(final int position) {
             tripName.setText(trips.get(position).getTripName());
             tripDate.setText(trips.get(position).getDate());
-//            Glide.with(context)
-//                    .load(Uri.parse("https://i.pinimg.com/originals/08/e2/dd/08e2ddabaa128e1fa3ca336d40f2fe62.jpg"))
-//                    .into(tripImage);
+            byte[] imageByte = null;
+            imageByte = trips.get(position).getTripImagebyte();
+            if(imageByte!=null)
+            tripImage.setImageBitmap(BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length));
         }
+
         @Override
         public void onClick(View v) {
-            cardClickedListener.onCardClicked(trips.get(getAdapterPosition()));
+            if(v.getId() == R.id.startBtn){
+                cardClickedListener.onStartClicked();
+            }else {
+                cardClickedListener.onCardClicked(trips.get(getAdapterPosition()));
+            }
         }
     }
 }

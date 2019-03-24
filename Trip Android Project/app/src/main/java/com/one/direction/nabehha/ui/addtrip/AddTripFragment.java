@@ -26,8 +26,10 @@ import com.google.gson.Gson;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.R;
 import com.one.direction.nabehha.Reminder;
+import com.one.direction.nabehha.Utilities;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.databinding.AddTripFragmentBinding;
+import com.one.direction.nabehha.service.DownloadImage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -91,8 +93,7 @@ public class AddTripFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         AddTripModelFactory factory = InjectionUtils.provideAddTripViewModelFactory(getContext());
         mViewModel = ViewModelProviders.of(this, factory).get(AddTripViewModel.class);
-
-
+    
         mAddTripFragmentBinding.imageAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,18 +213,21 @@ public class AddTripFragment extends Fragment {
                             && !String.valueOf(startPointLongitude).isEmpty()
                     ) {
                         calendarTime = Calendar.getInstance();
-                        Trip trip = new Trip();
+                        Trip trip = new Trip();                       
+                        trip.setTripName(mTripName);
                         trip.setType(mTripType);
                         trip.setStatus(mTripStatus);
                         trip.setTime(mTripTime);
                         trip.setDate(mTripDate);
-                        trip.setTripName(mTripName);
-                        //TODO Add LatLog attrib
+                        trip.setStartPointLatitude(startPointLatitude);
+                        trip.setStartPointLongitude(startPointLongitude);
+                        trip.setEndPointLatitude(endPointLatitude);
+                        trip.setEndPointLongitude(endPointLongitude);
                         trip.setEndPointAddress(mTripEndPoint);
                         trip.setStartPointAddress(mTripStartPoint);
                         calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
-                        doWork(trip);
-                        mViewModel.AddTripToWebService(mTripName, mTripStartPoint, mTripEndPoint, startPointLatitude, startPointLongitude, endPointLatitude, endPointLongitude, mTripDate, mTripTime, mTripType);
+                        tripReminder(trip);
+                        mViewModel.AddTripToWebService(trip,getActivity().getApplicationContext());
                         mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
                         getActivity().finish();
                     } else {
@@ -236,7 +240,7 @@ public class AddTripFragment extends Fragment {
     }
 
 
-    void doWork(Trip trip) {
+    void tripReminder(Trip trip) {
         Data.Builder builder = new Data.Builder();
         @SuppressLint("RestrictedApi") Data tripData = builder.put("trip", serializeToJson(trip)).build();
         Log.i("final time", getTimeInSeconds() + "");
