@@ -17,6 +17,9 @@
     <string name="add_time">Add Time</string>
     <string name="date">Date</string>
     <string name="Add_Date">add_date</string>
+    <string name="Edit_Date">Edit_date</string>
+    <string name="Edit_Trip">Edit Trip</string>
+
     <string name="cancel">Cancel</string>
     <string name="enter_your_date">Enter date</string>
     <string name="add_trip">Add</string>
