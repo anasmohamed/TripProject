@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.databinding.PastBinding;
 import com.one.direction.nabehha.webServiceUtils.RetrofitUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class Past extends Fragment {
     List<Trip> trips = null;
     private static final String TRIP_STATUS = "past";
     PastBinding mPastBinding;
-
+    RetrofitUtils retrofitUtils;
     public Past() {
     }
 
@@ -45,7 +47,7 @@ public class Past extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
         tripRecyclerView.setLayoutManager(layoutManager);
         tripRecyclerView.setHasFixedSize(true);
-        RetrofitUtils retrofitUtils = new RetrofitUtils();
+         retrofitUtils = new RetrofitUtils();
         retrofitUtils.getTripsUsingRetrofit(AppConstants.CURRENT_USER_ID, TRIP_STATUS, new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -56,10 +58,10 @@ public class Past extends Fragment {
                                 (String) child.child("tripName").getValue(),
                                 (String) child.child("startPointAddress").getValue(),
                                 (String) child.child("endPointAddress").getValue(),
-                                (Long) child.child("startPointLatitude").getValue(),
-                                (Long) child.child("startPointLongitude").getValue(),
-                                (Long) child.child("endPointLatitude").getValue(),
-                                (Long) child.child("endPointLongitude").getValue(),
+                                (double) child.child("startPointLatitude").getValue(),
+                                (double) child.child("startPointLongitude").getValue(),
+                                (double) child.child("endPointLatitude").getValue(),
+                                (double) child.child("endPointLongitude").getValue(),
                                 (String) child.child("date").getValue(),
                                 (String) child.child("time").getValue(),
                                 TRIP_STATUS,
@@ -68,8 +70,13 @@ public class Past extends Fragment {
                         if (!trips.contains(temp))
                             trips.add(temp);
                     }
-                    tripAdapter = new TripRecyclerViewAdapter(trips);
+                    tripAdapter = new TripRecyclerViewAdapter(trips,(TripRecyclerViewAdapter.CardClickedListener) getContext());
                     tripRecyclerView.setAdapter(tripAdapter);
+                    Picasso.get()
+                            .load(Utilities.getGoogleMapImageForTrips(trips))
+                            .placeholder(R.drawable.ic_close_black_24dp)
+                            .error(R.drawable.ic_close_white_24dp)
+                            .into(allTripGoogleImageImg);
                 }
             }
 
@@ -79,12 +86,8 @@ public class Past extends Fragment {
 //                Toast.makeText(mContext, "Faild To Log In", Toast.LENGTH_LONG).show();
             }
         });
-//        Picasso.get()
-//                .load(Utilities.getGoogleMapImageForTrips(trips))
-//                .placeholder(R.drawable.ic_close_black_24dp)
-//                .error(R.drawable.ic_close_white_24dp)
-//                .into(allTripGoogleImageImg);
 
+        deleteItem();
         return view;
 
 //        mPastBinding = DataBindingUtil.inflate(inflater, R.layout.past, container, false);
@@ -97,5 +100,25 @@ public class Past extends Fragment {
 //
 
 //        return mPastBinding.getRoot();
+    }
+
+    private void deleteItem() {
+        ItemTouchHelper.SimpleCallback simpleItemTouchHelper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                int position = viewHolder.getAdapterPosition();
+                final Trip deletedTrip = trips.get(position);
+                final int deletedPosition = position;
+                tripAdapter.deleteItem(deletedPosition);
+                retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(AppConstants.CURRENT_USER_ID), TRIP_STATUS,String.valueOf(deletedTrip.getTripId()));
+
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(tripRecyclerView);
     }
 }

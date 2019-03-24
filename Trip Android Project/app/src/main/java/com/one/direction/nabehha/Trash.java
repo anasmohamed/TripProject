@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class Trash extends Fragment {
     RecyclerView tripRecyclerView;
     TripRecyclerViewAdapter tripAdapter;
     List<Trip> trips = null;
+    RetrofitUtils retrofitUtils;
     private static final String TRIP_STATUS = "trash";
     public Trash() {
     }
@@ -40,7 +42,7 @@ public class Trash extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
         tripRecyclerView.setLayoutManager(layoutManager);
         tripRecyclerView.setHasFixedSize(true);
-        RetrofitUtils retrofitUtils = new RetrofitUtils();
+         retrofitUtils = new RetrofitUtils();
         retrofitUtils.getTripsUsingRetrofit(AppConstants.CURRENT_USER_ID, TRIP_STATUS,new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -51,10 +53,10 @@ public class Trash extends Fragment {
                                 (String) child.child("tripName").getValue(),
                                 (String) child.child("startPointAddress").getValue(),
                                 (String) child.child("endPointAddress").getValue(),
-                                (Long) child.child("startPointLatitude").getValue(),
-                                (Long) child.child("startPointLongitude").getValue(),
-                                (Long) child.child("endPointLatitude").getValue(),
-                                (Long) child.child("endPointLongitude").getValue(),
+                                (double) child.child("startPointLatitude").getValue(),
+                                (double) child.child("startPointLongitude").getValue(),
+                                (double) child.child("endPointLatitude").getValue(),
+                                (double) child.child("endPointLongitude").getValue(),
                                 (String) child.child("date").getValue(),
                                 (String) child.child("time").getValue(),
                                 TRIP_STATUS,
@@ -63,7 +65,7 @@ public class Trash extends Fragment {
                         if (!trips.contains(temp))
                             trips.add(temp);
                     }
-                    tripAdapter = new TripRecyclerViewAdapter(trips);
+                    tripAdapter = new TripRecyclerViewAdapter(trips,(TripRecyclerViewAdapter.CardClickedListener) getContext());
                     tripRecyclerView.setAdapter(tripAdapter);
                 }
             }
@@ -74,7 +76,26 @@ public class Trash extends Fragment {
 //                Toast.makeText(mContext, "Faild To Log In", Toast.LENGTH_LONG).show();
             }
         });
+        deleteItem();
         return view;
     }
+    private void deleteItem() {
+        ItemTouchHelper.SimpleCallback simpleItemTouchHelper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                int position = viewHolder.getAdapterPosition();
+                final Trip deletedTrip = trips.get(position);
+                final int deletedPosition = position;
+                tripAdapter.deleteItem(deletedPosition);
+                retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(AppConstants.CURRENT_USER_ID), TRIP_STATUS,String.valueOf(deletedTrip.getTripId()));
 
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(tripRecyclerView);
+    }
 }

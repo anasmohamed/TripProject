@@ -16,7 +16,7 @@ public class Utilities {
         for (int i = 1, size = tripArrayList.size(); i <= size; i++) {
             Trip trip = tripArrayList.get(i - 1);
             String hexaColor = Integer.toHexString((16777215 / size) * i);
-            urlString.
+            urlString.append("size=400x200").
                     append("&markers=color:0x").append(hexaColor).append("|")
                     .append(trip.getStartPointLatitude()).append(",").append(trip.getStartPointLongitude())
                     .append("&markers=color:0x").append(hexaColor).append("|").append(trip.getEndPointLatitude())
@@ -33,7 +33,7 @@ public class Utilities {
         StringBuilder urlString = new StringBuilder(BASE_GOOGLE_STATIC_MAP_URL);
         //random color : this 16777216 = 0xffffff +1
         String hexaColor = Integer.toHexString(new Random().nextInt(16777216));
-        urlString.
+        urlString.append("size=400x200").
                 append("&markers=color:0x").append(hexaColor).append("|")
                 .append(trip.getStartPointLatitude()).append(",").append(trip.getStartPointLongitude())
                 .append("&markers=color:0x").append(hexaColor).append("|").append(trip.getEndPointLatitude())

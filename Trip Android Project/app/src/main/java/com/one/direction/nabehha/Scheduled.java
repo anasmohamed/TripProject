@@ -73,7 +73,7 @@ public class Scheduled extends Fragment {
                         if (!trips.contains(temp))
                             trips.add(temp);
                     }
-                    tripAdapter = new TripRecyclerViewAdapter(trips);
+                    tripAdapter = new TripRecyclerViewAdapter(trips,(TripRecyclerViewAdapter.CardClickedListener) getContext());
                     tripRecyclerView.setAdapter(tripAdapter);
                 }
             }
