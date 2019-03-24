@@ -15,13 +15,13 @@ import java.util.List;
 
 public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecyclerViewAdapter.NotesViewHolder> {
 
-    List<Note> notes = new ArrayList();
-    Note recentlyDeletedNote;
+    List<String> notes = new ArrayList();
+    String recentlyDeletedNote;
     int recentlyDeletedNotePosition;
 
-//    public NotesRecyclerViewAdapter(List<NoteModel> notes) {
-//        this.notes = notes;
-//    }
+    public NotesRecyclerViewAdapter(List<String> notes) {
+        this.notes = notes;
+    }
 
     @NonNull
     @Override
@@ -40,7 +40,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
     @Override
     public int getItemCount() {
         //return notes.size();
-        return 6;
+        return notes.size();
     }
 
     public void deleteItem(int position) {
@@ -62,11 +62,12 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
 
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);
-            noteTv= itemView.findViewById(R.id.note_tv);
+            noteTv = itemView.findViewById(R.id.note_tv);
         }
+
         void bind(int position) {
-            // noteTv.setText(notes.get(position).getNote());
-            noteTv.setText("This is a note!");
+             noteTv.setText(notes.get(position));
+//            noteTv.setText("This is a note!");
         }
     }
 }

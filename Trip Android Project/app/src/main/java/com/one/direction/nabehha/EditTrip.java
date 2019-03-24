@@ -62,12 +62,24 @@ public class EditTrip extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activityEditTripBinding = DataBindingUtil.setContentView(this, R.layout.activity_edit_trip);
         mWorkManager = WorkManager.getInstance();
+
         AddTripModelFactory factory = InjectionUtils.provideAddTripViewModelFactory(this);
+
         mViewModel = ViewModelProviders.of(this, factory).get(AddTripViewModel.class);
         if (!getIntent().getExtras().isEmpty()) {
             incomeTrip = getIntent().getParcelableExtra(DISPLAY_TRIP_OBJECT);
         }
-       adapter = ArrayAdapter.createFromResource(this, R.array.select_state, android.R.layout.simple_spinner_item);
+        notesArrayList = new ArrayList<>();
+        notesAdapter = new NotesAdapter(notesArrayList, this);
+        adapter = ArrayAdapter.createFromResource(this, R.array.select_state, android.R.layout.simple_spinner_item);
+        if (incomeTrip != null){
+
+        for (int i = 0; i < incomeTrip.getNotes().size(); i++) {
+            notesArrayList.add(incomeTrip.getNotes().get(i));
+            notesAdapter.notifyDataSetChanged();
+        }}
+
+
         activityEditTripBinding.addTripTypeSpinner.setAdapter(adapter);
         activityEditTripBinding.imageAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,10 +168,7 @@ public class EditTrip extends AppCompatActivity {
         if (incomeTrip != null) {
             startPointFragment.setText(incomeTrip.getStartPointAddress());
             endPointFragment.setText(incomeTrip.getEndPointAddress());
-            for(int i =0; i < incomeTrip.getNotes().size();i++) {
-                notesArrayList.add(incomeTrip.getNotes().get(i));
-                notesAdapter.notifyDataSetChanged();
-            }
+
             mTripName = incomeTrip.getTripName();
             mTripDate = incomeTrip.getDate();
             mTripTime = incomeTrip.getTime();
