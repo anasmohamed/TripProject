@@ -177,7 +177,7 @@ public class TripAlarmDialog extends Service {
 //        InjectionUtils.provideTripRepository(context).changeTripStatus(trip.getId(),"past");
         //TODO remove alarm for this trip
 
-        WorkManager.getInstance().cancelAllWorkByTag(trip.getType());//TODO Cancel with id better i think
+        WorkManager.getInstance().cancelAllWorkByTag(trip.getTripId());//TODO Cancel with id better i think
         startFloatingWidgetService(trip.getTripId());
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + trip.getEndPointLatitude()+","+trip.getEndPointLongitude());
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);

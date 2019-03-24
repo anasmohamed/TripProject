@@ -28,8 +28,10 @@ import com.one.direction.nabehha.AppConstants;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.R;
 import com.one.direction.nabehha.Reminder;
+import com.one.direction.nabehha.Utilities;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.databinding.AddTripFragmentBinding;
+import com.one.direction.nabehha.service.DownloadImage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -95,7 +97,7 @@ public class AddTripFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this, factory).get(AddTripViewModel.class);
 
 
-            mTripName = mAddTripFragmentBinding.tripNameET.getText().toString();
+        mTripName = mAddTripFragmentBinding.tripNameET.getText().toString();
 
 //        bundle = this.getArguments();
 //        if (bundle != null) {
@@ -107,9 +109,9 @@ public class AddTripFragment extends Fragment {
             public void onClick(View view) {
 
 
-                    notesArrayList.add(mAddTripFragmentBinding.textViewAddNote.getText().toString());
-                    mAddTripFragmentBinding.textViewAddNote.setText("");
-                    notesAdapter.notifyDataSetChanged();
+                notesArrayList.add(mAddTripFragmentBinding.textViewAddNote.getText().toString());
+                mAddTripFragmentBinding.textViewAddNote.setText("");
+                notesAdapter.notifyDataSetChanged();
 
             }
         });
@@ -170,9 +172,9 @@ public class AddTripFragment extends Fragment {
             startPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
-                    mTripStartPoint= String.valueOf(place.getName());
-                    startPointLatitude=place.getLatLng().latitude;
-                    startPointLongitude=place.getLatLng().longitude;
+                    mTripStartPoint = String.valueOf(place.getName());
+                    startPointLatitude = place.getLatLng().latitude;
+                    startPointLongitude = place.getLatLng().longitude;
                 }
 
                 @Override
@@ -188,9 +190,9 @@ public class AddTripFragment extends Fragment {
             endPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
-                    mTripEndPoint= String.valueOf(place.getName());
-                    endPointLatitude=place.getLatLng().latitude;
-                    endPointLongitude=place.getLatLng().longitude;
+                    mTripEndPoint = String.valueOf(place.getName());
+                    endPointLatitude = place.getLatLng().latitude;
+                    endPointLongitude = place.getLatLng().longitude;
 
 
                 }
@@ -202,7 +204,7 @@ public class AddTripFragment extends Fragment {
                 }
             });
 
-                mTripTime = mAddTripFragmentBinding.tripTimeET.getText().toString();
+            mTripTime = mAddTripFragmentBinding.tripTimeET.getText().toString();
             mTripType = mAddTripFragmentBinding.addTripTypeSpinner.getSelectedItem().toString();
 
 
@@ -210,25 +212,28 @@ public class AddTripFragment extends Fragment {
             mAddTripFragmentBinding.addTripBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (!mAddTripFragmentBinding.tripDateET.getText().toString().isEmpty()&&
-                        !mAddTripFragmentBinding.tripTimeET.getText().toString().isEmpty()&& !mAddTripFragmentBinding.tripNameET.getText().toString().isEmpty()&&(!mAddTripFragmentBinding.textViewAddNote.getText().toString().isEmpty()))
-                    { calendarTime = Calendar.getInstance();
-                    Trip trip = new Trip();
-                    trip.setType(mTripType);
-                    trip.setStatus(mTripStatus);
-                    trip.setTime(mTripTime);
-                    trip.setDate(mTripDate);
-                    //TODO Add LatLog attrib
-                    trip.setEndPointAddress(mTripEndPoint);
-                    trip.setStartPointAddress(mTripStartPoint);
-                    calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
-                    doWork(trip);
-                    mViewModel.AddTripToWebService(mTripName, mTripStartPoint, mTripEndPoint,startPointLatitude,startPointLongitude,endPointLatitude,endPointLongitude ,mTripDate, mTripTime, mTripType);
-                    mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
-                    getActivity().finish();
-                }
-                else {
-                        Toast.makeText(getActivity(),"Please Fill All Required All Fields",Toast.LENGTH_LONG).show();
+                    if (!mAddTripFragmentBinding.tripDateET.getText().toString().isEmpty() &&
+                            !mAddTripFragmentBinding.tripTimeET.getText().toString().isEmpty() && !mAddTripFragmentBinding.tripNameET.getText().toString().isEmpty() && (!mAddTripFragmentBinding.textViewAddNote.getText().toString().isEmpty())) {
+                        calendarTime = Calendar.getInstance();
+                        Trip trip = new Trip();
+                        trip.setTripName(mTripName);
+                        trip.setType(mTripType);
+                        trip.setStatus(mTripStatus);
+                        trip.setTime(mTripTime);
+                        trip.setDate(mTripDate);
+                        trip.setStartPointLatitude(startPointLatitude);
+                        trip.setStartPointLongitude(startPointLongitude);
+                        trip.setEndPointLatitude(endPointLatitude);
+                        trip.setEndPointLongitude(endPointLongitude);
+                        trip.setEndPointAddress(mTripEndPoint);
+                        trip.setStartPointAddress(mTripStartPoint);
+                        calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
+                        doWork(trip);
+                        mViewModel.AddTripToWebService(trip,getActivity().getApplicationContext());
+                        mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
+                        getActivity().finish();
+                    } else {
+                        Toast.makeText(getActivity(), "Please Fill All Required All Fields", Toast.LENGTH_LONG).show();
                     }
                 }
             });

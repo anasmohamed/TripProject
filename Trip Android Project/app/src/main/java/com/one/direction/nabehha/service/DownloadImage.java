@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.one.direction.nabehha.AppConstants;
 import com.one.direction.nabehha.InjectionUtils;
@@ -30,9 +31,9 @@ public class DownloadImage extends IntentService {
         super("DownloadImage");
     }
 
-    public static void startDownloadAndSaveInDb(Context context, byte[] image, Long tripId) {
+    public static void startDownloadAndSaveInDb(Context context, String imageUrl, String tripId) {
         Intent intent = new Intent(context, DownloadImage.class);
-        intent.putExtra(TRIP_IMAGE_URL, image);
+        intent.putExtra(TRIP_IMAGE_URL, imageUrl);
         intent.putExtra(TRIP_ID, tripId);
         context.startService(intent);
     }
@@ -41,17 +42,19 @@ public class DownloadImage extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String url = intent.getStringExtra(TRIP_IMAGE_URL);
-            final Long tripId = intent.getLongExtra(TRIP_ID, -1);
+            final String tripId = intent.getStringExtra(TRIP_ID);
             downloadImageAndSaveToDb(url, tripId);
 
         }
     }
 
-    private void downloadImageAndSaveToDb(String url, Long tripId) {
+    private void downloadImageAndSaveToDb(String url, String tripId) {
+        Log.e("DownloADServices"," method");
         byte[] imageByte;
         imageByte = getbyteArrayFromURL(url);
         InjectionUtils.provideTripRepository(this).saveTripImage(tripId, imageByte);
         if (imageByte != null) {
+            Log.e("DownloADServices"," get image");
             Intent in = new Intent();
             in.putExtra(TRIP_IMAGE_URL, imageByte);
             in.putExtra(TRIP_ID, tripId);

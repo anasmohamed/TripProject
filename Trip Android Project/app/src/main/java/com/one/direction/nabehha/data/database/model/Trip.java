@@ -77,6 +77,12 @@ public class Trip implements Parcelable {
     @Ignore
     public Trip() {
     }
+    @Ignore
+    public Trip(@NonNull String tripId) {
+        this.tripId = tripId;
+    }
+
+
 
     public Trip(String tripId, @NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress,
                 double startPointLatitude, double startPointLongitude, double endPointLatitude, double endPointLongitude,
@@ -238,5 +244,10 @@ public class Trip implements Parcelable {
         dest.writeByteArray(tripImagebyte);
         dest.writeString(status);
         dest.writeString(type);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.tripId.equals(((Trip)obj).tripId);
     }
 }
