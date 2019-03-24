@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -54,6 +55,7 @@ public class EditTrip extends AppCompatActivity {
     private int mYear, mMonth, mDay, mHour, mMinute;
     private WorkManager mWorkManager;
     public static final String DISPLAY_TRIP_OBJECT = "tripObject";
+    ArrayAdapter<CharSequence> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class EditTrip extends AppCompatActivity {
         if (!getIntent().getExtras().isEmpty()) {
             incomeTrip = getIntent().getParcelableExtra(DISPLAY_TRIP_OBJECT);
         }
+       adapter = ArrayAdapter.createFromResource(this, R.array.select_state, android.R.layout.simple_spinner_item);
+        activityEditTripBinding.addTripTypeSpinner.setAdapter(adapter);
         activityEditTripBinding.imageAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,12 +127,14 @@ public class EditTrip extends AppCompatActivity {
             }
 
         });
+
         PlaceAutocompleteFragment startPointFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.start_point_autocomplete_fragment);
         if (startPointFragment != null) {
             startPointFragment.setHint("Start Point");
             startPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
+
                     mTripStartPoint = String.valueOf(place.getName());
                     startPointLatitude = place.getLatLng().latitude;
                     startPointLongitude = place.getLatLng().longitude;
@@ -141,6 +147,17 @@ public class EditTrip extends AppCompatActivity {
             });
         }
         PlaceAutocompleteFragment endPointFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.end_point_autocomplete_fragment);
+        if (incomeTrip != null) {
+            startPointFragment.setText(incomeTrip.getStartPointAddress());
+            endPointFragment.setText(incomeTrip.getEndPointAddress());
+            mTripName = incomeTrip.getTripName();
+            mTripDate = incomeTrip.getDate();
+            mTripTime = incomeTrip.getTime();
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            activityEditTripBinding.addTripTypeSpinner.setSelection(adapter.getPosition(incomeTrip.getType()));
+
+
+        }
         if (endPointFragment != null) {
             endPointFragment.setHint("Destination");
             endPointFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
