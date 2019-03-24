@@ -47,7 +47,7 @@ public class AddTripFragment extends Fragment {
     AddTripFragmentBinding mAddTripFragmentBinding;
     Fragment fragment = new AddNoteFragment();
     Bundle bundle;
-    Calendar c;
+    Calendar calendar;
     ArrayList<String> notesArrayList;
     NotesAdapter notesAdapter;
     Calendar calendarTime;
@@ -116,9 +116,9 @@ public class AddTripFragment extends Fragment {
         mAddTripFragmentBinding.tripTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                c = Calendar.getInstance();
-                mHour = c.get(Calendar.HOUR_OF_DAY);
-                mMinute = c.get(Calendar.MINUTE);
+                calendar = Calendar.getInstance();
+                mHour = calendar.get(Calendar.HOUR_OF_DAY);
+                mMinute = calendar.get(Calendar.MINUTE);
 
                 // Launch Time Picker Dialog
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
@@ -140,10 +140,10 @@ public class AddTripFragment extends Fragment {
         mAddTripFragmentBinding.tripDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+                calendar= Calendar.getInstance();
+                mYear = calendar.get(Calendar.YEAR);
+                mMonth = calendar.get(Calendar.MONTH);
+                mDay = calendar.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -152,7 +152,6 @@ public class AddTripFragment extends Fragment {
                                 mAddTripFragmentBinding.tripDateET.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                                 datePickerMonth = monthOfYear;
                                 datePickerDay = dayOfMonth;
-
                                 datePickerYear = year;
                             }
                         }, mYear, mMonth, mDay);
@@ -262,7 +261,7 @@ public class AddTripFragment extends Fragment {
 
     long getTimeInSeconds() {
 
-        long diffInMs = calendarTime.getTime().getTime() - c.getTime().getTime();
+        long diffInMs = calendarTime.getTime().getTime() - calendar.getTime().getTime();
         return TimeUnit.MILLISECONDS.toSeconds(diffInMs);
     }
 
