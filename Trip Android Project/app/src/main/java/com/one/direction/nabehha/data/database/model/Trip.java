@@ -17,6 +17,30 @@ import java.util.ArrayList;
 @Entity(primaryKeys = {"tripId"})
 public class Trip implements Parcelable {
 
+
+    protected Trip(Parcel in) {
+        if (in.readByte() == 0) {
+            userId = null;
+        } else {
+            userId = in.readInt();
+        }
+        notes = in.createStringArrayList();
+        tripId = in.readString();
+        tripName = in.readString();
+        tripImageUrl = in.readString();
+        startPointAddress = in.readString();
+        endPointAddress = in.readString();
+        startPointLatitude = in.readDouble();
+        startPointLongitude = in.readDouble();
+        endPointLatitude = in.readDouble();
+        endPointLongitude = in.readDouble();
+        date = in.readString();
+        time = in.readString();
+        status = in.readString();
+        type = in.readString();
+        tripImagebyte = in.createByteArray();
+    }
+
     public static final Creator<Trip> CREATOR = new Creator<Trip>() {
         @Override
         public Trip createFromParcel(Parcel in) {
@@ -121,21 +145,7 @@ public class Trip implements Parcelable {
         this.type = type;
     }
 
-    protected Trip(Parcel in) {
-        tripId = in.readString();
-        tripName = in.readString();
-        startPointAddress = in.readString();
-        endPointAddress = in.readString();
-        startPointLatitude = in.readDouble();
-        startPointLongitude = in.readDouble();
-        endPointLatitude = in.readDouble();
-        endPointLongitude = in.readDouble();
-        date = in.readString();
-        time = in.readString();
-        tripImagebyte = in.createByteArray();
-        status = in.readString();
-        type = in.readString();
-    }
+
 
     public ArrayList<String> getNotes() {
         return notes;
@@ -252,6 +262,13 @@ public class Trip implements Parcelable {
         this.tripImagebyte = tripImagebyte;
     }
 
+
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.tripId.equals(((Trip) obj).tripId);
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -259,8 +276,16 @@ public class Trip implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        if (userId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(userId);
+        }
+        dest.writeStringList(notes);
         dest.writeString(tripId);
         dest.writeString(tripName);
+        dest.writeString(tripImageUrl);
         dest.writeString(startPointAddress);
         dest.writeString(endPointAddress);
         dest.writeDouble(startPointLatitude);
@@ -269,13 +294,8 @@ public class Trip implements Parcelable {
         dest.writeDouble(endPointLongitude);
         dest.writeString(date);
         dest.writeString(time);
-        dest.writeByteArray(tripImagebyte);
         dest.writeString(status);
         dest.writeString(type);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return this.tripId.equals(((Trip) obj).tripId);
+        dest.writeByteArray(tripImagebyte);
     }
 }
