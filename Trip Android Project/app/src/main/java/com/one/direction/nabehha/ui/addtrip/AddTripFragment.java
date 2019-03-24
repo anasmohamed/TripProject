@@ -85,6 +85,12 @@ public class AddTripFragment extends Fragment {
         notesAdapter = new NotesAdapter(notesArrayList, getActivity());
         mAddTripFragmentBinding.listViewNotes.setAdapter(notesAdapter);
 
+        mAddTripFragmentBinding.cancelTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+            }
+        });
         return view;
     }
 
@@ -94,16 +100,16 @@ public class AddTripFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         AddTripModelFactory factory = InjectionUtils.provideAddTripViewModelFactory(getContext());
         mViewModel = ViewModelProviders.of(this, factory).get(AddTripViewModel.class);
-    
+
         mAddTripFragmentBinding.imageAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!mAddTripFragmentBinding.textViewAddNote.getText().toString().isEmpty()) {
 
-
-                notesArrayList.add(mAddTripFragmentBinding.textViewAddNote.getText().toString());
-                mAddTripFragmentBinding.textViewAddNote.setText("");
-                notesAdapter.notifyDataSetChanged();
-
+                    notesArrayList.add(mAddTripFragmentBinding.textViewAddNote.getText().toString());
+                    mAddTripFragmentBinding.textViewAddNote.setText("");
+                    notesAdapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -214,7 +220,7 @@ public class AddTripFragment extends Fragment {
                             && !String.valueOf(startPointLongitude).isEmpty()
                     ) {
                         calendarTime = Calendar.getInstance();
-                        Trip trip = new Trip();                       
+                        Trip trip = new Trip();
                         trip.setTripName(mTripName);
                         trip.setType(mTripType);
                         trip.setStatus(mTripStatus);
@@ -229,7 +235,7 @@ public class AddTripFragment extends Fragment {
                         trip.setNotes(notesArrayList);
                         calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
                         tripReminder(trip);
-                        mViewModel.AddTripToWebService(trip,getActivity().getApplicationContext());
+                        mViewModel.AddTripToWebService(trip, getActivity().getApplicationContext());
                         mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
                         getActivity().finish();
                     } else {

@@ -44,7 +44,8 @@ public class Scheduled extends Fragment {
     List<Trip> trips;
     RetrofitUtils retrofitUtils ;
     private static final String TRIP_STATUS = "scheduled";
-Button startBtn;
+    Button startBtn;
+    
     public Scheduled() {
     }
 

@@ -26,7 +26,6 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
 
     public interface CardClickedListener {
         void onCardClicked(Trip trip);
-        void onStartClicked();
     }
 
     public TripRecyclerViewAdapter(List<Trip> trips, CardClickedListener cardClickedListener) {
@@ -84,20 +83,24 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
         void bind(final int position) {
             tripName.setText(trips.get(position).getTripName());
             tripDate.setText(trips.get(position).getDate());
+//            Glide.with(context)
+//                   .load(Uri.parse(trip))
+//                  .into(tripImage);
+            Picasso.get()
+                    .load(Utilities.getGoogleMapImageForTrip(trips.get(position)))
+                    .placeholder(R.drawable.ic_not_found)
+                    .error(R.drawable.ic_close_white_24dp)
+                    .into(tripImage);
 
-            byte[] imageByte = null;
-            imageByte = trips.get(position).getTripImagebyte();
-            if(imageByte!=null)
-            tripImage.setImageBitmap(BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length));
+            // byte[] imageByte = null;
+            // imageByte = trips.get(position).getTripImagebyte();
+            // if(imageByte!=null)
+            // tripImage.setImageBitmap(BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length));
         }
 
         @Override
         public void onClick(View v) {
-            if(v.getId() == R.id.startBtn){
-                cardClickedListener.onStartClicked();
-            }else {
                 cardClickedListener.onCardClicked(trips.get(getAdapterPosition()));
-            }
         }
     }
 }

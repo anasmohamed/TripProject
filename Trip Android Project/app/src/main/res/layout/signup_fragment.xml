@@ -54,6 +54,8 @@
                     android:layout_marginTop="100dp"
                     android:layout_marginRight="16dp"
                     android:hint="Email"
+                    android:textColor="#fff"
+                    android:backgroundTint="#fff"
                     android:inputType="textEmailAddress"
                     android:textColorHint="#ffffff" />
 
@@ -65,7 +67,9 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="16dp"
                     android:ems="10"
+                    android:backgroundTint="#fff"
                     android:hint="Password"
+                    android:textColor="#fff"
                     android:inputType="textPassword"
                     android:textColorHint="#ffffff" />
 
@@ -78,7 +82,9 @@
                     android:layout_marginRight="16dp"
                     android:ems="10"
                     android:hint="@string/full_name"
+                    android:textColor="#fff"
                     android:inputType="textPersonName"
+                    android:backgroundTint="#fff"
                     android:textColorHint="#ffffff" />
 
                 <Button
@@ -86,7 +92,7 @@
                     android:layout_width="221dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="40dp"
                     android:layout_marginRight="16dp"
                     android:background="@drawable/roundedbutton"
                     android:text="@string/sign_up"
