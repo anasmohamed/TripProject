@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.service.DownloadImage;
 import com.one.direction.nabehha.service.note.FloatingWidgetService;
+import com.one.direction.nabehha.webServiceUtils.RetrofitUtils;
 import com.squareup.picasso.Picasso;
 
 import androidx.work.WorkManager;
@@ -37,6 +38,8 @@ public class DisplayTrip extends AppCompatActivity implements View.OnClickListen
 
     NotesRecyclerViewAdapter notesRecyclerViewAdapter;
     public static final String DISPLAY_TRIP_OBJECT = "tripObject";
+    private RetrofitUtils mUtils=new RetrofitUtils();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +67,7 @@ public class DisplayTrip extends AppCompatActivity implements View.OnClickListen
         dateTv.setText(trip.getDate());
         timeTv.setText(trip.getTime());
         Picasso.get()
-                .load(Utilities.getGoogleMapImageForTrip(trip))
+                .load(trip.getTripImageUrl())
                 .placeholder(R.drawable.ic_not_found)
                 .error(R.drawable.ic_close_white_24dp)
                 .into(tripImage);
@@ -99,17 +102,20 @@ public class DisplayTrip extends AppCompatActivity implements View.OnClickListen
     }
 
     private void cancelTrip(Trip trip) {
+        mUtils.changeTripStutus(AppConstants.CURRENT_USER_ID,"trash",trip);
+
         //        InjectionUtils.provideTripRepository(context).changeTripStatus(trip.getId(),"cancel");
         //TODO stop work manger alarm
-        WorkManager.getInstance().cancelAllWorkByTag(trip.getTripId());
+        WorkManager.getInstance().cancelAllWorkByTag(trip.getTripName() + trip.getDate() + trip.getTime());
         finish();
-    }
 
+    }
     private void startTrip(Trip trip) {
+        mUtils.changeTripStutus(AppConstants.CURRENT_USER_ID,"past",trip);
 //        InjectionUtils.provideTripRepository(context).changeTripStatus(trip.getId(),"past");
         //TODO remove alarm for this trip
 
-        WorkManager.getInstance().cancelAllWorkByTag(trip.getTripId());//TODO Cancel with id better i think
+        WorkManager.getInstance().cancelAllWorkByTag(trip.getTripId());
         startFloatingWidgetService(trip.getTripId());
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + trip.getEndPointLatitude()+","+trip.getEndPointLongitude());
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);

@@ -20,11 +20,12 @@ import retrofit2.Response;
 
 public class AddTripViewModel extends ViewModel {
     // TODO: Implement the ViewModel
-    FirebaseDatabase mFirebaseDatabase=FirebaseDatabase.getInstance();
+    FirebaseDatabase mFirebaseDatabase;
     DatabaseReference mDatabaseReference;
     private final TripRepository mTripRepository;
 
     public AddTripViewModel(TripRepository tripRepository) {
+        mFirebaseDatabase=FirebaseDatabase.getInstance();
         this.mTripRepository = tripRepository;
 
 
@@ -39,7 +40,7 @@ public class AddTripViewModel extends ViewModel {
                                     Context mContext ) {
         mDatabaseReference = mFirebaseDatabase.getReference("Trips");
         String tripId=mDatabaseReference.push().getKey();
-        DownloadImage.startDownloadAndSaveInDb(mContext, Utilities.getGoogleMapImageForTrip(trip), tripId);
+//        DownloadImage.startDownloadAndSaveInDb(mContext, Utilities.getGoogleMapImageForTrip(trip), tripId);
         mDatabaseReference = mFirebaseDatabase.getReference("Trips/" + AppConstants.CURRENT_USER_ID + "/scheduled/"+tripId);
         final HashMap<String, Object> nameKey = new HashMap<String, Object>() {{
             put("tripName", trip.getTripName());
@@ -59,5 +60,25 @@ public class AddTripViewModel extends ViewModel {
 
     }
 
+    public void editTripToWebService(final Trip trip, Context mContext) {
+        mDatabaseReference = mFirebaseDatabase.getReference("Trips");
+//        DownloadImage.startDownloadAndSaveInDb(mContext, Utilities.getGoogleMapImageForTrip(trip), trip.getTripId());
+        mDatabaseReference = mFirebaseDatabase.getReference("Trips/" + AppConstants.CURRENT_USER_ID + "/scheduled/"+trip.getTripId());
+        final HashMap<String, Object> nameKey = new HashMap<String, Object>() {{
+            put("tripName", trip.getTripName());
+            put("startPointAddress", trip.getStartPointAddress());
+            put("endPointAddress", trip.getEndPointAddress());
+            put("startPointLatitude", trip.getStartPointLatitude());
+            put("startPointLongitude", trip.getStartPointLongitude());
+            put("endPointLatitude", trip.getEndPointLatitude());
+            put("endPointLongitude", trip.getEndPointLongitude());
+            put("date", trip.getDate());
+            put("time", trip.getTime());
+            put("type", trip.getType());
+            put("notes", trip.getNotes());
+            put("tripImage", Utilities.getGoogleMapImageForTrip(trip));
+        }};
+        mDatabaseReference.setValue(nameKey);
+    }
 }
 

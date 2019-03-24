@@ -28,6 +28,7 @@ public class SplashActivity extends AppCompatActivity {
         final UserPreferencesHelper userPreferencesHelper = new AppPreferencesHelper(this, getString(R.string.user_info));
         mAuth = FirebaseAuth.getInstance();
         mUsersFirebaseDatabaseDatabaseReference = FirebaseDatabase.getInstance();
+        mUsersFirebaseDatabaseDatabaseReference.setPersistenceEnabled(true);
         userDatabaseReference = mUsersFirebaseDatabaseDatabaseReference.getReference("Users");
         if(mAuth.getCurrentUser()!=null) {
             AppConstants.CURRENT_USER_EMAIL = mAuth.getCurrentUser().getEmail();

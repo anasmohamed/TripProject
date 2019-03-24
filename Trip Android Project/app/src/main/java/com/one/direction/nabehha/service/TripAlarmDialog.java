@@ -182,7 +182,6 @@ public class TripAlarmDialog extends Service {
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
-
     }
 
     private void startFloatingWidgetService(String tripId) {
