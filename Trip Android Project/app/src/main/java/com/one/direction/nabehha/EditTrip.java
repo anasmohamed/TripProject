@@ -32,7 +32,6 @@ public class EditTrip extends AppCompatActivity implements View.OnClickListener 
         cancelBtn = findViewById(R.id.cancelNote);
         addTripBtn = findViewById(R.id.addTripBtn);
         addNoteBtn = findViewById(R.id.addNoteBtn);
-
         Intent intent = getIntent();
         trip = intent.getParcelableExtra(DisplayTrip.DISPLAY_TRIP_OBJECT);
     }
@@ -40,10 +39,13 @@ public class EditTrip extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.cancelNote:
+
                 break;
             case R.id.addTripBtn:
+
                 break;
             case R.id.addNoteBtn:
+
                 break;
         }
     }
