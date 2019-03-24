@@ -74,7 +74,8 @@ public class Scheduled extends Fragment {
                                 (String) child.child("date").getValue(),
                                 (String) child.child("time").getValue(),
                                 TRIP_STATUS,
-                                (String) child.child("type").getValue()
+                                (String) child.child("type").getValue(),
+                                (ArrayList<String>) child.child("notes").getValue()
                         );
                         if (!trips.contains(temp))
                             trips.add(temp);

@@ -37,20 +37,6 @@ public class AddTripViewModel extends ViewModel {
 
     public void AddTripToWebService(final Trip trip,
                                     Context mContext ) {
-//                mTripRepository.insertTripIntoWebService(tripName, startPoint, endPoint, date, time, type, tripImage,userId, status, new Callback<Trip>() {
-//            @Override
-//            public void onResponse(Call<Trip> call, Response<Trip> response) {
-//                Log.e("Add Trip",response.message());
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Trip> call, Throwable t) {
-//                Log.e ("error add trip ",t.getMessage());
-//
-//
-//            }
-//        });
         mDatabaseReference = mFirebaseDatabase.getReference("Trips");
         String tripId=mDatabaseReference.push().getKey();
         DownloadImage.startDownloadAndSaveInDb(mContext, Utilities.getGoogleMapImageForTrip(trip), tripId);
@@ -66,6 +52,7 @@ public class AddTripViewModel extends ViewModel {
             put("date", trip.getDate());
             put("time", trip.getTime());
             put("type", trip.getType());
+            put("notes", trip.getNotes());
         }};
         mDatabaseReference.setValue(nameKey);
 

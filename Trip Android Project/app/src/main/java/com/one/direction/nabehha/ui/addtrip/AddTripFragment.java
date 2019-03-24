@@ -35,6 +35,7 @@ import com.one.direction.nabehha.service.DownloadImage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import androidx.work.Data;
@@ -227,6 +228,7 @@ public class AddTripFragment extends Fragment {
                         trip.setEndPointLongitude(endPointLongitude);
                         trip.setEndPointAddress(mTripEndPoint);
                         trip.setStartPointAddress(mTripStartPoint);
+                        trip.setNotes(notesArrayList);
                         calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
                         doWork(trip);
                         mViewModel.AddTripToWebService(trip,getActivity().getApplicationContext());

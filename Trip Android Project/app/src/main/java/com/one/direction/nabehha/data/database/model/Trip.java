@@ -8,10 +8,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+@IgnoreExtraProperties
 @Entity(primaryKeys = {"tripId"})
 public class Trip implements Parcelable {
 
@@ -38,8 +40,8 @@ public class Trip implements Parcelable {
     @Ignore
     private Integer userId;
     @Ignore
-    ArrayList<Note> notes;
-   
+    ArrayList<String> notes;
+
     @NonNull
     private String tripId;
     @NonNull
@@ -77,12 +79,30 @@ public class Trip implements Parcelable {
     @Ignore
     public Trip() {
     }
+
     @Ignore
     public Trip(@NonNull String tripId) {
         this.tripId = tripId;
     }
 
-
+    @Ignore
+    public Trip(String tripId, @NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress,
+                double startPointLatitude, double startPointLongitude, double endPointLatitude, double endPointLongitude,
+                @NonNull String date, @NonNull String time, String status, @NonNull String type,ArrayList<String> notes) {
+        this.tripId = tripId;
+        this.tripName = tripName;
+        this.startPointAddress = startPointAddress;
+        this.endPointAddress = endPointAddress;
+        this.startPointLatitude = startPointLatitude;
+        this.startPointLongitude = startPointLongitude;
+        this.endPointLatitude = endPointLatitude;
+        this.endPointLongitude = endPointLongitude;
+        this.date = date;
+        this.time = time;
+        this.status = status;
+        this.type = type;
+        this.notes=notes;
+    }
 
     public Trip(String tripId, @NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress,
                 double startPointLatitude, double startPointLongitude, double endPointLatitude, double endPointLongitude,
@@ -115,6 +135,14 @@ public class Trip implements Parcelable {
         tripImagebyte = in.createByteArray();
         status = in.readString();
         type = in.readString();
+    }
+
+    public ArrayList<String> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(ArrayList<String> notes) {
+        this.notes = notes;
     }
 
     public String getTripName() {
@@ -248,6 +276,6 @@ public class Trip implements Parcelable {
 
     @Override
     public boolean equals(Object obj) {
-        return this.tripId.equals(((Trip)obj).tripId);
+        return this.tripId.equals(((Trip) obj).tripId);
     }
 }
