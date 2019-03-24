@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.R;
 import com.one.direction.nabehha.SplashActivity;
+import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.service.DownloadImage;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 
 public class FloatingWidgetService extends Service implements View.OnClickListener {
     //Abdo Modify
-    private Long tripId;
+    private Trip trip;
     private RecyclerView mRecyclerView;
 
     //...........
@@ -53,7 +54,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     @Override
     public IBinder onBind(Intent intent) {
         if(intent!=null){
-            tripId=intent.getLongExtra(DownloadImage.TRIP_ID,-1);
+            trip=intent.getParcelableExtra(DownloadImage.TRIP_ID);
         }
         return null;
     }
@@ -164,12 +165,12 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
 
 
         //TODO get note array and show it
-        ArrayList<String> notes=InjectionUtils.provideTripRepository(this).getNotes(tripId);
+//        ArrayList<String> notes=InjectionUtils.provideTripRepository(this).getNotes(trip.getNotes());
         mRecyclerView=mFloatingWidgetView.findViewById(R.id.note_recycle_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        NoteRecyclerViewAdapter noteAdapter = new NoteRecyclerViewAdapter(notes);
+        NoteRecyclerViewAdapter noteAdapter = new NoteRecyclerViewAdapter(trip.getNotes());
         mRecyclerView.setAdapter(noteAdapter);
 
 

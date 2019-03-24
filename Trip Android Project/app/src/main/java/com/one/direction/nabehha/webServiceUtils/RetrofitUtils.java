@@ -46,7 +46,7 @@ public class RetrofitUtils {
     }
     public void changeTripStutus(String userId, String tripStatus, final Trip trip) {
         deleteTripsUsingRetrofit(userId, tripStatus, trip.getTripId());
-        mFirebaseDatabase.getReference("Trips/" + userId + "/"+tripStatus+"/"+trip.getTripId());
+        mDatabaseReference=mFirebaseDatabase.getReference("Trips/" + userId + "/"+tripStatus+"/"+trip.getTripId());
         final HashMap<String, Object> nameKey = new HashMap<String, Object>() {{
             put("tripName", trip.getTripName());
             put("startPointAddress", trip.getStartPointAddress());

@@ -20,10 +20,10 @@ public class Utilities {
                     append("&markers=color:0x").append(hexaColor).append("|")
                     .append(trip.getStartPointLatitude()).append(",").append(trip.getStartPointLongitude())
                     .append("&markers=color:0x").append(hexaColor).append("|").append(trip.getEndPointLatitude())
-                    .append(",").append(trip.getStartPointLongitude())
+                    .append(",").append(trip.getEndPointLongitude())
                     .append("&path=color:0x").append(hexaColor)
                     .append("|weight:5|").append(trip.getStartPointLatitude()).append(",").append(trip.getStartPointLongitude())
-                    .append("|").append(trip.getEndPointLatitude()).append(",").append(trip.getStartPointLongitude());
+                    .append("|").append(trip.getEndPointLatitude()).append(",").append(trip.getEndPointLongitude());
         }
         urlString.append("&key=").append(GOOGLE_STATIC_MAP_KEY);
         return urlString.toString();
@@ -37,10 +37,10 @@ public class Utilities {
                 append("&markers=color:0x").append(hexaColor).append("|")
                 .append(trip.getStartPointLatitude()).append(",").append(trip.getStartPointLongitude())
                 .append("&markers=color:0x").append(hexaColor).append("|").append(trip.getEndPointLatitude())
-                .append(",").append(trip.getStartPointLongitude())
+                .append(",").append(trip.getEndPointLongitude())
                 .append("&path=color:0x").append(hexaColor)
                 .append("|weight:5|").append(trip.getStartPointLatitude()).append(",").append(trip.getStartPointLongitude())
-                .append("|").append(trip.getEndPointLatitude()).append(",").append(trip.getStartPointLongitude());
+                .append("|").append(trip.getEndPointLatitude()).append(",").append(trip.getEndPointLongitude());
 //                .append("&maptype=satellite");
 
         urlString.append("&key=").append(GOOGLE_STATIC_MAP_KEY);

@@ -118,16 +118,16 @@ public class DisplayTrip extends AppCompatActivity implements View.OnClickListen
         //TODO remove alarm for this trip
 
         WorkManager.getInstance().cancelAllWorkByTag(trip.getTripId());
-        startFloatingWidgetService(trip.getTripId());
+        startFloatingWidgetService(trip);
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + trip.getEndPointLatitude() + "," + trip.getEndPointLongitude());
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
     }
 
-    private void startFloatingWidgetService(String tripId) {
+    private void startFloatingWidgetService(Trip trip) {
         Intent intent = new Intent(this, FloatingWidgetService.class);
-        intent.putExtra(DownloadImage.TRIP_ID, tripId);
+        intent.putExtra(DownloadImage.TRIP_ID, trip);
         startService(intent);
     }
 }

@@ -51,7 +51,7 @@
         android:background="@drawable/square_shap_ciurvy"
         android:minHeight="10dp"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
 
         <!--  ImageView to Close Expanded View  -->
