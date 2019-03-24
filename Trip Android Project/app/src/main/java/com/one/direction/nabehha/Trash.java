@@ -9,6 +9,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.webServiceUtils.RetrofitUtils;
@@ -44,7 +45,7 @@ public class Trash extends Fragment {
         tripRecyclerView.setLayoutManager(layoutManager);
         tripRecyclerView.setHasFixedSize(true);
          retrofitUtils = new RetrofitUtils();
-        retrofitUtils.getTripsUsingRetrofit(AppConstants.CURRENT_USER_ID, TRIP_STATUS,new ValueEventListener() {
+        retrofitUtils.getTripsUsingRetrofit(String.valueOf(AppConstants.CURRENT_USER_ID), TRIP_STATUS,new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 trips=new ArrayList<>();
@@ -61,19 +62,22 @@ public class Trash extends Fragment {
                                 (String) child.child("date").getValue(),
                                 (String) child.child("time").getValue(),
                                 TRIP_STATUS,
-                                (String) child.child("type").getValue()
+                                (String) child.child("type").getValue(),
+                                (ArrayList<String>) child.child("notes").getValue(),
+                                (String) child.child("tripImage").getValue()
                         );
                         if (!trips.contains(temp))
                             trips.add(temp);
                     }
-                    tripAdapter = new TripRecyclerViewAdapter(trips,(TripRecyclerViewAdapter.CardClickedListener) getContext());
+                    tripAdapter = new TripRecyclerViewAdapter(trips,(TripRecyclerViewAdapter.CardClickedListener)getContext());
                     tripRecyclerView.setAdapter(tripAdapter);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
-//                Toast.makeText(mContext, "Faild To Log In", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Failed To Log In", Toast.LENGTH_LONG).show();
             }
         });
         deleteItem();

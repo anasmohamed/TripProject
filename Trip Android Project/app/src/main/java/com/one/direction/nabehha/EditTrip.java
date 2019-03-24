@@ -236,7 +236,7 @@ public class EditTrip extends AppCompatActivity {
                     trip.setStartPointAddress(mTripStartPoint);
                     calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
                     tripReminder(trip);
-                    mViewModel.AddTripToWebService(trip, getApplicationContext());
+                    mViewModel.editTripToWebService(trip, getApplicationContext());
                     mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, EditTrip.this);
                     finish();
                 } else {

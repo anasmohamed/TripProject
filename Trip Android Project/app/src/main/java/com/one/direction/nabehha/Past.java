@@ -66,7 +66,9 @@ public class Past extends Fragment {
                                 (String) child.child("date").getValue(),
                                 (String) child.child("time").getValue(),
                                 TRIP_STATUS,
-                                (String) child.child("type").getValue()
+                                (String) child.child("type").getValue(),
+                                (ArrayList<String>) child.child("notes").getValue(),
+                                (String) child.child("tripImage").getValue()
                         );
                         if (!trips.contains(temp))
                             trips.add(temp);

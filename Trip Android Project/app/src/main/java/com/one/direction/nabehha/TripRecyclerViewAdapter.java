@@ -87,7 +87,7 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
 //                   .load(Uri.parse(trip))
 //                  .into(tripImage);
             Picasso.get()
-                    .load(Utilities.getGoogleMapImageForTrip(trips.get(position)))
+                    .load(trips.get(position).getTripImageUrl())
                     .placeholder(R.drawable.ic_not_found)
                     .error(R.drawable.ic_close_white_24dp)
                     .into(tripImage);

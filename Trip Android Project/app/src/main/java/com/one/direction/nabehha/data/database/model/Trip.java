@@ -112,7 +112,7 @@ public class Trip implements Parcelable {
     @Ignore
     public Trip(String tripId, @NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress,
                 double startPointLatitude, double startPointLongitude, double endPointLatitude, double endPointLongitude,
-                @NonNull String date, @NonNull String time, String status, @NonNull String type,ArrayList<String> notes) {
+                @NonNull String date, @NonNull String time, String status, @NonNull String type,ArrayList<String> notes,String tripImageUrl) {
         this.tripId = tripId;
         this.tripName = tripName;
         this.startPointAddress = startPointAddress;
@@ -126,6 +126,7 @@ public class Trip implements Parcelable {
         this.status = status;
         this.type = type;
         this.notes=notes;
+        this.tripImageUrl=tripImageUrl;
     }
 
     public Trip(String tripId, @NonNull String tripName, @NonNull String startPointAddress, @NonNull String endPointAddress,
@@ -146,6 +147,15 @@ public class Trip implements Parcelable {
     }
 
 
+
+    @NonNull
+    public String getTripImageUrl() {
+        return tripImageUrl;
+    }
+
+    public void setTripImageUrl(@NonNull String tripImageUrl) {
+        this.tripImageUrl = tripImageUrl;
+    }
 
     public ArrayList<String> getNotes() {
         return notes;

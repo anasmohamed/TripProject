@@ -22,11 +22,12 @@ public class RetrofitUtils {
 
     private Retrofit retrofit;
     private TripServiceApi tripServiceApi;
-    FirebaseDatabase mFirebaseDatabase=FirebaseDatabase.getInstance();
+    FirebaseDatabase mFirebaseDatabase;
     DatabaseReference mDatabaseReference;
     private List<Trip> trips;
 
     public RetrofitUtils() {
+        mFirebaseDatabase=FirebaseDatabase.getInstance();
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -37,6 +38,7 @@ public class RetrofitUtils {
     public void getTripsUsingRetrofit(String userId, final String tripStatus, ValueEventListener valueEventListener) {
         mDatabaseReference = mFirebaseDatabase.getReference("Trips/" + userId + "/"+tripStatus);
         mDatabaseReference.addValueEventListener(valueEventListener);
+
     }
 
     public boolean deleteTripsUsingRetrofit(String userId,String tripStatus,String tripId) {
@@ -57,6 +59,7 @@ public class RetrofitUtils {
             put("time", trip.getTime());
             put("type", trip.getType());
             put("notes", trip.getNotes());
+            put("tripImage",trip.getTripImageUrl());
         }};
         mDatabaseReference.setValue(nameKey);
     }
