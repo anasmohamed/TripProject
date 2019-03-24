@@ -44,7 +44,8 @@ public class Scheduled extends Fragment {
     List<Trip> trips;
     RetrofitUtils retrofitUtils ;
     private static final String TRIP_STATUS = "scheduled";
-Button startBtn;
+    Button startBtn;
+    
     public Scheduled() {
     }
 
@@ -76,7 +77,8 @@ Button startBtn;
                                 (String) child.child("date").getValue(),
                                 (String) child.child("time").getValue(),
                                 TRIP_STATUS,
-                                (String) child.child("type").getValue()
+                                (String) child.child("type").getValue(),
+                                (ArrayList<String>) child.child("notes").getValue()
                         );
                         if (!trips.contains(temp))
                             trips.add(temp);

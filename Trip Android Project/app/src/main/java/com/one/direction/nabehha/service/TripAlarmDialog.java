@@ -23,10 +23,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.one.direction.nabehha.AppConstants;
 import com.one.direction.nabehha.R;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.databinding.ReminderDialogFragmentBinding;
 import com.one.direction.nabehha.service.note.FloatingWidgetService;
+import com.one.direction.nabehha.webServiceUtils.RetrofitUtils;
 
 import androidx.work.WorkManager;
 
@@ -37,12 +39,7 @@ public class TripAlarmDialog extends Service {
     LayoutInflater inflater;
     private WindowManager mWindowManager;
     private ReminderDialogFragmentBinding mDialogBinder;
-    Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message message) {
-
-        }
-    };
+    RetrofitUtils mUtils=new RetrofitUtils();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -174,10 +171,11 @@ public class TripAlarmDialog extends Service {
     }
 
     private void startTrip(Trip trip) {
+        mUtils.changeTripStutus(AppConstants.CURRENT_USER_ID,"past",trip);
 //        InjectionUtils.provideTripRepository(context).changeTripStatus(trip.getId(),"past");
         //TODO remove alarm for this trip
 
-        WorkManager.getInstance().cancelAllWorkByTag(trip.getTripName() + trip.getDate() + trip.getTime());
+        WorkManager.getInstance().cancelAllWorkByTag(trip.getTripId());
         startFloatingWidgetService(trip.getTripId());
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + trip.getEndPointLatitude()+","+trip.getEndPointLongitude());
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);

@@ -1,6 +1,8 @@
 package com.one.direction.nabehha;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -17,6 +19,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.one.direction.nabehha.data.database.model.Trip;
+import com.one.direction.nabehha.service.DownloadImage;
+import com.one.direction.nabehha.service.TripAlarmDialog;
+import com.one.direction.nabehha.service.note.FloatingWidgetService;
+
+import androidx.work.WorkManager;
+
+import static com.one.direction.nabehha.AppConstants.PARCELABLE_TRIP;
 
 
 public class MainActivity extends AppCompatActivity
@@ -56,7 +65,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -89,8 +97,4 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(this,String.valueOf(trip.getTripName()),Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void onStartClicked() {
-        Toast.makeText(this,"clicked",Toast.LENGTH_LONG).show();
-    }
 }

@@ -34,7 +34,8 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
 
     @Override
     public int getItemCount() {
-        return notes.size();
+        //return notes.size();
+        return 7;
     }
 
     class NoteViewHolder extends RecyclerView.ViewHolder{
@@ -45,7 +46,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         }
 
         void bind(int position){
-            noteCheckBox.setText(notes.get(position));
+           // noteCheckBox.setText(notes.get(position));
         }
     }
 }
