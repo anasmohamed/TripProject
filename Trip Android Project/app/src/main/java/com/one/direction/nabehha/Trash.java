@@ -31,6 +31,7 @@ public class Trash extends Fragment {
     List<Trip> trips = null;
     RetrofitUtils retrofitUtils;
     private static final String TRIP_STATUS = "trash";
+
     public Trash() {
     }
 
@@ -69,7 +70,6 @@ public class Trash extends Fragment {
                     tripRecyclerView.setAdapter(tripAdapter);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
@@ -80,7 +80,7 @@ public class Trash extends Fragment {
         return view;
     }
     private void deleteItem() {
-        ItemTouchHelper.SimpleCallback simpleItemTouchHelper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback simpleItemTouchHelper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
                 return false;
@@ -92,7 +92,6 @@ public class Trash extends Fragment {
                 final int deletedPosition = position;
                 tripAdapter.deleteItem(deletedPosition);
                 retrofitUtils.deleteTripsUsingRetrofit(String.valueOf(AppConstants.CURRENT_USER_ID), TRIP_STATUS,String.valueOf(deletedTrip.getTripId()));
-
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchHelper);
