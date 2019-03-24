@@ -86,7 +86,7 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
             @Override
             public void onClick(View view) {
                 loadingUi(true);
-                if (!binding.email.getText().toString().isEmpty() && binding.password.getText().toString().isEmpty()) {
+                if (!binding.email.getText().toString().isEmpty() && !binding.password.getText().toString().isEmpty()) {
                     mViewModel.login(binding.email.getText().toString(), binding.password.getText().toString(),
                             new OnCompleteListener<AuthResult>() {
                                 @Override

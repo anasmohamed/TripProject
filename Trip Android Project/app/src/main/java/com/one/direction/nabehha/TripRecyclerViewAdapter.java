@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.one.direction.nabehha.data.database.model.Trip;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,8 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
 
     public interface CardClickedListener {
         void onCardClicked(Trip trip);
-        void onStartClicked();
     }
+
     public TripRecyclerViewAdapter(List<Trip> trips, CardClickedListener cardClickedListener) {
         this.trips = trips;
         this.cardClickedListener = cardClickedListener;
@@ -80,16 +81,17 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
             tripName.setText(trips.get(position).getTripName());
             tripDate.setText(trips.get(position).getDate());
 //            Glide.with(context)
-//                    .load(Uri.parse("https://i.pinimg.com/originals/08/e2/dd/08e2ddabaa128e1fa3ca336d40f2fe62.jpg"))
-//                    .into(tripImage);
+//                   .load(Uri.parse(trip))
+//                  .into(tripImage);
+            Picasso.get()
+                    .load(Utilities.getGoogleMapImageForTrip(trips.get(position)))
+                    .placeholder(R.drawable.ic_not_found)
+                    .error(R.drawable.ic_close_white_24dp)
+                    .into(tripImage);
         }
         @Override
         public void onClick(View v) {
-            if(v.getId() == R.id.startBtn){
-                cardClickedListener.onStartClicked();
-            }else {
                 cardClickedListener.onCardClicked(trips.get(getAdapterPosition()));
-            }
         }
     }
 }

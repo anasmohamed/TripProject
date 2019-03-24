@@ -15,7 +15,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".AddTripAcitivty"></activity>
         <activity android:name=".EditTrip" />
-        <activity android:name=".DisplayTrip" />
+        <activity android:name=".DisplayTrip" android:parentActivityName=".MainActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -52,7 +52,6 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -50,9 +50,11 @@
                     android:layout_marginTop="100dp"
                     android:layout_marginRight="16dp"
                     android:hint="@string/prompt_email"
+                    android:textColor="#fff"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
+                    android:backgroundTint="#fff"
                     android:textColorHint="#ffffff" />
 
                 <EditText
@@ -64,10 +66,12 @@
                     android:layout_marginRight="16dp"
                     android:hint="@string/prompt_password"
                     android:imeActionId="6"
+                    android:textColor="#fff"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"
+                    android:backgroundTint="#fff"
                     android:textColorHint="#ffffff" />
 
                 <Button

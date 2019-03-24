@@ -38,6 +38,10 @@ public class Scheduled extends Fragment {
     RetrofitUtils retrofitUtils ;
     private static final String TRIP_STATUS = "scheduled";
 
+    public interface getTripInterface {
+        void getTrip();
+    }
+
     public Scheduled() {
     }
 
