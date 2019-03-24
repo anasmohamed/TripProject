@@ -69,7 +69,7 @@ public class TripRepository {
     }
 
 
-    public void saveTripImage(Long tripId, byte[] imageByte) {
+    public void saveTripImage(String tripId, byte[] imageByte) {
 
     }
 

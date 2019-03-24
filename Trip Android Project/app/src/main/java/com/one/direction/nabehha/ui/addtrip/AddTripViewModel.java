@@ -7,8 +7,10 @@ import android.util.Log;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.one.direction.nabehha.AppConstants;
+import com.one.direction.nabehha.Utilities;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.data.network.TripRepository;
+import com.one.direction.nabehha.service.DownloadImage;
 
 import java.util.HashMap;
 
@@ -33,36 +35,24 @@ public class AddTripViewModel extends ViewModel {
         mTripRepository.insertTripIntoDatabase(tripName, startPoint, endPoint, date, time, type, tripImage, userId, status, context);
     }
 
-    public void AddTripToWebService(final String tripName, final String startPoint, final String endPoint, final double startPointLatitude,
-                                    final double startPointLongitude, final double endPointLatitude, final double endPointLongitude, final String date, final String time, final String type) {
-//                mTripRepository.insertTripIntoWebService(tripName, startPoint, endPoint, date, time, type, tripImage,userId, status, new Callback<Trip>() {
-//            @Override
-//            public void onResponse(Call<Trip> call, Response<Trip> response) {
-//                Log.e("Add Trip",response.message());
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Trip> call, Throwable t) {
-//                Log.e ("error add trip ",t.getMessage());
-//
-//
-//            }
-//        });
+    public void AddTripToWebService(final Trip trip,
+                                    Context mContext ) {
         mDatabaseReference = mFirebaseDatabase.getReference("Trips");
         String tripId=mDatabaseReference.push().getKey();
+        DownloadImage.startDownloadAndSaveInDb(mContext, Utilities.getGoogleMapImageForTrip(trip), tripId);
         mDatabaseReference = mFirebaseDatabase.getReference("Trips/" + AppConstants.CURRENT_USER_ID + "/scheduled/"+tripId);
         final HashMap<String, Object> nameKey = new HashMap<String, Object>() {{
-            put("tripName", tripName);
-            put("startPointAddress", startPoint);
-            put("endPointAddress", endPoint);
-            put("startPointLatitude", startPointLatitude);
-            put("startPointLongitude", startPointLongitude);
-            put("endPointLatitude", endPointLatitude);
-            put("endPointLongitude", endPointLongitude);
-            put("date", date);
-            put("time", time);
-            put("type", type);
+            put("tripName", trip.getTripName());
+            put("startPointAddress", trip.getStartPointAddress());
+            put("endPointAddress", trip.getEndPointAddress());
+            put("startPointLatitude", trip.getStartPointLatitude());
+            put("startPointLongitude", trip.getStartPointLongitude());
+            put("endPointLatitude", trip.getEndPointLatitude());
+            put("endPointLongitude", trip.getEndPointLongitude());
+            put("date", trip.getDate());
+            put("time", trip.getTime());
+            put("type", trip.getType());
+            put("notes", trip.getNotes());
         }};
         mDatabaseReference.setValue(nameKey);
 

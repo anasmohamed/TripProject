@@ -55,7 +55,7 @@ public class Past extends Fragment {
                 trips=new ArrayList<>();
                 if ((dataSnapshot.getValue()) != null) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        Trip temp = new Trip((String) child.child("tripId").getKey(),
+                        Trip temp = new Trip((String) child.getKey(),
                                 (String) child.child("tripName").getValue(),
                                 (String) child.child("startPointAddress").getValue(),
                                 (String) child.child("endPointAddress").getValue(),

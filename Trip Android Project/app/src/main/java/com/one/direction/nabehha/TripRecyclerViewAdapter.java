@@ -1,6 +1,8 @@
 package com.one.direction.nabehha;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -77,6 +79,7 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
             tripDate = itemView.findViewById(R.id.trip_card_date);
             itemView.setOnClickListener(this);
         }
+
         void bind(final int position) {
             tripName.setText(trips.get(position).getTripName());
             tripDate.setText(trips.get(position).getDate());
@@ -88,7 +91,13 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
                     .placeholder(R.drawable.ic_not_found)
                     .error(R.drawable.ic_close_white_24dp)
                     .into(tripImage);
+
+            // byte[] imageByte = null;
+            // imageByte = trips.get(position).getTripImagebyte();
+            // if(imageByte!=null)
+            // tripImage.setImageBitmap(BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length));
         }
+
         @Override
         public void onClick(View v) {
                 cardClickedListener.onCardClicked(trips.get(getAdapterPosition()));

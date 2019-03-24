@@ -1,9 +1,14 @@
 package com.one.direction.nabehha;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -11,12 +16,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.one.direction.nabehha.data.database.model.Trip;
+import com.one.direction.nabehha.service.DownloadImage;
 import com.one.direction.nabehha.webServiceUtils.RetrofitUtils;
 
 import java.util.ArrayList;
@@ -37,11 +44,8 @@ public class Scheduled extends Fragment {
     List<Trip> trips;
     RetrofitUtils retrofitUtils ;
     private static final String TRIP_STATUS = "scheduled";
-
-    public interface getTripInterface {
-        void getTrip();
-    }
-
+    Button startBtn;
+    
     public Scheduled() {
     }
 
@@ -55,13 +59,14 @@ public class Scheduled extends Fragment {
         tripRecyclerView.setHasFixedSize(true);
         retrofitUtils = new RetrofitUtils();
         //get user Id from shared preferences
+
         retrofitUtils.getTripsUsingRetrofit(String.valueOf(AppConstants.CURRENT_USER_ID), TRIP_STATUS,new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 trips=new ArrayList<>();
                 if ((dataSnapshot.getValue()) != null) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        Trip temp = new Trip((String) child.child("tripId").getKey(),
+                        Trip temp = new Trip((String) child.getKey(),
                                 (String) child.child("tripName").getValue(),
                                 (String) child.child("startPointAddress").getValue(),
                                 (String) child.child("endPointAddress").getValue(),
@@ -72,12 +77,13 @@ public class Scheduled extends Fragment {
                                 (String) child.child("date").getValue(),
                                 (String) child.child("time").getValue(),
                                 TRIP_STATUS,
-                                (String) child.child("type").getValue()
+                                (String) child.child("type").getValue(),
+                                (ArrayList<String>) child.child("notes").getValue()
                         );
                         if (!trips.contains(temp))
                             trips.add(temp);
                     }
-                    tripAdapter = new TripRecyclerViewAdapter(trips,(TripRecyclerViewAdapter.CardClickedListener) getContext());
+                    tripAdapter = new TripRecyclerViewAdapter(trips,(TripRecyclerViewAdapter.CardClickedListener)getContext());
                     tripRecyclerView.setAdapter(tripAdapter);
                 }
             }
@@ -85,7 +91,7 @@ public class Scheduled extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
-                Toast.makeText(getActivity(), "Faild To Log In", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Failed To Log In", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -112,4 +118,35 @@ public class Scheduled extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchHelper);
         itemTouchHelper.attachToRecyclerView(tripRecyclerView);
     }
+
+
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent!=null){
+                String tripId=intent.getStringExtra(DownloadImage.TRIP_ID);
+                byte[] image=intent.getByteArrayExtra(DownloadImage.TRIP_IMAGE_URL);
+                trips.get(trips.indexOf(new Trip(tripId))).setTripImagebyte(image);
+                tripAdapter.notifyDataSetChanged();
+            }
+        }
+    };
+
+
+    @Override
+    public void onResume ()
+    {
+        super.onResume();
+        //registerReceiver(broadcastReceiver,mIntent);
+        LocalBroadcastManager.getInstance(getActivity())
+                .registerReceiver(broadcastReceiver, new IntentFilter(AppConstants.RECEIVE_IMAGE_ACTION));
+    }
+
+    @Override
+    public void onPause () {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+        super.onPause();
+    }
+
 }
