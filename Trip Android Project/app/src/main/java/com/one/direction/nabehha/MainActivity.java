@@ -2,6 +2,7 @@ package com.one.direction.nabehha;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -117,5 +118,10 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(DISPLAY_ACTIVITY_INTENT, trip);
         startActivity(intent);
         Toast.makeText(this,String.valueOf(trip.getTripName()),Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onStartClicked() {
+        Toast.makeText(this,"clicked",Toast.LENGTH_LONG).show();
     }
 }

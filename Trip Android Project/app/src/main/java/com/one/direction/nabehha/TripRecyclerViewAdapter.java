@@ -26,6 +26,7 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
 
     public interface CardClickedListener {
         void onCardClicked(Trip trip);
+        void onStartClicked();
     }
 
     public TripRecyclerViewAdapter(List<Trip> trips, CardClickedListener cardClickedListener) {
@@ -91,7 +92,11 @@ public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerVi
 
         @Override
         public void onClick(View v) {
-            cardClickedListener.onCardClicked(trips.get(getAdapterPosition()));
+            if(v.getId() == R.id.startBtn){
+                cardClickedListener.onStartClicked();
+            }else {
+                cardClickedListener.onCardClicked(trips.get(getAdapterPosition()));
+            }
         }
     }
 }

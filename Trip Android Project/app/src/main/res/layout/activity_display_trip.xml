@@ -24,7 +24,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/globe"
                 app:layout_collapseMode="parallax"/>
 
             <android.support.v7.widget.Toolbar

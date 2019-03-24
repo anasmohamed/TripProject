@@ -35,6 +35,15 @@ public class EditTrip extends AppCompatActivity implements View.OnClickListener 
 
         Intent intent = getIntent();
         trip = intent.getParcelableExtra(DisplayTrip.DISPLAY_TRIP_OBJECT);
+        tripNameET.setText(trip.getTripName());
+        tripTimeET.setText(trip.getTime());
+        tripDateET.setText(trip.getDate());
+
+        cancelBtn.setOnClickListener(this);
+        tripDateBtn.setOnClickListener(this);
+        tripTimeBtn.setOnClickListener(this);
+        addTripBtn.setOnClickListener(this);
+        addNoteBtn.setOnClickListener(this);
     }
     @Override
     public void onClick(View v) {
