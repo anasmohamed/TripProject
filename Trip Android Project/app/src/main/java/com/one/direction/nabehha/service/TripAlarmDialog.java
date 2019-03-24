@@ -127,6 +127,8 @@ public class TripAlarmDialog extends Service {
     }
 
     private void cancelTrip(Trip trip) {
+        mUtils.changeTripStutus(AppConstants.CURRENT_USER_ID,"trash",trip);
+
         //        InjectionUtils.provideTripRepository(context).changeTripStatus(trip.getId(),"cancel");
         //TODO stop work manger alarm
         WorkManager.getInstance().cancelAllWorkByTag(trip.getTripName() + trip.getDate() + trip.getTime());
@@ -134,8 +136,7 @@ public class TripAlarmDialog extends Service {
     }
 
     private void ProcrastinateTheTrip(Trip trip) {
-        //TODO permenate  notification
-        //Stop work manger alarm
+        //TODO Stop work manger alarm
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 

@@ -57,6 +57,7 @@ public class RetrofitUtils {
             put("time", trip.getTime());
             put("type", trip.getType());
             put("notes", trip.getNotes());
+            put("tripImage",trip.getTripImageUrl());
         }};
         mDatabaseReference.setValue(nameKey);
     }

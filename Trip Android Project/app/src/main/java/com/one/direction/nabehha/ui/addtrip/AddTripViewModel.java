@@ -53,6 +53,7 @@ public class AddTripViewModel extends ViewModel {
             put("time", trip.getTime());
             put("type", trip.getType());
             put("notes", trip.getNotes());
+            put("tripImage", Utilities.getGoogleMapImageForTrip(trip));
         }};
         mDatabaseReference.setValue(nameKey);
 
