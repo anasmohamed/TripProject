@@ -230,6 +230,7 @@ public class EditTrip extends AppCompatActivity {
                     trip.setTime(mTripTime);
                     trip.setDate(mTripDate);
                     trip.setStartPointLongitude(startPointLongitude);
+                    trip.setStartPointLatitude(startPointLatitude);
                     trip.setEndPointLatitude(endPointLatitude);
                     trip.setEndPointLongitude(endPointLongitude);
                     trip.setEndPointAddress(mTripEndPoint);
