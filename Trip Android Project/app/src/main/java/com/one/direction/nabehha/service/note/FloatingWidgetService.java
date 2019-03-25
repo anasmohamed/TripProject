@@ -46,16 +46,27 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     //Variable to check if the Floating widget view is on left side or in right side
     // initially we are displaying Floating widget view to Left side so set it to true
     private boolean isLeft = true;
+    private LayoutInflater inflater;
 
     public FloatingWidgetService() {
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if(intent!=null) {
+            trip = intent.getParcelableExtra(DownloadImage.TRIP_ID);
+            addRemoveView(inflater);
+            addFloatingWidgetView(inflater);
+            implementClickListeners();
+            implementTouchListenerToFloatingWidgetView();
+        }
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        if(intent!=null){
-            trip=intent.getParcelableExtra(DownloadImage.TRIP_ID);
-        }
+
         return null;
     }
 
@@ -69,12 +80,9 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         getWindowManagerDefaultDisplay();
 
         //Init LayoutInflater
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        addRemoveView(inflater);
-        addFloatingWidgetView(inflater);
-        implementClickListeners();
-        implementTouchListenerToFloatingWidgetView();
+
     }
 
 
@@ -169,9 +177,9 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         mRecyclerView=mFloatingWidgetView.findViewById(R.id.note_recycle_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
-
         NoteRecyclerViewAdapter noteAdapter = new NoteRecyclerViewAdapter(trip.getNotes());
         mRecyclerView.setAdapter(noteAdapter);
+        noteAdapter.notifyDataSetChanged();
 
 
 //        new ArrayList<String>(){{

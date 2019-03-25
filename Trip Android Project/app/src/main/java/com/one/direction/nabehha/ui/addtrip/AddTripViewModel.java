@@ -7,6 +7,7 @@ import android.util.Log;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.one.direction.nabehha.AppConstants;
+import com.one.direction.nabehha.ReturnResult;
 import com.one.direction.nabehha.Utilities;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.data.network.TripRepository;
@@ -37,9 +38,10 @@ public class AddTripViewModel extends ViewModel {
     }
 
     public void AddTripToWebService(final Trip trip,
-                                    Context mContext ) {
+                                    ReturnResult mReturnResult ) {
         mDatabaseReference = mFirebaseDatabase.getReference("Trips");
         String tripId=mDatabaseReference.push().getKey();
+        mReturnResult.onReturn(tripId);
 //        DownloadImage.startDownloadAndSaveInDb(mContext, Utilities.getGoogleMapImageForTrip(trip), tripId);
         mDatabaseReference = mFirebaseDatabase.getReference("Trips/" + AppConstants.CURRENT_USER_ID + "/scheduled/"+tripId);
         final HashMap<String, Object> nameKey = new HashMap<String, Object>() {{
@@ -80,5 +82,7 @@ public class AddTripViewModel extends ViewModel {
         }};
         mDatabaseReference.setValue(nameKey);
     }
+
+
 }
 

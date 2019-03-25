@@ -29,7 +29,6 @@ public class Reminder extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        trip = new Trip();
         trip = deserializeFromJson(getInputData().getString("trip"));
         TripAlarmDialog.startTripAlarm(context,trip);
         mp = MediaPlayer.create(context, R.raw.alarm);

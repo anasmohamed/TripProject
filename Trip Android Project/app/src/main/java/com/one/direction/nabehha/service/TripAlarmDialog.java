@@ -51,6 +51,18 @@ public class TripAlarmDialog extends Service {
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null) {
+            if (intent.getParcelableExtra(PARCELABLE_TRIP) != null)
+                trip = intent.getParcelableExtra(PARCELABLE_TRIP);
+        }
+        addFloatingWidgetView(inflater);
+
+        return super.onStartCommand(intent, flags, startId);
+
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
         Log.e(TripAlarmDialog.class.getName(),"Started .............");
@@ -59,7 +71,6 @@ public class TripAlarmDialog extends Service {
         //Init LayoutInflater
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        addFloatingWidgetView(inflater);
     }
 
     private void addFloatingWidgetView(LayoutInflater inflater) {
@@ -180,16 +191,16 @@ public class TripAlarmDialog extends Service {
         //TODO remove alarm for this trip
 
         WorkManager.getInstance().cancelAllWorkByTag(trip.getTripId());
-        startFloatingWidgetService(trip.getTripId());
+        startFloatingWidgetService(trip);
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + trip.getEndPointLatitude()+","+trip.getEndPointLongitude());
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
     }
 
-    private void startFloatingWidgetService(String tripId) {
+    private void startFloatingWidgetService(Trip trip) {
         Intent intent = new Intent(this, FloatingWidgetService.class);
-        intent.putExtra(DownloadImage.TRIP_ID, tripId);
+        intent.putExtra(DownloadImage.TRIP_ID, trip);
         startService(intent);
 
     }

@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.one.direction.nabehha.InjectionUtils;
 import com.one.direction.nabehha.R;
 import com.one.direction.nabehha.Reminder;
+import com.one.direction.nabehha.ReturnResult;
 import com.one.direction.nabehha.Utilities;
 import com.one.direction.nabehha.data.database.model.Trip;
 import com.one.direction.nabehha.databinding.AddTripFragmentBinding;
@@ -219,7 +220,7 @@ public class AddTripFragment extends Fragment {
                             && !String.valueOf(startPointLongitude).isEmpty()
                     ) {
                         calendarTime = Calendar.getInstance();
-                        Trip trip = new Trip();
+                        final Trip trip = new Trip();
                         trip.setTripName(mTripName);
                         trip.setType(mTripType);
                         trip.setStatus(mTripStatus);
@@ -233,10 +234,17 @@ public class AddTripFragment extends Fragment {
                         trip.setStartPointAddress(mTripStartPoint);
                         trip.setNotes(notesArrayList);
                         calendarTime.set(datePickerYear, datePickerMonth, datePickerDay, timePickerHour, timePickerMinute);
-                        tripReminder(trip);
-                        mViewModel.AddTripToWebService(trip, getActivity().getApplicationContext());
+
+                        mViewModel.AddTripToWebService(trip, new ReturnResult(){
+                            @Override
+                            public void onReturn(Object o) {
+                                trip.setTripId((String) o);
+                                tripReminder(trip);
+                                getActivity().finish();
+                            }
+                        });
                         mViewModel.addTripToDatabase(mTripName, "a", "b", mTripDate, mTripTime, mTripType, null, 1L, mTripStatus, getContext());
-                        getActivity().finish();
+
                     } else {
                         Toast.makeText(getActivity(), "Please Fill All Required All Fields", Toast.LENGTH_LONG).show();
                     }
@@ -249,10 +257,10 @@ public class AddTripFragment extends Fragment {
 
     void tripReminder(Trip trip) {
         Data.Builder builder = new Data.Builder();
-        @SuppressLint("RestrictedApi") Data tripData = builder.put("trip", serializeToJson(trip)).build();
+         @SuppressLint("RestrictedApi") Data tripData = builder.put("trip", serializeToJson(trip)).build();
         Log.i("final time", getTimeInSeconds() + "");
         OneTimeWorkRequest myWork =
-                new OneTimeWorkRequest.Builder(Reminder.class).setInputData(tripData).addTag(trip.getTripName() + trip.getDate() + trip.getTime())
+                new OneTimeWorkRequest.Builder(Reminder.class).setInputData(tripData).addTag(trip.getTripId())
                         .setInitialDelay(getTimeInSeconds(), TimeUnit.SECONDS).// Use this when you want to add initial delay or schedule initial work to `OneTimeWorkRequest` e.g. setInitialDelay(2, TimeUnit.HOURS)
                         build();
         mWorkManager.enqueue(myWork);
